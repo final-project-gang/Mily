@@ -1,6 +1,7 @@
 package com.mily.milyx;
 
 import com.mily.milyxcomment.MilyXComment;
+import com.mily.user.MilyUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,11 +25,8 @@ public class MilyX {
 
     private LocalDateTime createDate;
 
-//    @ManyToOne
-//    private Member memberNickName;
-//    // 멤버 구현 시 사용 가능
-//
-//    // 사이버 머니도 구현 필요
+    @ManyToOne
+    private MilyUser milyUser;
 
     @OneToMany(mappedBy = "milyX", cascade = CascadeType.REMOVE)
     private List<MilyXComment> mxc;

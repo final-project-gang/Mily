@@ -1,6 +1,7 @@
 package com.mily.milyxcomment;
 
 import com.mily.milyx.MilyX;
+import com.mily.user.MilyUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,9 +21,8 @@ public class MilyXComment {
 
     private LocalDateTime createDate;
 
-//    @ManyToOne
-//    private Member memberNickName;
-//    멤버 구현 시 사용 가능 + 온도
+    @ManyToOne
+    private MilyUser milyUser;
 
     @ManyToOne
     @JoinColumn(name = "milyx_id")
