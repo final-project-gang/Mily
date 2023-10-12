@@ -1,13 +1,8 @@
 package com.mily.milyx;
 
-import com.mily.milyxcomment.MilyXComment;
-import com.mily.user.MilyUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -23,12 +18,12 @@ public class MilyX {
     @Column(columnDefinition = "TEXT")
     private String body;
 
-    private LocalDateTime createDate;
+    private String createDate;
 
-    @ManyToOne
-    private MilyUser milyUser;
+//    @ManyToOne
+//    private MilyUser milyUser;
 
-    @OneToMany(mappedBy = "milyX", cascade = CascadeType.REMOVE)
-    private List<MilyXComment> mxc;
+//    @OneToMany(mappedBy = "milyX", cascade = CascadeType.REMOVE)
+//    private List<MilyXComment> mxc;
     // 변호사 답변 기능
 }
