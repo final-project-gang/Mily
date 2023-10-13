@@ -1,0 +1,202 @@
+<html layout:decorate="@{mily/common/layout}" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+</head>
+
+<body>
+
+<div layout:fragment="content" class="flex-1 flex items-center justify-center">
+    <div class="max-w-2xl w-full px-4">
+        <div class="flex mb-4 mt-4 justify-center items-center">
+            <i class="fa-solid fa-user-plus"></i>
+            회원가입
+        </div>
+
+        <script>
+            let submitSignupFormDone = false;
+            function submitSignupForm(form) {
+                if ( submitSignupFormDone ) return;
+
+                form.userLoginId.value = form.userLoginId.value.trim();
+
+                if ( form.userLoginId.value.length == 0 ) {
+                    form.userLoginId.focus();
+                    toastWarning('아이디 입력 란을 확인해주세요.');
+                    return;
+                }
+                if ( form.userLoginId.value.length < 4 ) {
+                    form.userLoginId.focus();
+                    toastWarning('아이디는 최소 4글자 이상이어야 합니다.');
+                    return;
+                }
+
+                form.userPassword.value = form.userPassword.value.trim();
+
+                if ( form.userPassword.value.length == 0 ) {
+                    form.userPassword.focus();
+                    toastWarning('비밀번호 입력 란을 확인해주세요.');
+                    return;
+                }
+                if ( form.userPassword.value.length < 8 ) {
+                    form.userPassword.focus();
+                    toastWarning('비밀번호는 최소 8글자 이상이어야 합니다.');
+                    return;
+                }
+
+                form.userPassword2.value = form.userPassword2.value.trim();
+
+                if ( form.userPassword2.value.length == 0 ) {
+                    form.userPassword2.focus();
+                    toastWarning('비밀번호 확인 입력 란을 확인해주세요.');
+                    return;
+                }
+                if ( form.userPassword.value != form.userPassword2.value ) {
+                    form.userPassword2.focus();
+                    toastWarning('두 개의 비밀번호가 일치하지 않습니다.');
+                    return;
+                }
+
+                form.userNickname.value = form.userNickname.value.trim();
+
+                if ( form.userNickname.value.length == 0 ) {
+                    form.userNickname.focus();
+                    toastWarning('닉네임 입력 란을 확인해주세요.');
+                    return;
+                }
+                if ( form.userNickname.value.length < 3 ) {
+                    form.userNickname.focus();
+                    toastWarning('닉네임은 최소 3글자 이상이어야 합니다.');
+                    return;
+                }
+                if ( form.userNickname.value.length > 12) {
+                    form.userNickname.focus();
+                    toastWarning('닉네임은 최대 12글자 이하여야 합니다.');
+                    return;
+                }
+
+                form.userName.value = form.userName.value.trim();
+
+                if ( form.userName.value.length == 0 ) {
+                    form.userName.focus();
+                    toastWarning('이름 입력 란을 확인해주세요.');
+                    return;
+                }
+
+                form.userEmail.value = form.userEmail.value.trim();
+
+                if ( form.userEmail.value.length == 0 ) {
+                    form.userEmail.focus();
+                    toastWarning('이메일 입력 란을 확인해주세요.');
+                    return;
+                }
+
+                form.userPhoneNumber.value = form.userPhoneNumber.value.trim();
+
+                if ( form.userPhoneNumber.value.length == 0 ) {
+                    form.userPhoneNumber.focus();
+                    toastWarning('전화번호 입력 란을 확인해주세요.');
+                    return;
+                }
+                if ( form.userPhoneNumber.value.length < 11 ) {
+                    form.userPhoneNumber.focus();
+                    toastWarning('전화번호를 다시 확인해주세요.');
+                    return;
+                }
+
+                form.userDateOfBirth.value = form.userDateOfBirth.value.trim();
+
+                if ( form.userDateOfBirth.value.length == 0 ) {
+                    form.userDateOfBirth.focus();
+                    toastWarning('생년월일 입력 란을 확인해주세요.');
+                    return;
+                }
+
+                form.submit();
+                submitSignupFormDone = true;
+            }
+        </script>
+
+        <form th:action method="POST" onsubmit="submitSignupForm(this); return false;" class="flex flex-col gap-6">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">아이디</span>
+                </label>
+                <input type="text" name="userLoginId" placeholder="아이디" class="input input-bordered" autofocus
+                       maxlength="12">
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">비밀번호</span>
+                </label>
+                <input type="password" name="userPassword" placeholder="비밀번호" class="input input-bordered"
+                       maxlength="30">
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">비밀번호 확인</span>
+                </label>
+                <input type="password" name="userPassword2" placeholder="비밀번호 확인" class="input input-bordered"
+                       maxlength="30">
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">닉네임</span>
+                </label>
+                <input type="text" name="userNickname" placeholder="닉네임" class="input input-bordered" autofocus
+                       maxlength="30">
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">이름</span>
+                </label>
+                <input type="text" name="userName" placeholder="이름" class="input input-bordered" autofocus
+                       maxlength="30">
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">이메일</span>
+                </label>
+                <input type="email" name="userEmail" placeholder="이메일" class="input input-bordered" autofocus
+                       maxlength="30">
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">전화번호</span>
+                </label>
+                <input type="tel" name="userPhoneNumber" placeholder="'-' 없이 입력해주세요." class="input input-bordered" autofocus
+                       maxlength="30">
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">생년월일</span>
+                </label>
+                <input type="date" name="userDateOfBirth" placeholder="생년월일" class="input input-bordered" autofocus
+                       maxlength="30">
+            </div>
+
+            <div>
+                <button class="btn btn-block btn-primary gap-1">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span>가입하기</span>
+                </button>
+
+                <div class="text-center">
+                    <button class="btn btn-link">로그인</button>
+                    <button class="btn btn-link">아이디 찾기</button>
+                    <button class="btn btn-link">비밀번호 찾기</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
