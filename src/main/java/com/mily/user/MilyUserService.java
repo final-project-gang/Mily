@@ -18,16 +18,16 @@ public class MilyUserService {
 
     @Transactional
     public RsData<MilyUser> signup (String userLoginId, String userPassword, String userNickName, String userName, String userEmail, String userPhoneNumber, String userDateOfBirth) {
-        if ( findByUserLoginId(userLoginId).isPresent() ) {
+        if (findByUserLoginId(userLoginId).isPresent()) {
             return RsData.of("F-1", "%s은(는) 이미 사용 중인 아이디입니다.".formatted(userLoginId));
         }
-        if ( findByUserNickName(userNickName).isPresent() ) {
+        if (findByUserNickName(userNickName).isPresent()) {
             return RsData.of("F-1", "%s은(는) 이미 사용 중인 닉네임입니다.".formatted(userNickName));
         }
-        if ( findByUserEmail(userEmail).isPresent() ) {
+        if (findByUserEmail(userEmail).isPresent()) {
             return RsData.of("F-1", "%s은(는) 이미 인증 된 이메일입니다.".formatted(userEmail));
         }
-        if ( findByUserPhoneNumber(userPhoneNumber).isPresent() ) {
+        if (findByUserPhoneNumber(userPhoneNumber).isPresent()) {
             return RsData.of("F-1", "%s은(는) 이미 인증 된 전화번호입니다.".formatted(userPhoneNumber));
         }
 
@@ -66,6 +66,7 @@ public class MilyUserService {
     public Optional<MilyUser> findByUserPhoneNumber (String userPhoneNumber) {
         return milyUserRepository.findByUserPhoneNumber(userPhoneNumber);
     }
+
     public Optional<MilyUser> findById (long id) {
         return milyUserRepository.findById(id);
     }
