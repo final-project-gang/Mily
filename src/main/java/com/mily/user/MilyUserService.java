@@ -70,4 +70,28 @@ public class MilyUserService {
     public Optional<MilyUser> findById (long id) {
         return milyUserRepository.findById(id);
     }
+
+    public RsData checkUserLoginIdDup (String userLoginId) {
+        if ( findByUserLoginId(userLoginId).isPresent() ) return RsData.of("F-1", "%s(은)는 이미 사용 중인 아이디입니다.".formatted(userLoginId));
+
+        return RsData.of("S-1", "%s(은)는 사용 가능한 아이디입니다.".formatted(userLoginId));
+    }
+
+    public RsData checkUserNickNameDup (String userNickName) {
+        if ( findByUserNickName(userNickName).isPresent() ) return RsData.of("F-1", "%s(은)는 이미 사용 중인 닉네임입니다.".formatted(userNickName));
+
+        return RsData.of("S-1", "%s(은)는 사용 가능한 닉네임입니다.".formatted(userNickName));
+    }
+
+    public RsData checkUserEmailDup (String userEmail) {
+        if ( findByUserEmail(userEmail).isPresent() ) return RsData.of("F-1", "%s(은)는 이미 인증 된 이메일입니다.".formatted(userEmail));
+
+        return RsData.of("S-1", "%s(은)는 사용 가능한 이메일입니다.".formatted(userEmail));
+    }
+
+    public RsData checkUserPhoneNumberDup (String userPhoneNumber) {
+        if ( findByUserPhoneNumber(userPhoneNumber).isPresent() ) return RsData.of("F-1", "%s(은)는 이미 인증 된 전화번호입니다.".formatted(userPhoneNumber));
+
+        return RsData.of("S-1", "%s(은)는 사용 가능한 전화번호입니다.".formatted(userPhoneNumber));
+    }
 }
