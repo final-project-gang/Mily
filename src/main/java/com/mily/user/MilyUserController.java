@@ -1,5 +1,7 @@
 package com.mily.user;
 
+import com.mily.base.rq.Rq;
+import com.mily.base.rsData.RsData;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @Controller
 public class MilyUserController {
+    private final Rq rq;
     private final MilyUserService milyUserService;
 
     @GetMapping("/signup")
@@ -24,8 +27,14 @@ public class MilyUserController {
 
     @PostMapping("/signup")
     public String doSignup(@Valid SignupForm signupForm) {
-        milyUserService.signup(signupForm.getUserLoginId(), signupForm.getUserPassword(), signupForm.getUserNickname(), signupForm.getUserName(), signupForm.getUserEmail(), signupForm.getUserPhoneNumber(), signupForm.getUserDateOfBirth());
-        return "redirect:/?msg=";
+        RsData<MilyUser> signupRs = milyUserService.signup(signupForm.getUserLoginId(), signupForm.getUserPassword(), signupForm.getUserNickname(), signupForm.getUserName(), signupForm.getUserEmail(), signupForm.getUserPhoneNumber(), signupForm.getUserDateOfBirth());
+
+        if ( signupRs.isFail() ) {
+            rq.historyBack(signupRs.getMsg());
+            return "common/js";
+        }
+
+        return rq.redirect("/", signupRs.getMsg());
     }
 
     @Getter
