@@ -28,6 +28,23 @@ function parseMsg(msg) {
     return [pureMsg, true];
 }
 
+function parseMsg(msg) {
+    const [pureMsg, ttl] = msg.split(";ttl=");
+
+    const currentJsUnixTimestamp = new Date().getTime();
+
+    if (ttl && parseInt(ttl) + 5000 < currentJsUnixTimestamp) {
+        return [pureMsg, false];
+    }
+
+    return [pureMsg, true];
+}
+
+function toastMsg(isNotice, msg) {
+    if ( isNotice ) toastNotice(msg);
+    else toastWarning(msg);
+}
+
 function toastNotice(msg) {
     const [pureMsg, needToShow] = parseMsg(msg);
 

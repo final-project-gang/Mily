@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class MilyUserController {
 
     @PostMapping("/signup")
     public String doSignup(@Valid SignupForm signupForm) {
-        RsData<MilyUser> signupRs = milyUserService.signup(signupForm.getUserLoginId(), signupForm.getUserPassword(), signupForm.getUserNickname(), signupForm.getUserName(), signupForm.getUserEmail(), signupForm.getUserPhoneNumber(), signupForm.getUserDateOfBirth());
+        RsData<MilyUser> signupRs = milyUserService.signup(signupForm.getUserLoginId(), signupForm.getUserPassword(), signupForm.getUserNickName(), signupForm.getUserName(), signupForm.getUserEmail(), signupForm.getUserPhoneNumber(), signupForm.getUserDateOfBirth());
 
         if ( signupRs.isFail() ) {
             rq.historyBack(signupRs.getMsg());
@@ -41,17 +42,13 @@ public class MilyUserController {
     @AllArgsConstructor
     public static class SignupForm {
         @NotBlank
-//        @Size(min = 4, max = 12)
         private String userLoginId;
 
         @NotBlank
         private String userPassword;
 
-//        @NotBlank
-//        private String userPassword2;
-
         @NotBlank
-        private String userNickname;
+        private String userNickName;
 
         @NotBlank
         private String userName;
@@ -65,5 +62,29 @@ public class MilyUserController {
 
         @NotBlank
         private String userDateOfBirth;
+    }
+
+    @GetMapping("checkUserLoginIdDup")
+    @ResponseBody
+    public RsData checkUserLoginIdDup (String userLoginId) {
+        return milyUserService.checkUserLoginIdDup(userLoginId);
+    }
+
+    @GetMapping("checkUserNickNameDup")
+    @ResponseBody
+    public RsData checkUserNickName (String userNickName) {
+        return milyUserService.checkUserNickNameDup(userNickName);
+    }
+
+    @GetMapping("checkUserEmailDup")
+    @ResponseBody
+    public RsData checkUserEmail (String userEmail) {
+        return milyUserService.checkUserEmailDup(userEmail);
+    }
+
+    @GetMapping("checkUserPhoneNumberDup")
+    @ResponseBody
+    public RsData checkUserPhoneNumber (String userPhoneNumber) {
+        return milyUserService.checkUserPhoneNumberDup(userPhoneNumber);
     }
 }
