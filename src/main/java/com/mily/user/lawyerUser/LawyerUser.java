@@ -2,12 +2,14 @@ package com.mily.user.lawyerUser;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class LawyerUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,15 +17,17 @@ public class LawyerUser {
 
     private String name;
 
+    private String password;
+
+    @Email
+    private String email;
+
     @Column(unique = true)
     private String phoneNumber;
 
     private String organization;
 
     private String organizationNumber;
-
-    @Email
-    private String email;
 
     private String major;
 

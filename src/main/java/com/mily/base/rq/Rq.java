@@ -1,8 +1,11 @@
 package com.mily.base.rq;
 
 import com.mily.standard.util.Ut;
-import com.mily.user.MilyUser;
-import com.mily.user.MilyUserService;
+import com.mily.user.lawyerUser.LawyerUser;
+import com.mily.user.lawyerUser.LawyerUserService;
+import com.mily.user.lawyerUser.LawyerUserSignUpForm;
+import com.mily.user.milyUser.MilyUser;
+import com.mily.user.milyUser.MilyUserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,14 +20,17 @@ import org.springframework.web.context.annotation.RequestScope;
 @RequestScope
 public class Rq {
     private final MilyUserService milyUserService;
+    private final LawyerUserService lawyerUserService;
     private final HttpServletRequest req;
     private final HttpServletResponse resp;
     private final HttpSession session;
     private MilyUser milyUser = null;
+    private LawyerUser lawyerUser = null;
     private final User user;
 
-    public Rq(MilyUserService milyUserService, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
+    public Rq(LawyerUserService lawyerUserService, MilyUserService milyUserService, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
         this.milyUserService = milyUserService;
+        this.lawyerUserService = lawyerUserService;
         this.req = req;
         this.resp = resp;
         this.session = session;
@@ -63,6 +69,18 @@ public class Rq {
         }
 
         return milyUser;
+    }
+
+    public LawyerUser getLawyerUser() {
+        if(isLogout()) {
+            return null;
+        }
+
+        if(lawyerUser == null) {
+            lawyerUser = lawyerUserService.findByName(getLoginedMemberUsername()).get();
+        }
+
+        return lawyerUser;
     }
 
     public boolean isAdmin() {

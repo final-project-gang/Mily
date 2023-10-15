@@ -1,6 +1,6 @@
 package com.mily.base.initData;
 
-import com.mily.user.MilyUserService;
+import com.mily.user.milyUser.MilyUserService;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

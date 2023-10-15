@@ -2,5 +2,8 @@ package com.mily.user.lawyerUser;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface LawyerUserRepository extends JpaRepository<Long, LawyerUser> {
+import java.util.Optional;
+
+public interface LawyerUserRepository extends JpaRepository<LawyerUser, Long> {
+    public Optional<LawyerUser> findByName(String name);
 }
