@@ -33,6 +33,10 @@ public class LawyerUserService {
         return RsData.of("S-1", "변호사 가입 신청을 완료하였습니다.", lu);
     }
 
+    public Optional<LawyerUser> findByCurrent(String current) {
+        return lawyerUserRepository.findByCurrent(current);
+    }
+
     public Optional<LawyerUser> findByName(String name) {
         return lawyerUserRepository.findByName(name);
     }

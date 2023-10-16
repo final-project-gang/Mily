@@ -20,7 +20,7 @@ public class LawyerUserController {
     public String showLawyerSignup() { return "mily/lawyeruser/signup_form"; }
 
     @PostMapping("/signup")
-    public String doLawterSignup(@Valid LawyerUserSignUpForm lawyerUserSignUpForm) {
+    public String doLawyerSignup(@Valid LawyerUserSignUpForm lawyerUserSignUpForm) {
         RsData<LawyerUser> signupRs = lawyerUserService.join(
                 lawyerUserSignUpForm.getName(),
                 lawyerUserSignUpForm.getPassword(),

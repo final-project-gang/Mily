@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface LawyerUserRepository extends JpaRepository<LawyerUser, Long> {
     public Optional<LawyerUser> findByName(String name);
+    Optional<LawyerUser> findByCurrent(String current);
 }

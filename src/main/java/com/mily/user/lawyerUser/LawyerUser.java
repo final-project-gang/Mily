@@ -32,4 +32,6 @@ public class LawyerUser {
     private String major;
 
     private String introduce;
+
+    private String current;
 }
