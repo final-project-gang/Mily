@@ -3,7 +3,6 @@ package com.mily.base.rq;
 import com.mily.standard.util.Ut;
 import com.mily.user.lawyerUser.LawyerUser;
 import com.mily.user.lawyerUser.LawyerUserService;
-import com.mily.user.lawyerUser.LawyerUserSignUpForm;
 import com.mily.user.milyUser.MilyUser;
 import com.mily.user.milyUser.MilyUserService;
 import jakarta.servlet.http.Cookie;
@@ -87,6 +86,12 @@ public class Rq {
         if (isLogout()) return false;
 
         return getMilyUser().isAdmin();
+    }
+
+    public boolean isApprove() {
+        if(isLogout()) return false;
+
+        return getLawyerUser().isApprove();
     }
 
     // 세션 관련 함수

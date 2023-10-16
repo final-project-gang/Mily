@@ -1,7 +1,6 @@
 package com.mily.user.lawyerUser;
 
 import com.mily.base.rsData.RsData;
-import com.mily.user.milyUser.MilyUser;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,14 +26,11 @@ public class LawyerUserService {
                 .organization(organization)
                 .organizationNumber(organizationNumber)
                 .introduce(introduce)
+                .current("waiting")
                 .build();
 
         lu = lawyerUserRepository.save(lu);
         return RsData.of("S-1", "변호사 가입 신청을 완료하였습니다.", lu);
-    }
-
-    public Optional<LawyerUser> findByCurrent(String current) {
-        return lawyerUserRepository.findByCurrent(current);
     }
 
     public Optional<LawyerUser> findByName(String name) {

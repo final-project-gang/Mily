@@ -1,6 +1,9 @@
 package com.mily.user.milyUser;
 
 import com.mily.base.rsData.RsData;
+import com.mily.estimate.Estimate;
+import com.mily.estimate.EstimateRepository;
+import com.mily.standard.util.Ut;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +17,7 @@ import java.util.Optional;
 @Service
 public class MilyUserService {
     private final MilyUserRepository milyUserRepository;
+    private final EstimateRepository estimateRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -93,5 +97,21 @@ public class MilyUserService {
         if ( findByUserPhoneNumber(userPhoneNumber).isPresent() ) return RsData.of("F-1", "%s(은)는 이미 인증 된 전화번호입니다.".formatted(userPhoneNumber));
 
         return RsData.of("S-1", "%s(은)는 사용 가능한 전화번호입니다.".formatted(userPhoneNumber));
+    }
+
+    public void saveEstimate(String category, String categoryItem, MilyUser milyUser) {
+        Estimate estimate = new Estimate();
+        estimate.setCategory(category);
+        estimate.setCategoryItem(categoryItem);
+        this.estimateRepository.save(estimate);
+    }
+
+    public MilyUser getUser(String userName) {
+        Optional<MilyUser> milyUser = milyUserRepository.findByUserName(userName);
+        if (milyUser.isPresent()) {
+            return milyUser.get();
+        } else {
+            throw new Ut.DataNotFoundException("유저 정보가 없습니다.");
+        }
     }
 }

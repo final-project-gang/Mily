@@ -34,4 +34,8 @@ public class LawyerUser {
     private String introduce;
 
     private String current;
+
+    public boolean isApprove() {
+        return "approve".equals(current);
+    }
 }
