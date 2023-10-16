@@ -1,7 +1,7 @@
 package com.mily.milyx;
 
 import com.mily.milyxcomment.MilyXCommentService;
-import com.mily.user.MilyUserService;
+import com.mily.user.milyUser.MilyUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

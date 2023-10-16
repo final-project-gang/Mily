@@ -1,4 +1,4 @@
-package com.mily.user;
+package com.mily.user.milyUser;
 
 import com.mily.base.rsData.RsData;
 import jakarta.transaction.Transactional;

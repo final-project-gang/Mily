@@ -1,4 +1,4 @@
-package com.mily.user;
+package com.mily.user.milyUser;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,4 +1,4 @@
-package com.mily.user;
+package com.mily.user.milyUser;
 
 import jakarta.persistence.*;
 import lombok.*;

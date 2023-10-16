@@ -1,7 +1,7 @@
 package com.mily.milyxcomment;
 
 import com.mily.milyx.MilyX;
-import com.mily.user.MilyUser;
+import com.mily.user.milyUser.MilyUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
