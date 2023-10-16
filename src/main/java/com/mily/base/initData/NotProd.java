@@ -12,7 +12,7 @@ public class NotProd {
     @Bean
     public ApplicationRunner init(MilyUserService milyUserService) {
         return args -> {
-            milyUserService.signup("admin", "1234", "관리자", "관리자", "admin@email.com", "99999999999", null);
+            milyUserService.signup("admin123", "9a9a9a9a", "administrator", "administrator", "admin123@email.com", "99999999999", "1996-10-05");
         };
     }
 }
