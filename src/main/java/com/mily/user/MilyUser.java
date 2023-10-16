@@ -7,9 +7,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Getter
@@ -43,7 +40,7 @@ public class MilyUser {
     private String userCreateDate;
 
     public boolean isAdmin() {
-        return "admin".equals(userLoginId);
+        return "admin123".equals(userLoginId);
     }
 
     public List<? extends GrantedAuthority> grantedAuthorities() {
@@ -54,7 +51,7 @@ public class MilyUser {
 
         // userLoginId 가 admin인 회원은 admin 권한도 가집니다.
         if (isAdmin()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
+            grantedAuthorities.add(new SimpleGrantedAuthority("admin123"));
         }
 
         return grantedAuthorities;

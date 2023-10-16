@@ -30,7 +30,7 @@ public class MilyUserController {
     public String doSignup(@Valid SignupForm signupForm) {
         RsData<MilyUser> signupRs = milyUserService.signup(signupForm.getUserLoginId(), signupForm.getUserPassword(), signupForm.getUserNickName(), signupForm.getUserName(), signupForm.getUserEmail(), signupForm.getUserPhoneNumber(), signupForm.getUserDateOfBirth());
 
-        if ( signupRs.isFail() ) {
+        if (signupRs.isFail()) {
             rq.historyBack(signupRs.getMsg());
             return "common/js";
         }
@@ -66,25 +66,25 @@ public class MilyUserController {
 
     @GetMapping("checkUserLoginIdDup")
     @ResponseBody
-    public RsData checkUserLoginIdDup (String userLoginId) {
+    public RsData checkUserLoginIdDup(String userLoginId) {
         return milyUserService.checkUserLoginIdDup(userLoginId);
     }
 
     @GetMapping("checkUserNickNameDup")
     @ResponseBody
-    public RsData checkUserNickName (String userNickName) {
+    public RsData checkUserNickName(String userNickName) {
         return milyUserService.checkUserNickNameDup(userNickName);
     }
 
     @GetMapping("checkUserEmailDup")
     @ResponseBody
-    public RsData checkUserEmail (String userEmail) {
+    public RsData checkUserEmail(String userEmail) {
         return milyUserService.checkUserEmailDup(userEmail);
     }
 
     @GetMapping("checkUserPhoneNumberDup")
     @ResponseBody
-    public RsData checkUserPhoneNumber (String userPhoneNumber) {
+    public RsData checkUserPhoneNumber(String userPhoneNumber) {
         return milyUserService.checkUserPhoneNumberDup(userPhoneNumber);
     }
 }
