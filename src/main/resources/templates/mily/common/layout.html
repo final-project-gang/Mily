@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <!-- 제이쿼리 불러오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- toastr 불러오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://jhs512.github.io/toastr/toastr.css">
+
+    <!-- 폰트어썸 아이콘 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- 아이콘 목록 : https://fontawesome.com/search?o=r&m=free -->
+
+</head>
+<body>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@3.7.7/dist/full.css" rel="stylesheet" type="text/css"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="/resource/common/common.css">
+<script src="/resource/common/common.js"></script>
+
+<div class="min-h-screen flex flex-col">
+    <header>
+        <div class="navbar bg-base-100">
+            <div class="flex-1">
+                <a class="btn btn-ghost normal-case text-xl">MILY</a>
+                <div class="form-control">
+                    <input type="text" placeholder="검색" class="input input-bordered w-24 md:w-auto"/>
+                </div>
+            </div>
+            <div class="flex-none gap-2">
+                <div class="dropdown dropdown-end">
+                    <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+                        <div class="gw-10 rounded-full; justify-center items-center">
+                            <i class="fa-solid fa-user" style="color: #4b55ff;"></i>
+                        </div>
+                    </label>
+                    <ul tabindex="0"
+                        class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+                        <li><a href="#">로그인</a></li>
+                        <li><a href="/user/signup">회원 가입</a></li>
+                        <li>
+                            <a class="justify-between">
+                                내 정보
+                                <span class="badge">New</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <th:block layout:fragment="content"></th:block>
+    </main>
+</div>
+
+<script>
+    // URL에서 msg 파라미터의 값을 가져오는 함수
+    function getMsgFromURL() {
+        const url = new URL(window.location.href);
+        return url.searchParams.get('msg');
+    }
+
+    function getFailMsgFromURL() {
+        const url = new URL(window.location.href);
+        return url.searchParams.get('failMsg');
+    }
+
+    const message = getMsgFromURL();
+
+    // msg 파라미터의 값이 있으면 toastr로 알림을 표시
+    if (message) {
+        toastNotice(decodeURIComponent(message));
+    }
+
+    const msg = getMsgFromURL();
+
+    // msg 파라미터의 값이 있으면 toastr로 알림을 표시
+    if (msg) {
+        toastNotice(decodeURIComponent(msg));
+    }
+
+    // history.back 에 의해서 돌아온 경우에 실행됨
+    $(window).bind("pageshow", function (event) {
+        let localStorageKeyAboutHistoryBackFailMsg = "historyBackFailMsg___" + location.href;
+
+        if (!localStorage.getItem(localStorageKeyAboutHistoryBackFailMsg)) {
+            localStorageKeyAboutHistoryBackFailMsg = "historyBackFailMsg___null";
+        }
+
+        const historyBackFailMsg = localStorage.getItem(localStorageKeyAboutHistoryBackFailMsg);
+        if (historyBackFailMsg) {
+            toastWarning(historyBackFailMsg);
+            localStorage.removeItem(localStorageKeyAboutHistoryBackFailMsg);
+        }
+    });
+</script>
+</body>
+</html>
