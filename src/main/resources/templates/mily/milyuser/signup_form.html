@@ -1,7 +1,7 @@
 <html layout:decorate="@{mily/common/layout}" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>회원가입</title>
+    <title>MILY 회원가입</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 </head>
 
@@ -46,7 +46,7 @@
                     <span class="label-text">닉네임</span>
                 </label>
                 <input type="text" name="userNickName" placeholder="닉네임" class="input input-bordered" autofocus
-                       maxlength="8" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
+                       maxlength="13" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
                        onkeyup="checkUserNickNameDupDebounce();">
                 <div class="mt-2 text-sm"></div>
             </div>

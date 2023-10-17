@@ -23,6 +23,17 @@ public class SecurityConfig {
                 .headers((headers) -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
+                .formLogin((formLogin) -> formLogin
+                        .loginPage("/user/login")
+                        .usernameParameter("userLoginId")
+                        .passwordParameter("userPassword")
+                        .successHandler(new CustomSimpleUrlAuthenticationSuccessHandler())
+                        .failureHandler(new CustomSimpleUrlAuthenticationFailureHandler())
+                )
+                .logout((logout) -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true))
         ;
         return http.build();
     }

@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,11 +22,17 @@ public class MilyUserController {
     private final Rq rq;
     private final MilyUserService milyUserService;
 
+    @PreAuthorize("isAnonymous()")
+    @GetMapping("/login")
+    public String showLogin() { return "mily/milyuser/login_form"; }
+
+    @PreAuthorize("isAnonymous()")
     @GetMapping("/signup")
     public String showSignup() {
         return "mily/milyuser/signup_form";
     }
 
+    @PreAuthorize("isAnonymous()")
     @PostMapping("/signup")
     public String doSignup(@Valid SignupForm signupForm) {
         RsData<MilyUser> signupRs = milyUserService.signup(signupForm.getUserLoginId(), signupForm.getUserPassword(), signupForm.getUserNickName(), signupForm.getUserName(), signupForm.getUserEmail(), signupForm.getUserPhoneNumber(), signupForm.getUserDateOfBirth());
