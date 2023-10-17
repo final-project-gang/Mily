@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface LawyerUserRepository extends JpaRepository<LawyerUser, Long> {
-    public Optional<LawyerUser> findByName(String name);
+    Optional<LawyerUser> findByName(String name);
     Optional<LawyerUser> findByCurrent(String current);
 }

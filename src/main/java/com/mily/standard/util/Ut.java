@@ -5,8 +5,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Ut {
+    public static class date {
+        public static String getCurrentDateFormatted(String pattern) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+            return simpleDateFormat.format(new Date());
+        }
+    }
+
     public static class url {
         public static String encode(String message) {
             try {
@@ -14,6 +23,42 @@ public class Ut {
             } catch (UnsupportedEncodingException e) {
                 return null;
             }
+        }
+
+        public static String modifyQueryParam(String url, String paramName, String paramValue) {
+            url = deleteQueryParam(url, paramName);
+            url = addQueryParam(url, paramName, paramValue);
+
+            return url;
+        }
+
+        public static String addQueryParam(String url, String paramName, String paramValue) {
+            if (!url.contains("?")) {
+                url += "?";
+            }
+
+            if (!url.endsWith("?") && !url.endsWith("&")) {
+                url += "&";
+            }
+
+            url += paramName + "=" + paramValue;
+
+            return url;
+        }
+
+        private static String deleteQueryParam(String url, String paramName) {
+            int startPoint = url.indexOf(paramName + "=");
+            if (startPoint == -1) return url;
+
+            int endPoint = url.substring(startPoint).indexOf("&");
+
+            if (endPoint == -1) {
+                return url.substring(0, startPoint - 1);
+            }
+
+            String urlAfter = url.substring(startPoint + endPoint + 1);
+
+            return url.substring(0, startPoint) + urlAfter;
         }
     }
 

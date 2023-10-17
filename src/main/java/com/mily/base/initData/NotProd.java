@@ -13,7 +13,7 @@ public class NotProd {
     public ApplicationRunner init(MilyUserService milyUserService) {
         return args -> {
             milyUserService.signup("admin123", "9a9a9a9a", "administrator", "administrator", "admin123@email.com", "99999999999", "1996-10-05");
-            milyUserService.signup("test", "test", "test", "test", "test@test.com", "01011111111", "1111-11-11");
+            milyUserService.signup("testaccount", "qwerasdf", "testaccount", "testaccount", "testaccount@email.com", "88888888888", "1996-10-05");
         };
     }
 }

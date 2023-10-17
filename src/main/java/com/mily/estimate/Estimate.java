@@ -1,9 +1,7 @@
 package com.mily.estimate;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.mily.user.milyUser.MilyUser;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,15 +13,16 @@ public class Estimate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
-    private String sex;
-
-    private int phoneNumber;
-
-    private int birth;
-
     private String category;
 
     private String categoryItem;
+
+    private String name;
+
+    private String birth;
+
+    private String phoneNumber;
+
+    @OneToOne
+    private MilyUser milyUser;
 }

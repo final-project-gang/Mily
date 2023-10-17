@@ -191,7 +191,7 @@ public class Rq {
         String referer = req.getHeader("referer");
         String key = "historyBackFailMsg___" + referer;
         req.setAttribute("localStorageKeyAboutHistoryBackFailMsg", key);
-        req.setAttribute("historyBackFailMsg", msg);
+        req.setAttribute("historyBackFailMsg", (msg));
         // 200 이 아니라 400 으로 응답 코드가 지정 되게
         resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 
@@ -199,6 +199,6 @@ public class Rq {
     }
 
     public String redirect(String url, String msg) {
-        return "redirect:" + url + "?msg=" + Ut.url.encode(msg);
+        return "redirect:" + Ut.url.modifyQueryParam(url, "msg", Ut.url.encode(msg));
     }
 }

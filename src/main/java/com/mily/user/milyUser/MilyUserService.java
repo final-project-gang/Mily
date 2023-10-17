@@ -4,6 +4,8 @@ import com.mily.base.rsData.RsData;
 import com.mily.estimate.Estimate;
 import com.mily.estimate.EstimateRepository;
 import com.mily.standard.util.Ut;
+import com.mily.user.lawyerUser.LawyerUser;
+import com.mily.user.lawyerUser.LawyerUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +20,7 @@ import java.util.Optional;
 public class MilyUserService {
     private final MilyUserRepository milyUserRepository;
     private final EstimateRepository estimateRepository;
+    private final LawyerUserRepository lawyerUserRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -99,10 +102,14 @@ public class MilyUserService {
         return RsData.of("S-1", "%s(은)는 사용 가능한 전화번호입니다.".formatted(userPhoneNumber));
     }
 
-    public void saveEstimate(String category, String categoryItem, MilyUser milyUser) {
+    public void sendEstimate(String category, String categoryItem, MilyUser milyUser) {
         Estimate estimate = new Estimate();
         estimate.setCategory(category);
         estimate.setCategoryItem(categoryItem);
+        estimate.setName(milyUser.getUserName());
+        estimate.setBirth(milyUser.getUserDateOfBirth());
+        estimate.setPhoneNumber(milyUser.getUserPhoneNumber());
+        estimate.setMilyUser(milyUser);
         this.estimateRepository.save(estimate);
     }
 
@@ -113,5 +120,9 @@ public class MilyUserService {
         } else {
             throw new Ut.DataNotFoundException("유저 정보가 없습니다.");
         }
+    }
+
+    public Optional<LawyerUser> findByCurrent(String current) {
+        return lawyerUserRepository.findByCurrent(current);
     }
 }
