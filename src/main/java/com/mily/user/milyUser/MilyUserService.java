@@ -8,11 +8,17 @@ import com.mily.user.lawyerUser.LawyerUser;
 import com.mily.user.lawyerUser.LawyerUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -122,7 +128,14 @@ public class MilyUserService {
         }
     }
 
-    public Optional<LawyerUser> findByCurrent(String current) {
-        return lawyerUserRepository.findByCurrent(current);
+    public Page<LawyerUser> getWaitingLawyerList(int page, String current) {
+        MilyUser milyUser = new MilyUser();
+        if(milyUser.isAdmin()) {
+            List<Sort.Order> sorts = new ArrayList<>();
+            sorts.add(Sort.Order.desc("createDate"));
+            Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+            return lawyerUserRepository.findByCurrent(current, pageable);
+        }
+        else return null;
     }
 }
