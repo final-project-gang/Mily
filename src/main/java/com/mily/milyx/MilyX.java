@@ -20,7 +20,6 @@ public class MilyX {
 
     private String createDate;
 
-//    @ManyToOne
 //    private MilyUser milyUser;
 
 //    @OneToMany(mappedBy = "milyX", cascade = CascadeType.REMOVE)
