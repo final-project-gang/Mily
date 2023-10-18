@@ -4,20 +4,24 @@
     <title>Waiting Lawyer List</title>
 </head>
 <body>
-<h1>Waiting Lawyer List</h1>
+<h1>승인 대기중인 변호사 목록</h1>
 
 <table border="1">
     <thead>
     <tr>
-        <th>ID</th>
         <th>Name</th>
-        <!-- Add other fields as needed -->
+        <th>email</th>
+        <th>phoneNumber</th>
+        <th>organization</th>
+        <th>organizationNumber</th>
+        <th>major</th>
+        <th>introduce</th>
+        <!-- 필요한 다른 필드들 -->
     </tr>
     </thead>
 
-    <tbody th:each="lawyer : ${paging.content}">
+    <tbody th:each="lawyer : ${waitingLawyers}">
     <tr>
-        <td th:text="${lawyer.id}"></td>
         <td th:text="${lawyer.name}"></td>
         <td th:text="${lawyer.email}"></td>
         <td th:text="${lawyer.phoneNumber}"></td>
@@ -25,24 +29,14 @@
         <td th:text="${lawyer.organizationNumber}"></td>
         <td th:text="${lawyer.major}"></td>
         <td th:text="${lawyer.introduce}"></td>
-        <!-- Add other fields as needed -->
+
     </tr>
+
     </tbody>
 
 </table>
 
-<!-- Pagination Links -->
-<div class="pagination">
-    <a th:if="${paging.hasPrevious()} || ${paging.isFirst()}" th:href="@{/waitinglawyerlist(page=${paging.number-1}, current='your_current_value')}">Previous Page</a>
-    <!-- Replace 'your_current_value' with the actual value of current. If it's dynamic, you should pass it from the controller -->
-
-    Page: <span th:text="${paging.number + 1}"></span>/<span th:text="${paging.totalPages}"></span>
-
-    <a th:if="${paging.hasNext()} || ${paging.isLast()}" th:href="@{/waitinglawyerlist(page=${paging.number+1}, current='your_current_value')}">Next Page</a>
-    <!-- Replace 'your_current_value' with the actual value of current. If it's dynamic, you should pass it from the controller -->
-
-</div>
-
+<a href="/">홈</a>
 
 </body>
 

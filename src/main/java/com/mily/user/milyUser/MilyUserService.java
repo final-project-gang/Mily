@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -122,19 +123,18 @@ public class MilyUserService {
         }
     }
 
-    public LawyerUser getWaitingLawyerList(String current) {
-        Optional<LawyerUser> lawyerUser = lawyerUserRepository.findByCurrent(current);
-        if(lawyerUser.isPresent()) {
-            return lawyerUser.get();
-        } else {
-            throw new Ut.DataNotFoundException("승인 대기중인 변호사 목록이 없습니다.");
-        }
-    }
-
     public boolean isAdmin(String userLoginId) {
         return milyUserRepository.findByUserLoginId(userLoginId)
                 .map(MilyUser::getUserLoginId)
                 .filter(loginId -> loginId.equals("admin123"))
                 .isPresent();
+    }
+
+    public List<LawyerUser> getWaitingLawyerList() {
+        List<LawyerUser> lawyerUsers = lawyerUserRepository.findByCurrent("waiting");
+        if (lawyerUsers.isEmpty()) {
+            throw new Ut.DataNotFoundException("승인 대기중인 변호사 목록이 없습니다.");
+        }
+        return lawyerUsers;
     }
 }

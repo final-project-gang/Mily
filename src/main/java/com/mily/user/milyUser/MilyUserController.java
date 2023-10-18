@@ -2,6 +2,7 @@ package com.mily.user.milyUser;
 
 import com.mily.base.rq.Rq;
 import com.mily.base.rsData.RsData;
+import com.mily.user.lawyerUser.LawyerUser;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -11,12 +12,14 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
+import java.util.List;
 
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -27,7 +30,9 @@ public class MilyUserController {
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
-    public String showLogin() { return "mily/milyuser/login_form"; }
+    public String showLogin() {
+        return "mily/milyuser/login_form";
+    }
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/signup")
@@ -122,13 +127,13 @@ public class MilyUserController {
     }
 
     @GetMapping("/waitlawyerlist")
-    public String getWaitingLawyerList(Principal principal) {
+    public String getWaitingLawyerList(Principal principal, Model model) {
         String userLoginId = principal.getName();
-        if(milyUserService.isAdmin(userLoginId)) {
-            milyUserService.getWaitingLawyerList("waiting");
+        if (milyUserService.isAdmin(userLoginId)) {
+            List<LawyerUser> waitingLawyers = milyUserService.getWaitingLawyerList();
+            model.addAttribute("waitingLawyers", waitingLawyers);
             return "/mily/waiting_lawyer_list";
-        }
-        else {
+        } else {
             return "mily_main";
         }
     }
