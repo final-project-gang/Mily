@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Waiting Lawyer List</title>
+</head>
+<body>
+<h1>Waiting Lawyer List</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <!-- Add other fields as needed -->
+    </tr>
+    </thead>
+
+    <tbody th:each="lawyer : ${paging.content}">
+    <tr>
+        <td th:text="${lawyer.id}"></td>
+        <td th:text="${lawyer.name}"></td>
+        <td th:text="${lawyer.email}"></td>
+        <td th:text="${lawyer.phoneNumber}"></td>
+        <td th:text="${lawyer.organization}"></td>
+        <td th:text="${lawyer.organizationNumber}"></td>
+        <td th:text="${lawyer.major}"></td>
+        <td th:text="${lawyer.introduce}"></td>
+        <!-- Add other fields as needed -->
+    </tr>
+    </tbody>
+
+</table>
+
+<!-- Pagination Links -->
+<div class="pagination">
+    <a th:if="${paging.hasPrevious()} || ${paging.isFirst()}" th:href="@{/waitinglawyerlist(page=${paging.number-1}, current='your_current_value')}">Previous Page</a>
+    <!-- Replace 'your_current_value' with the actual value of current. If it's dynamic, you should pass it from the controller -->
+
+    Page: <span th:text="${paging.number + 1}"></span>/<span th:text="${paging.totalPages}"></span>
+
+    <a th:if="${paging.hasNext()} || ${paging.isLast()}" th:href="@{/waitinglawyerlist(page=${paging.number+1}, current='your_current_value')}">Next Page</a>
+    <!-- Replace 'your_current_value' with the actual value of current. If it's dynamic, you should pass it from the controller -->
+
+</div>
+
+
+</body>
+
