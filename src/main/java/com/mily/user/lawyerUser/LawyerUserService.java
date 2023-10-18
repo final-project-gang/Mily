@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -16,6 +18,10 @@ public class LawyerUserService {
 
     @Transactional
     public RsData<LawyerUser> join(String name, String password, String phoneNumber, String email, String organization, String organizationNumber, String major, String introduce) {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm");
+        String nowDate = now.format(dtf);
+
         LawyerUser lu = LawyerUser
                 .builder()
                 .name(name)
@@ -27,6 +33,7 @@ public class LawyerUserService {
                 .organizationNumber(organizationNumber)
                 .introduce(introduce)
                 .current("waiting")
+                .createDate(nowDate)
                 .build();
 
         lu = lawyerUserRepository.save(lu);

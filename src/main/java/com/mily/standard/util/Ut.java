@@ -69,4 +69,20 @@ public class Ut {
             super(message);
         }
     }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "unauthorized")
+    public static class UnauthorizedException extends RuntimeException {
+        private static final long serialVersionUID = 1L;
+        public UnauthorizedException(String message) {
+            super(message);
+        }
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "invalidData")
+    public static class InvalidDataException extends RuntimeException {
+        private static final long serialVersionUID = 1L;
+        public InvalidDataException(String message) {
+            super(message);
+        }
+    }
 }

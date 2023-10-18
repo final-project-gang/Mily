@@ -41,7 +41,7 @@ public class LawyerUser {
 
     private String current;
 
-    private LocalDateTime createDate;
+    private String createDate;
 
     public boolean isApprove() {
         return "approve".equals(current);

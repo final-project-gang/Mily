@@ -103,6 +103,7 @@ public class MilyUserService {
         return RsData.of("S-1", "%s(은)는 사용 가능한 전화번호입니다.".formatted(userPhoneNumber));
     }
 
+    @Transactional
     public void sendEstimate(String category, String categoryItem, MilyUser milyUser) {
         Estimate estimate = new Estimate();
         estimate.setCategory(category);
@@ -136,5 +137,25 @@ public class MilyUserService {
             throw new Ut.DataNotFoundException("승인 대기중인 변호사 목록이 없습니다.");
         }
         return lawyerUsers;
+    }
+
+    @Transactional
+    public void approveLawyer(long id, String userLoginId) {
+        if (!isAdmin(userLoginId)) {
+            throw new Ut.UnauthorizedException("승인 권한이 없습니다.");
+        }
+
+        Optional<LawyerUser> optionalLawyer = lawyerUserRepository.findById(id);
+        if (optionalLawyer.isPresent()) {
+            LawyerUser lawyer = optionalLawyer.get();
+            if ("waiting".equals(lawyer.getCurrent())) {
+                lawyer.setCurrent("approve");
+                lawyerUserRepository.save(lawyer);
+            } else {
+                throw new Ut.InvalidDataException("선택된 변호사는 대기 중인 상태가 아닙니다.");
+            }
+        } else {
+            throw new Ut.DataNotFoundException("변호사를 찾을 수 없습니다.");
+        }
     }
 }
