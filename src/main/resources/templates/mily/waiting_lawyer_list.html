@@ -33,7 +33,7 @@
         <td th:text="${lawyer.introduce}"></td>
         <td>
             <div class="button">
-                <form th:action="@{/approvelawyer/{id}(id=${lawyer.id})}" method="post">
+                <form th:action="@{/user/approvelawyer/{id}(id=${lawyer.id})}" method="post">
                     <input type="submit" value="Approve"/>
                 </form>
             </div></tr>

@@ -139,6 +139,6 @@ public class MilyUserController {
     public String approveLawyer(@PathVariable int id, Principal principal) {
         String adminLoginId = principal.getName();
         this.milyUserService.approveLawyer(id, adminLoginId);
-        return "redirect:/waitlawyerslist";
+        return "redirect:/user/waitlawyerlist";
     }
 }
