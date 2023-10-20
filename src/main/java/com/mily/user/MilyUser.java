@@ -39,6 +39,7 @@ public class MilyUser {
     private String userDateOfBirth;
 
     private String userCreateDate;
+    private String loginId;
 
     public boolean isAdmin() {
         return "admin123".equals(userLoginId);
@@ -57,4 +58,10 @@ public class MilyUser {
 
         return grantedAuthorities;
     }
+
 }
+
+
+    // 아이디 찾기는 팝업이 아닌 페이지 내에서 알려주는 걸로 진행.
+    // 이메일로 인증했을시 맞는 아이디 찾아주기
+    // 비밀번호 찾기는 이메일 인증을 통해서 비밀번호를 변경할 수 있는 권한을 준다.

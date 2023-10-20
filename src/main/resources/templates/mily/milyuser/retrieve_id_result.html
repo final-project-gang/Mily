@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html layout:decorate="@{mily/common/layout}" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>MILY 아이디 찾기 결과</title>
+</head>
+<body>
+
+<div layout:fragment="content" class="flex-1 flex items-center justify-center">
+    <div class="max-w-2xl w-full px-4">
+        <h1 class="mb-4">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            아이디 찾기 결과
+        </h1>
+
+        <div class="flex flex-col gap-6">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">찾은 아이디</span>
+                </label>
+                <input type="text" class="input input-bordered" th:value="${foundId}" readonly>
+            </div>
+
+            <div class="text-center">
+                <a href="/user/login" class="btn btn-link">로그인</a>
+                <a href="/user/signup" class="btn btn-link">회원가입</a>
+                <a href="/user/retrieveId" class="btn btn-link">아이디 찾기</a>
+                <a href="/user/findPassword" class="btn btn-link">비밀번호 찾기</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

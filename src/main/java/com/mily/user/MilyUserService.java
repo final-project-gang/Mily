@@ -16,6 +16,7 @@ public class MilyUserService {
     private final MilyUserRepository milyUserRepository;
     private final PasswordEncoder passwordEncoder;
 
+
     @Transactional
     public RsData<MilyUser> signup (String userLoginId, String userPassword, String userNickName, String userName, String userEmail, String userPhoneNumber, String userDateOfBirth) {
         if (findByUserLoginId(userLoginId).isPresent()) {
@@ -94,4 +95,15 @@ public class MilyUserService {
 
         return RsData.of("S-1", "%s(은)는 사용 가능한 전화번호입니다.".formatted(userPhoneNumber));
     }
+
+    public Optional<MilyUser> findUserByEmail(String userEmail) {
+        return findByUserEmail(userEmail);
+    }
+
+    public Optional<String> findLoginIdByUserEmail(String userEmail) {
+        Optional<MilyUser> user = findByUserEmail(userEmail);
+        return user.map(MilyUser::getLoginId);
+    }
+
 }
+
