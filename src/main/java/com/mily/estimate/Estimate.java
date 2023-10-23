@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Setter
 @Getter
@@ -22,6 +24,10 @@ public class Estimate {
     private String birth;
 
     private String phoneNumber;
+
+    private LocalDateTime createDate;
+
+    private String area;
 
     @OneToOne
     private MilyUser milyUser;

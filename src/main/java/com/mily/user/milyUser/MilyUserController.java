@@ -40,7 +40,7 @@ public class MilyUserController {
     @PreAuthorize("isAnonymous()")
     @PostMapping("/signup")
     public String doSignup(@Valid SignupForm signupForm) {
-        RsData<MilyUser> signupRs = milyUserService.signup(signupForm.getUserLoginId(), signupForm.getUserPassword(), signupForm.getUserNickName(), signupForm.getUserName(), signupForm.getUserEmail(), signupForm.getUserPhoneNumber(), signupForm.getUserDateOfBirth());
+        RsData<MilyUser> signupRs = milyUserService.signup(signupForm.getUserLoginId(), signupForm.getUserPassword(), signupForm.getUserNickName(), signupForm.getUserName(), signupForm.getUserEmail(), signupForm.getUserPhoneNumber(), signupForm.getUserDateOfBirth(), signupForm.getArea());
 
         if (signupRs.isFail()) {
             rq.historyBack(signupRs.getMsg());
@@ -74,6 +74,9 @@ public class MilyUserController {
 
         @NotBlank
         private String userDateOfBirth;
+
+        @NotBlank
+        private String area;
     }
 
     @GetMapping("checkUserLoginIdDup")
@@ -107,8 +110,8 @@ public class MilyUserController {
 
     @PostMapping("/estimate")
     public String getEstimate(@Valid EstimateCreateForm estimateCreateForm, Principal principal) {
-        String name = principal.getName();
-        MilyUser milyUser = milyUserService.getUser(name);
+        String userName = principal.getName();
+        MilyUser milyUser = milyUserService.getUser(userName);
         milyUserService.sendEstimate(estimateCreateForm.getCategory(), estimateCreateForm.getCategoryItem(), milyUser);
         return rq.redirect("/", "견적서가 전달되었습니다.");
     }
@@ -123,7 +126,7 @@ public class MilyUserController {
         private String categoryItem;
     }
 
-    @GetMapping("/waitlawyerlist")
+    @GetMapping("/waitLawyerList")
     public String getWaitingLawyerList(Principal principal, Model model) {
         String userLoginId = principal.getName();
         if (milyUserService.isAdmin(userLoginId)) {
@@ -135,10 +138,10 @@ public class MilyUserController {
         }
     }
 
-    @PostMapping("/approvelawyer/{id}")
+    @PostMapping("/approveLawyer/{id}")
     public String approveLawyer(@PathVariable int id, Principal principal) {
         String adminLoginId = principal.getName();
         this.milyUserService.approveLawyer(id, adminLoginId);
-        return "redirect:/user/waitlawyerlist";
+        return "redirect:/user/waitLawyerList";
     }
 }

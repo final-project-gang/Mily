@@ -40,6 +40,8 @@ public class MilyUser {
 
     private String userCreateDate;
 
+    private String area;
+
     public boolean isAdmin() {
         return "admin123".equals(userLoginId);
     }

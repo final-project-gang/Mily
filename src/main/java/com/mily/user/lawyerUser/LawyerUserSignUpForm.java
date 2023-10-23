@@ -29,4 +29,6 @@ public class LawyerUserSignUpForm {
     private String major;
 
     private String introduce;
+
+    private String area;
 }

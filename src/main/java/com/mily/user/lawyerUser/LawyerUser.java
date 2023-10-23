@@ -43,6 +43,8 @@ public class LawyerUser {
 
     private String createDate;
 
+    private String area;
+
     public boolean isApprove() {
         return "approve".equals(current);
     }

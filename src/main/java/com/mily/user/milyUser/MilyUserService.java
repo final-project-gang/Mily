@@ -25,7 +25,7 @@ public class MilyUserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public RsData<MilyUser> signup (String userLoginId, String userPassword, String userNickName, String userName, String userEmail, String userPhoneNumber, String userDateOfBirth) {
+    public RsData<MilyUser> signup (String userLoginId, String userPassword, String userNickName, String userName, String userEmail, String userPhoneNumber, String userDateOfBirth, String area) {
         if (findByUserLoginId(userLoginId).isPresent()) {
             return RsData.of("F-1", "%s은(는) 이미 사용 중인 아이디입니다.".formatted(userLoginId));
         }
@@ -53,6 +53,7 @@ public class MilyUserService {
                 .userPhoneNumber(userPhoneNumber)
                 .userDateOfBirth(userDateOfBirth)
                 .userCreateDate(nowDate)
+                .area(area)
                 .build();
 
         mu = milyUserRepository.save(mu);
@@ -112,6 +113,8 @@ public class MilyUserService {
         estimate.setBirth(milyUser.getUserDateOfBirth());
         estimate.setPhoneNumber(milyUser.getUserPhoneNumber());
         estimate.setMilyUser(milyUser);
+        estimate.setArea(milyUser.getArea());
+        estimate.setCreateDate(LocalDateTime.now());
         this.estimateRepository.save(estimate);
     }
 
