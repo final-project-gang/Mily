@@ -4,7 +4,6 @@ import com.mily.base.rsData.RsData;
 import com.mily.estimate.Estimate;
 import com.mily.estimate.EstimateRepository;
 import com.mily.standard.util.Ut;
-import com.mily.user.milyUser.MilyUser;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +23,16 @@ public class LawyerUserService {
 
     @Transactional
     public RsData<LawyerUser> signup(String name, String password, String phoneNumber, String email, String organization, String organizationNumber, String major, String introduce, String area) {
+        if (findByName(name).isPresent()) {
+            return RsData.of("F-1", "%s은(는) 이미 사용 중인 아이디입니다.".formatted(name));
+        }
+        if (findByEmail(email).isPresent()) {
+            return RsData.of("F-1", "%s은(는) 이미 인증 된 이메일입니다.".formatted(email));
+        }
+        if (findByPhoneNumber(phoneNumber).isPresent()) {
+            return RsData.of("F-1", "%s은(는) 이미 인증 된 전화번호입니다.".formatted(phoneNumber));
+        }
+
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm");
         String nowDate = now.format(dtf);
@@ -47,8 +56,16 @@ public class LawyerUserService {
         return RsData.of("S-1", "변호사 가입 신청을 완료하였습니다.", lu);
     }
 
-    public Optional<LawyerUser> findByName(String name) {
-        return lawyerUserRepository.findByName(name);
+    public Optional<LawyerUser> findByName (String userLoginId) {
+        return lawyerUserRepository.findByName(userLoginId);
+    }
+
+    public Optional<LawyerUser> findByEmail (String userEmail) {
+        return lawyerUserRepository.findByEmail(userEmail);
+    }
+
+    public Optional<LawyerUser> findByPhoneNumber (String userPhoneNumber) {
+        return lawyerUserRepository.findByPhoneNumber(userPhoneNumber);
     }
 
     public List<Estimate> getEstimate(String category, String area) {

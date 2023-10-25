@@ -14,7 +14,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain userFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
@@ -28,10 +28,33 @@ public class SecurityConfig {
                         .usernameParameter("userLoginId")
                         .passwordParameter("userPassword")
                         .successHandler(new CustomSimpleUrlAuthenticationSuccessHandler())
-                        .failureHandler(new CustomSimpleUrlAuthenticationFailureHandler())
-                )
+                        .failureHandler(new CustomSimpleUrlAuthenticationFailureHandler()))
                 .logout((logout) -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true))
+        ;
+        return http.build();
+    }
+
+    @Bean
+    SecurityFilterChain lawyerFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
+                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
+                .csrf((csrf) -> csrf.disable())
+//                        .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
+                .headers((headers) -> headers
+                        .addHeaderWriter(new XFrameOptionsHeaderWriter(
+                                XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
+                .formLogin((formLogin) -> formLogin
+                        .loginPage("/lawyer/login")
+                        .usernameParameter("name")
+                        .passwordParameter("password")
+                        .successHandler(new CustomSimpleUrlAuthenticationSuccessHandler())
+                        .failureHandler(new CustomSimpleUrlAuthenticationFailureHandler()))
+                .logout((logout) -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/lawyer/logout"))
                         .logoutSuccessUrl("/")
                         .invalidateHttpSession(true))
         ;
@@ -43,3 +66,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+

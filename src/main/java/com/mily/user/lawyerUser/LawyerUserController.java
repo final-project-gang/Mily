@@ -28,9 +28,11 @@ public class LawyerUserController {
         return "mily/lawyeruser/login_form";
     }
 
+    @PreAuthorize("isAnonymous()")
     @GetMapping("/signup")
     public String showLawyerSignup() { return "mily/lawyeruser/signup_form"; }
 
+    @PreAuthorize("isAnonymous()")
     @PostMapping("/signup")
     public String doLawyerSignup(@Valid LawyerUserSignUpForm lawyerUserSignUpForm) {
         RsData<LawyerUser> signupRs = lawyerUserService.signup(
