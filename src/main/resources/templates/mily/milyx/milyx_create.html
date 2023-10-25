@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Mily > Mily X 질문</title>
-    <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 <div class="flex-1 flex items-center justify-center" layout:fragment="content">
@@ -15,17 +15,16 @@
         <form class="flex flex-col gap-6" method="POST" onsubmit="submitCreateForm(this); return false;"
               th:action>
             <div class="form-control">
-                대분류 : <select name="mainCategory">
-                <option value="">전체</option>
-            </select>
-                소분류 : <select name="subCategory">
-                <option value="">전체</option>
-            </select>
-                테스트 : <select>
-                <option value="">전체</option>
-                <option th:each="category : ${firstCategories}" th:text="${category.title}"
-                        th:value="${category.title}"></option>
-            </select>
+                대분류 :
+                <select name="firstCategory" id="firstCategorySelect">
+                    <option value="">전체</option>
+                    <option th:each="category : ${firstCategories}" th:text="${category.title}"
+                            th:value="${category.title}"></option>
+                </select>
+                소분류 :
+                <select name="secondCategory" id="secondCategorySelect">
+
+                </select>
                 <label class="label">
                     <span class="label-text">제목</span>
                 </label>
@@ -49,168 +48,14 @@
                 </button>
             </div>
         </form>
-        <script type="text/javascript">
-
-            $(document).ready(function() {
-
-                // main 카테고리를 선택할 때마다 main, sub 카테고리 전체를 들고 온다.
-
-                // main 카테고리 셋팅
-                var mainCategoryArray = new Array();
-                var mainCategoryObject = new Object();
-
-                mainCategoryObject = new Object();
-                mainCategoryObject.main_category_id = "1";
-                mainCategoryObject.main_category_name = "성 범죄";
-                mainCategoryArray.push(mainCategoryObject);
-
-                mainCategoryObject = new Object();
-                mainCategoryObject.main_category_id = "2";
-                mainCategoryObject.main_category_name = "재산 범죄";
-                mainCategoryArray.push(mainCategoryObject);
-
-                mainCategoryObject = new Object();
-                mainCategoryObject.main_category_id = "3";
-                mainCategoryObject.main_category_name = "교통사고/범죄";
-                mainCategoryArray.push(mainCategoryObject);
-
-                mainCategoryObject = new Object();
-                mainCategoryObject.main_category_id = "4";
-                mainCategoryObject.main_category_name = "폭행/협박";
-                mainCategoryArray.push(mainCategoryObject);
-
-                mainCategoryObject = new Object();
-                mainCategoryObject.main_category_id = "5";
-                mainCategoryObject.main_category_name = "명예훼손/모욕";
-                mainCategoryArray.push(mainCategoryObject);
-
-                mainCategoryObject = new Object();
-                mainCategoryObject.main_category_id = "6";
-                mainCategoryObject.main_category_name = "기타 형사범죄";
-                mainCategoryArray.push(mainCategoryObject);
-
-                mainCategoryObject = new Object();
-                mainCategoryObject.main_category_id = "7";
-                mainCategoryObject.main_category_name = "부동산/임대차";
-                mainCategoryArray.push(mainCategoryObject);
-
-                mainCategoryObject = new Object();
-                mainCategoryObject.main_category_id = "8";
-                mainCategoryObject.main_category_name = "금전/계약 문제";
-                mainCategoryArray.push(mainCategoryObject);
-
-                mainCategoryObject = new Object();
-                mainCategoryObject.main_category_id = "9";
-                mainCategoryObject.main_category_name = "민사 절차";
-                mainCategoryArray.push(mainCategoryObject);
-
-                mainCategoryObject = new Object();
-                mainCategoryObject.main_category_id = "10";
-                mainCategoryObject.main_category_name = "기타 민사 문제";
-                mainCategoryArray.push(mainCategoryObject);
-
-                mainCategoryObject = new Object();
-                mainCategoryObject.main_category_id = "11";
-                mainCategoryObject.main_category_name = "가족";
-                mainCategoryArray.push(mainCategoryObject);
-
-                mainCategoryObject = new Object();
-                mainCategoryObject.main_category_id = "12";
-                mainCategoryObject.main_category_name = "회사";
-                mainCategoryArray.push(mainCategoryObject);
-
-                mainCategoryObject = new Object();
-                mainCategoryObject.main_category_id = "13";
-                mainCategoryObject.main_category_name = "의료/세금/행정";
-                mainCategoryArray.push(mainCategoryObject);
-
-                mainCategoryObject = new Object();
-                mainCategoryObject.main_category_id = "14";
-                mainCategoryObject.main_category_name = "IT/지식재산/금융";
-                mainCategoryArray.push(mainCategoryObject);
-
-                // sub 카테고리 셋팅
-                var subCategoryArray = new Array();
-                var subCategoryObject = new Object();
-
-                // 성 범죄에 해당하는 sub 카테고리 리스트
-                subCategoryObject = new Object();
-                subCategoryObject.main_category_id = "1";
-                subCategoryObject.sub_category_id = "1"
-                subCategoryObject.sub_category_name = "성매매"
-                subCategoryArray.push(subCategoryObject);
-
-                subCategoryObject = new Object();
-                subCategoryObject.main_category_id = "1";
-                subCategoryObject.sub_category_id = "2"
-                subCategoryObject.sub_category_name = "성폭력/강제추행 등"
-                subCategoryArray.push(subCategoryObject);
-
-                subCategoryObject = new Object();
-                subCategoryObject.main_category_id = "1";
-                subCategoryObject.sub_category_id = "3"
-                subCategoryObject.sub_category_name = "미성년 대상 성범죄"
-                subCategoryArray.push(subCategoryObject);
-
-                subCategoryObject = new Object();
-                subCategoryObject.main_category_id = "1";
-                subCategoryObject.sub_category_id = "4"
-                subCategoryObject.sub_category_name = "디지털 성범죄"
-                subCategoryArray.push(subCategoryObject);
-
-                // 재산 범죄에 해당하는 sub category 리스트
-                subCategoryObject = new Object();
-                subCategoryObject.main_category_id = "2";
-                subCategoryObject.sub_category_id = "1"
-                subCategoryObject.sub_category_name = "횡령/배임"
-                subCategoryArray.push(subCategoryObject);
-
-                subCategoryObject = new Object();
-                subCategoryObject.main_category_id = "2";
-                subCategoryObject.sub_category_id = "2"
-                subCategoryObject.sub_category_name = "사기/공갈"
-                subCategoryArray.push(subCategoryObject);
-
-                subCategoryObject = new Object();
-                subCategoryObject.main_category_id = "2";
-                subCategoryObject.sub_category_id = "3"
-                subCategoryObject.sub_category_name = "기타 재산범죄"
-                subCategoryArray.push(subCategoryObject);
-
-                // main 카테고리 셋팅
-                var mainCategorySelectBox = $("select[name='mainCategory']");
-
-                for(var i=0;i<mainCategoryArray.length;i++){
-                    mainCategorySelectBox.append("<option value='"+mainCategoryArray[i].main_category_id+"'>"+mainCategoryArray[i].main_category_name+"</option>");
-                }
-
-                // 1depth 카테고리 선택 후 2depth 생성
-                $(document).on("change","select[name='mainCategory']",function(){
-
-                    // 두 번째 셀렉트 박스를 삭제 시킨다.
-                    var subCategorySelectBox = $("select[name='subCategory']");
-                    subCategorySelectBox.children().remove(); //기존 리스트 삭제
-
-                    // 선택한 첫 번째 박스의 값을 가져와 일치하는 값을 두 번째 셀렉트 박스에 넣는다.
-                    $("option:selected", this).each(function(){
-                        var selectValue = $(this).val(); //main category 에서 선택한 값
-                        subCategorySelectBox.append("<option value=''>전체</option>");
-                        for(var i=0;i<subCategoryArray.length;i++){
-                            if(selectValue == subCategoryArray[i].main_category_id){
-                                subCategorySelectBox.append("<option value='"+subCategoryArray[i].sub_category_id+"'>"+subCategoryArray[i].sub_category_name+"</option>");
-                            }
-                        }
-                    });
-
-                });
-            });
-        </script>
         <script>
             let submitCreateFormDone = false;
 
             function submitCreateForm(form) {
                 if (submitCreateFormDone) return;
 
+                form.firstCategory.value = form.firstCategoryTitle.value;
+                form.secondCategory.value = form.secondCategoryTitle.value;
                 form.subject.value = form.subject.value.trim();
 
                 if (form.subject.value.length == 0) {
@@ -238,9 +83,6 @@
                     toastWarning('내용을 2자 이상 입력해주세요.');
                     return;
                 }
-
-                form.firstCategory.value = form.mainCategory.value.trim();
-                form.secondCategory.value = form.subCategory.value.trim();
 
                 form.submit();
                 submitCreateFormDone = true;
