@@ -34,8 +34,13 @@ public class CategoryService {
         return scr.save(sc);
     }
 
-    public FirstCategory findByTitle(String title) {
+    public FirstCategory findByFTitle(String title) {
         return fcr.findByTitle(title)
+                .orElseThrow(() -> new NoSuchElementException("1차 카테고리를 정확히 입력해주세요 : " + title));
+    }
+
+    public SecondCategory findBySTitle(String title) {
+        return scr.findByTitle(title)
                 .orElseThrow(() -> new NoSuchElementException("1차 카테고리를 정확히 입력해주세요 : " + title));
     }
 
