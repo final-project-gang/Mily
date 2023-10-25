@@ -15,11 +15,16 @@
         <form class="flex flex-col gap-6" method="POST" onsubmit="submitCreateForm(this); return false;"
               th:action>
             <div class="form-control">
-                1depth: <select name="mainCategory">
+                대분류 : <select name="mainCategory">
                 <option value="">전체</option>
             </select>
-                2depth: <select name="subCategory">
+                소분류 : <select name="subCategory">
                 <option value="">전체</option>
+            </select>
+                테스트 : <select>
+                <option value="">전체</option>
+                <option th:each="category : ${firstCategories}" th:text="${category.title}"
+                        th:value="${category.title}"></option>
             </select>
                 <label class="label">
                     <span class="label-text">제목</span>

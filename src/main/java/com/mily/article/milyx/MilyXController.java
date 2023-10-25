@@ -1,10 +1,10 @@
 package com.mily.article.milyx;
 
+import com.mily.article.milyx.category.CategoryService;
 import com.mily.article.milyx.category.entity.FirstCategory;
 import com.mily.article.milyx.category.entity.SecondCategory;
 import com.mily.base.rq.Rq;
 import com.mily.base.rsData.RsData;
-import com.mily.board.BoardService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/milyx")
 public class MilyXController {
-    private final BoardService boardService;
+    private final CategoryService categoryService;
     private final MilyXService milyXService;
     private final Rq rq;
 
@@ -32,7 +34,9 @@ public class MilyXController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
-    public String create () {
+    public String create (Model model) {
+        List<FirstCategory> firstCategories = categoryService.getFirstCategories();
+        model.addAttribute("firstCategories", firstCategories);
         return "mily/milyx/milyx_create";
     }
 
