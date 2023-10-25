@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -16,6 +17,10 @@ import java.util.NoSuchElementException;
 public class CategoryService {
     private final FirstCategoryRepository fcr;
     private final SecondCategoryRepository scr;
+
+    public List<FirstCategory> getFirstCategories () {
+        return fcr.findAll();
+    }
 
     public FirstCategory addFC (String title) {
         FirstCategory fc = FirstCategory.builder()
