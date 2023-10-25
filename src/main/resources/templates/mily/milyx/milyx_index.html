@@ -4,14 +4,25 @@
     <title>Mily > Mily X</title>
 </head>
 <body>
-<div layout:fragment="content">
+<div layout:fragment="content" class="flex-1 flex items-center justify-center">
     <div>
         <h1>무엇이든 물어보세요!</h1>
     </div>
     <div>
         <button>
-            <a th:href="@{/milyx/create}" class="btn btn-primary">질문하기</a>
+            <a th:href="@{milyx/create}" class="btn btn-primary">질문하기</a>
         </button>
+    </div>
+    <div>
+        <ul>
+            <li th:each="post : ${milyXList}">
+                <div>
+                    <h3 th:text="${post.subject}"></h3>
+                    <p th:text="${post.body}"></p>
+                    <p th:text="${post.author.username}"></p>
+                </div>
+            </li>
+        </ul>
     </div>
 </div>
 </body>
