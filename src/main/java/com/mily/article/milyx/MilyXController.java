@@ -28,13 +28,13 @@ public class MilyXController {
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("")
-    public String showMilyX (Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String kw, @RequestParam(defaultValue = "all") String kwType) {
+    public String showMilyX(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String kw, @RequestParam(defaultValue = "all") String kwType) {
         return "mily/milyx/milyx_index";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
-    public String create (Model model) {
+    public String create(Model model) {
         List<FirstCategory> firstCategories = categoryService.getFirstCategories();
         model.addAttribute("firstCategories", firstCategories);
         return "mily/milyx/milyx_create";
@@ -42,10 +42,16 @@ public class MilyXController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String create (CreateForm createForm) {
+    public String create(String firstCategoryTitle, String secondCategoryTitle, String subject, String body) {
+        System.out.println(firstCategoryTitle + ", " + secondCategoryTitle + ", " + subject + ", " + body);
+        FirstCategory firstCategory = categoryService.findByFTitle(firstCategoryTitle);
+        System.out.println(firstCategoryTitle + ", " + secondCategoryTitle + ", " + subject + ", " + body);
+        SecondCategory secondCategory = categoryService.findBySTitle(secondCategoryTitle);
+        System.out.println(firstCategoryTitle + ", " + secondCategoryTitle + ", " + subject + ", " + body);
+        CreateForm createForm = new CreateForm(firstCategory, secondCategory, subject, body);
+        System.out.println(firstCategory + ", " + secondCategory + ", " + subject + ", " + body);
         RsData<MilyX> rsData = milyXService.create(rq.getMilyUser(), createForm.getFirstCategory(), createForm.getSecondCategory(), createForm.getSubject(), createForm.getBody());
-
-        System.out.println("createForm : " + createForm.getFirstCategory() + createForm.getSecondCategory() + createForm.getSubject() + createForm.getBody());
+        System.out.println(rq.getMilyUser() + ", " + createForm.getFirstCategory() + ", " + createForm.getSecondCategory() + ", " + createForm.getSubject() + ", " + createForm.getBody());
         return "redirect:/mily/milyx";
     }
 

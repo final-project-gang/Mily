@@ -22,6 +22,10 @@ public class CategoryService {
         return fcr.findAll();
     }
 
+    public List<SecondCategory> findSecondCategoriesByFirstCategory (String firstCategory) {
+        return scr.findByFirstCategory_Title (firstCategory);
+    }
+
     public FirstCategory addFC (String title) {
         FirstCategory fc = FirstCategory.builder()
                 .title(title)
