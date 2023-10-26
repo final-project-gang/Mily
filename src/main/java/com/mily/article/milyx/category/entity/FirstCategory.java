@@ -1,5 +1,6 @@
 package com.mily.article.milyx.category.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -25,6 +26,7 @@ public class FirstCategory {
     @Column(unique = true)
     private String title;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "firstCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SecondCategory> secondCategories;
 }
