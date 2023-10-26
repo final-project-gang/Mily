@@ -2,7 +2,6 @@ package com.mily.article.milyx;
 
 import com.mily.article.milyx.category.entity.FirstCategory;
 import com.mily.article.milyx.category.entity.SecondCategory;
-import com.mily.board.Board;
 import com.mily.user.MilyUser;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,9 +31,6 @@ public class MilyX {
 
     @ManyToOne
     private MilyUser author;
-
-    @ManyToOne
-    private Board board;
 
     @ManyToOne
     private FirstCategory firstCategory;

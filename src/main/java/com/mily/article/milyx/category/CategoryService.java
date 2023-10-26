@@ -22,6 +22,10 @@ public class CategoryService {
         return fcr.findAll();
     }
 
+    public List<SecondCategory> getSecondCategories () {
+        return scr.findAll();
+    }
+
     public List<SecondCategory> findSecondCategoriesByFirstCategory (String firstCategory) {
         return scr.findByFirstCategory_Title (firstCategory);
     }
@@ -53,8 +57,18 @@ public class CategoryService {
                 .orElseThrow(() -> new NoSuchElementException("1차 카테고리를 정확히 입력해주세요 : " + title));
     }
 
-    public FirstCategory findById (int id) {
+    public FirstCategory findByFId (Integer id) {
         return fcr.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("다음에 대한 검색 결과가 없습니다. : " + id));
+    }
+
+    public SecondCategory findBySId (Integer id) {
+        return scr.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("다음에 대한 검색 결과가 없습니다. : " + id));
+    }
+
+    public List<SecondCategory> findByFirstCategoryId (int firstCategoryId) {
+        System.out.println("서비스 정상인가? : " + firstCategoryId);
+        return scr.findByFirstCategoryId(firstCategoryId);
     }
 }

@@ -2,6 +2,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Mily > Mily X 질문</title>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
@@ -13,17 +15,17 @@
         </h1>
 
         <form class="flex flex-col gap-6" method="POST" onsubmit="submitCreateForm(this); return false;"
-              th:action>
+              th:action="@{/milyx/create}">
             <div class="form-control">
                 대분류 :
-                <select name="firstCategory" id="firstCategorySelect">
-                    <option value="">전체</option>
+                <select name="firstCategory" id="firstCategory">
+                    <option value="0" disabled selected>전체</option>
                     <option th:each="category : ${firstCategories}" th:text="${category.title}"
-                            th:value="${category.title}"></option>
+                            th:value="${category.id}"></option>
                 </select>
                 소분류 :
-                <select name="secondCategory" id="secondCategorySelect">
-
+                <select name="secondCategory" id="secondCategory">
+                    <option value="0" disabled selected>대분류를 선택해주세요.</option>
                 </select>
                 <label class="label">
                     <span class="label-text">제목</span>
@@ -48,14 +50,41 @@
                 </button>
             </div>
         </form>
+
+        <script th:inline="javascript">
+            $('#firstCategory').change(function() {
+                var firstCategoryId = $(this).val();
+
+                // console.log('firstCategoryId:', firstCategoryId);
+
+                $.ajax({
+                    url: "/milyx/secondCategories",
+                    method: 'GET',
+                    data: { firstCategoryId: firstCategoryId },
+                    success: function(data) {
+                        // console.log('Data:', data);
+
+                        $("#secondCategory").empty();
+
+                        $.each(data, function (index, category) {
+                            const option = $("<option>", { value: category.id, text: category.title });
+                            $("#secondCategory").append(option);
+                        });
+                    },
+                    error: function(request,status,error){
+                        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                    }
+                });
+            });
+        </script>
         <script>
             let submitCreateFormDone = false;
 
             function submitCreateForm(form) {
                 if (submitCreateFormDone) return;
 
-                form.firstCategory.value = form.firstCategoryTitle.value;
-                form.secondCategory.value = form.secondCategoryTitle.value;
+                form.firstCategory.value = form.firstCategoryId.value;
+                form.secondCategory.value = form.secondCategoryId.value;
                 form.subject.value = form.subject.value.trim();
 
                 if (form.subject.value.length == 0) {
