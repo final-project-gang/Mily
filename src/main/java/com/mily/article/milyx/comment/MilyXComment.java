@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -13,13 +15,12 @@ import static lombok.AccessLevel.PROTECTED;
 @SuperBuilder
 @AllArgsConstructor(access = PROTECTED)
 @NoArgsConstructor(access = PROTECTED)
-@ToString(callSuper = true)
 public class MilyXComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String createDate;
+    private LocalDateTime createDate;
 
     private String modifyDate;
 

@@ -24,7 +24,7 @@ public class QMilyXComment extends EntityPathBase<MilyXComment> {
 
     public final StringPath body = createString("body");
 
-    public final StringPath createDate = createString("createDate");
+    public final DateTimePath<java.time.LocalDateTime> createDate = createDateTime("createDate", java.time.LocalDateTime.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 

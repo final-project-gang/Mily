@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -28,6 +29,7 @@ public class MilyXController {
     @GetMapping("")
     public String showMilyX(Model model) {
         List<MilyX> milyx = milyXService.getAllPosts();
+        Collections.reverse(milyx);
         model.addAttribute("milyx", milyx);
         System.out.println(milyx);
         return "mily/milyx/milyx_index";
@@ -70,9 +72,8 @@ public class MilyXController {
     @GetMapping("/detail/{id}")
     public String showDetail (Model model, @PathVariable long id) {
         MilyX milyX = milyXService.findById(id).get();
-        System.out.println("find by id : " + milyX);
         int view = milyX.getView() + 1;
-        System.out.println("view : " + view);
+
         MilyX mx = MilyX.builder()
                 .view(view)
                 .build();

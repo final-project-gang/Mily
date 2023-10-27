@@ -18,7 +18,6 @@ import static lombok.AccessLevel.PROTECTED;
 @SuperBuilder
 @AllArgsConstructor(access = PROTECTED)
 @NoArgsConstructor(access = PROTECTED)
-@ToString(callSuper = true)
 public class MilyX {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

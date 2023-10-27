@@ -2,6 +2,34 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="|${milyx.subject}|"></title>
+    <script th:inline="javascript">
+        const elapsedTime = (date) => {
+            const start = new Date(date);
+            const end = new Date();
+
+            const seconds = Math.floor((end.getTime() - start.getTime()) / 1000);
+            if (seconds < 60) return '방금 전 작성 됨';
+
+            const minutes = seconds / 60;
+            if (minutes < 60) return `${Math.floor(minutes)}분 전 작성 됨`;
+
+            const hours = minutes / 60;
+            if (hours < 24) return `${Math.floor(hours)}시간 전 작성 됨`;
+
+            const days = hours / 24;
+            if (days < 7) return `${Math.floor(days)}일 전 작성 됨`;
+
+            return `${start.toLocaleDateString()}`;
+        };
+
+        window.onload = function() {
+            document.querySelectorAll("[id^='createDate_']").forEach(function(element) {
+                const createDateInMillis = Date.parse(element.textContent);
+                console.log(createDateInMillis);
+                element.textContent = elapsedTime(createDateInMillis);
+            });
+        };
+    </script>
 </head>
 <body>
 <div layout:fragment="content" class="items-center justify-center" style="display: flex;">
@@ -9,43 +37,60 @@
 
         <div class="card bg-base-100 shadow-xl">
             <div class="card-body">
-                <div class="detail grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-3">
-
-                    <div class="form-contro col-span-fulll">
-                        <label class="label">
-                            <span class="label-text">작성자</span>
-                        </label>
-                        <div th:text="${milyx.author.userNickName}"></div>
+                <div class="detail grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-9">
+                    <div class="form-control col-span-full">
+                        <div class="form-control"
+                             th:text="${milyx.firstCategory.title} + ' ・ ' + ${milyx.secondCategory.title}"></div>
                     </div>
 
                     <div class="form-control col-span-full">
-                        <label class="label">
-                            <span class="label-text">제목</span>
-                        </label>
-                        <div th:text="${milyx.subject}"></div>
+                        <div th:text="${milyx.subject}" style="font-weight: bold;"></div>
                     </div>
 
                     <div class="form-control col-span-full">
-                        <label class="label">
-                            <span class="label-text">내용</span>
-                        </label>
                         <div class="whitespace-pre-line" th:text="${milyx.body}"></div>
                     </div>
 
                     <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">작성일</span>
-                        </label>
                         <div th:id="'createDate_' + ${milyx.id}" th:text="${milyx.createDate}"></div>
                     </div>
 
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">조회수</span>
-                        </label>
+                    <div class="form-control" style="display: -webkit-box">
+                        <i class="fa-regular fa-eye" style="font-size: 16px;"></i>
+                        <div>ㅤ</div>
                         <div th:text="${milyx.view}"></div>
                     </div>
                 </div>
+            </div>
+
+            <div class="form-control" style="display: -webkit-box">
+                <div>ㅤㅤ</div>
+                <i class="fa-regular fa-comment" style="font-size: 16px;"></i>
+                <div>ㅤ</div>
+                <div th:text="${#lists.size(milyx.comments)}|"></div>
+            </div>
+
+            <form th:if="${@rq.login}" method="POST" onsubmit="submitCommentForm(this); return false;"
+                  th:action="@{|/milyxcomment/create/${milyx.id}|}">
+                <div class="mt-6 form-control">
+                <textarea class="textarea textarea-bordered h-[calc(100vh-850px)] min-h-[100px]" maxlength="20000"
+                          name="body" placeholder="답변 달기"
+                ></textarea>
+                </div>
+
+                <div>
+                    <button class="btn btn-block btn-primary gap-1">
+                        <i class="fa-solid fa-pen"></i>
+                        <span>답변 등록</span>
+                    </button>
+                </div>
+            </form>
+
+
+            <div class="form-control">
+                <ul>
+                    <li th:each="milyxcomment : ${milyx.comments}" th:text="${milyxcomment.body}"></li>
+                </ul>
             </div>
 
             <!--div class="mt-6">
@@ -58,32 +103,26 @@
 </div>
 </body>
 </html>
+<script>
+    let submitCommentFormDone = false;
 
-<script th:inline="javascript">
-    const elapsedTime = (date) => {
-    	const start = new Date(date);
-    	const end = new Date();
+    function submitCommentForm(form) {
+        if (submitCommentFormDone) return;
 
-    	const seconds = Math.floor((end.getTime() - start.getTime()) / 1000);
-    	if (seconds < 60) return '방금 전 작성 됨';
+        form.body.value = form.body.value.trim();
 
-    	const minutes = seconds / 60;
-    	if (minutes < 60) return `${Math.floor(minutes)}분 전 작성 됨`;
+        if (form.body.value.length == 0) {
+            form.body.focus();
+            toastWarning('내용을 입력해주세요.');
+            return;
+        }
+        if (form.body.value.length < 30) {
+            form.body.focus();
+            toastWarning('내용을 30 글자 이상 입력해주세요.');
+            return;
+        }
 
-    	const hours = minutes / 60;
-    	if (hours < 24) return `${Math.floor(hours)}시간 전 작성 됨`;
-
-    	const days = hours / 24;
-    	if (days < 7) return `${Math.floor(days)}일 전 작성 됨`;
-
-    	return `${start.toLocaleDateString()}`;
-    };
-
-    window.onload = function() {
-        document.querySelectorAll("[id^='createDate_']").forEach(function(element) {
-            const createDateInMillis = Date.parse(element.textContent);
-            console.log(createDateInMillis);
-            element.textContent = elapsedTime(createDateInMillis);
-        });
-    };
+        form.submit();
+        submitCommentFormDone = true;
+    }
 </script>
