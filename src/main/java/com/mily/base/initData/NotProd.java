@@ -125,8 +125,16 @@ public class NotProd {
             categoryService.addSC("금융/보험", fc);
 
             FirstCategory firstCategory = categoryService.findByFTitle("성 범죄");
-            SecondCategory secondCategory = categoryService.findBySTitle("미성년 대상 성범죄");
-            milyXService.create(milyUser1, firstCategory, secondCategory, "테스트 데이터 제목", "테스트 데이터 내용");
+            SecondCategory secondCategory = categoryService.findBySTitle("성폭력/강제추행 등");
+            milyXService.create(milyUser1, firstCategory, secondCategory, "대학교 후배와 성관계 이후 상대방이 고소를 진행할 예정이랍니다.", "올해 초에 처음 관계를 맺었으며, 관계 이후에도 연락을 주고 받으면서 지냈습니다. 친하게 지냈음에도 불구하고, 5월에 상대방이 교수님과 상담하며 본인과 관계한 것에 대해 자궁에 상처가 났고, 성폭력을 당한 것처럼 주장했습니다. 처음 연락을 주고받은 시점부터 연락한 내용은 남아있습니다. 좋게 지내다가 돌연 사이가 소원해지면서 이전의 성관계에 대해 증거가 없다 생각해서 저러는 것 같은데, 어떻게 대처해야할까요? 무죄를 입증할만한 증거가 있다면 무죄 판정 받은 후에 무고죄도 성립될까요?");
+
+            firstCategory = categoryService.findByFTitle("폭행/협박");
+            secondCategory = categoryService.findBySTitle("폭행/협박/상해 일반");
+            milyXService.create(milyUser1, firstCategory, secondCategory, "술집에서 싸움에 휘말려 양방 폭행이 나왔습니다.", "사건 일시 : 2023년 10월 24일");
+
+            firstCategory = categoryService.findByFTitle("명예훼손/모욕");
+            secondCategory = categoryService.findBySTitle("사이버 명예훼손/모욕");
+            milyXService.create(milyUser1, firstCategory, secondCategory, "test", "test");
         };
     }
 }

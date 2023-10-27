@@ -26,7 +26,9 @@ public class QMilyX extends EntityPathBase<MilyX> {
 
     public final StringPath body = createString("body");
 
-    public final StringPath createDate = createString("createDate");
+    public final ListPath<com.mily.article.milyx.comment.MilyXComment, com.mily.article.milyx.comment.QMilyXComment> comments = this.<com.mily.article.milyx.comment.MilyXComment, com.mily.article.milyx.comment.QMilyXComment>createList("comments", com.mily.article.milyx.comment.MilyXComment.class, com.mily.article.milyx.comment.QMilyXComment.class, PathInits.DIRECT2);
+
+    public final DateTimePath<java.time.LocalDateTime> createDate = createDateTime("createDate", java.time.LocalDateTime.class);
 
     public final com.mily.article.milyx.category.entity.QFirstCategory firstCategory;
 
@@ -37,6 +39,8 @@ public class QMilyX extends EntityPathBase<MilyX> {
     public final com.mily.article.milyx.category.entity.QSecondCategory secondCategory;
 
     public final StringPath subject = createString("subject");
+
+    public final NumberPath<Integer> view = createNumber("view", Integer.class);
 
     public QMilyX(String variable) {
         this(MilyX.class, forVariable(variable), INITS);

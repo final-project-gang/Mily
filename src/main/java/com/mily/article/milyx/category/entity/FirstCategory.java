@@ -17,7 +17,6 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor(access = PROTECTED)
 @NoArgsConstructor(access = PROTECTED)
 @SuperBuilder
-@ToString(callSuper = true)
 public class FirstCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

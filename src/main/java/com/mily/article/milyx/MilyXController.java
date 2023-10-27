@@ -12,10 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,7 +26,10 @@ public class MilyXController {
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("")
-    public String showMilyX(Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String kw, @RequestParam(defaultValue = "all") String kwType) {
+    public String showMilyX(Model model) {
+        List<MilyX> milyx = milyXService.getAllPosts();
+        model.addAttribute("milyx", milyx);
+        System.out.println(milyx);
         return "mily/milyx/milyx_index";
     }
 
@@ -64,5 +64,24 @@ public class MilyXController {
         private SecondCategory secondCategory;
         private String subject;
         private String body;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/detail/{id}")
+    public String showDetail (Model model, @PathVariable long id) {
+        MilyX milyX = milyXService.findById(id).get();
+        System.out.println("find by id : " + milyX);
+        int view = milyX.getView() + 1;
+        System.out.println("view : " + view);
+        MilyX mx = MilyX.builder()
+                .view(view)
+                .build();
+
+        milyX.updateView(view);
+        milyXService.updateView(milyX.getId(), mx);
+
+        model.addAttribute("milyx", milyX);
+
+        return "mily/milyx/milyx_detail";
     }
 }
