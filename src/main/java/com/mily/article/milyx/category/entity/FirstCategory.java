@@ -1,5 +1,6 @@
 package com.mily.article.milyx.category.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -16,7 +17,6 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor(access = PROTECTED)
 @NoArgsConstructor(access = PROTECTED)
 @SuperBuilder
-@ToString(callSuper = true)
 public class FirstCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +25,7 @@ public class FirstCategory {
     @Column(unique = true)
     private String title;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "firstCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SecondCategory> secondCategories;
 }

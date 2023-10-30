@@ -2,6 +2,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Mily > Mily X 질문</title>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 <div class="flex-1 flex items-center justify-center" layout:fragment="content">
@@ -11,9 +14,19 @@
             <span>글쓰기</span>
         </h1>
 
-        <form class="flex flex-col gap-6" method="POST" onsubmit="submitWriteForm(this); return false;"
-              th:action>
+        <form class="flex flex-col gap-6" method="POST" onsubmit="submitCreateForm(this); return false;"
+              th:action="@{/milyx/create}">
             <div class="form-control">
+                대분류 :
+                <select name="firstCategory" id="firstCategory">
+                    <option value="0" disabled selected>전체</option>
+                    <option th:each="category : ${firstCategories}" th:text="${category.title}"
+                            th:value="${category.id}"></option>
+                </select>
+                소분류 :
+                <select name="secondCategory" id="secondCategory">
+                    <option value="0" disabled selected>대분류를 선택해주세요.</option>
+                </select>
                 <label class="label">
                     <span class="label-text">제목</span>
                 </label>
@@ -38,12 +51,40 @@
             </div>
         </form>
 
+        <script th:inline="javascript">
+            $('#firstCategory').change(function() {
+                var firstCategoryId = $(this).val();
+
+                // console.log('firstCategoryId:', firstCategoryId);
+
+                $.ajax({
+                    url: "/milyx/secondCategories",
+                    method: 'GET',
+                    data: { firstCategoryId: firstCategoryId },
+                    success: function(data) {
+                        // console.log('Data:', data);
+
+                        $("#secondCategory").empty();
+
+                        $.each(data, function (index, category) {
+                            const option = $("<option>", { value: category.id, text: category.title });
+                            $("#secondCategory").append(option);
+                        });
+                    },
+                    error: function(request,status,error){
+                        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                    }
+                });
+            });
+        </script>
         <script>
-            let submitWriteFormDone = false;
+            let submitCreateFormDone = false;
 
-            function submitWriteForm(form) {
-                if (submitWriteFormDone) return;
+            function submitCreateForm(form) {
+                if (submitCreateFormDone) return;
 
+                form.firstCategory.value = form.firstCategoryId.value;
+                form.secondCategory.value = form.secondCategoryId.value;
                 form.subject.value = form.subject.value.trim();
 
                 if (form.subject.value.length == 0) {
@@ -54,7 +95,7 @@
 
                 if (form.subject.value.length < 2) {
                     form.subject.focus();
-                    toastWarning('제목을 2자 이상 입력해주세요.');
+                    toastWarning('제목을 2글자 이상 입력해주세요.');
                     return;
                 }
 
@@ -73,7 +114,7 @@
                 }
 
                 form.submit();
-                submitWriteFormDone = true;
+                submitCreateFormDone = true;
             }
         </script>
     </div>
