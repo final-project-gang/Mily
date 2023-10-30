@@ -52,6 +52,18 @@
                 form.submit();
             }
         </script>
+
+        <!-- 페이지 상단에 스크립트 추가 -->
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            var errorMessage = /*[[${errorMessage}]]*/ null;
+            if (errorMessage) {
+                alert(errorMessage);
+            }
+            /*]]>*/
+
+        </script>
+
     </div>
 </div>
 

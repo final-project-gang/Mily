@@ -1,0 +1,46 @@
+package com.mily.article.milyx.category;
+
+import com.mily.article.milyx.category.entity.FirstCategory;
+import com.mily.article.milyx.category.entity.SecondCategory;
+import com.mily.article.milyx.category.repository.FirstCategoryRepository;
+import com.mily.article.milyx.category.repository.SecondCategoryRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.NoSuchElementException;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class CategoryService {
+    private final FirstCategoryRepository fcr;
+    private final SecondCategoryRepository scr;
+
+    public FirstCategory addFC (String title) {
+        FirstCategory fc = FirstCategory.builder()
+                .title(title)
+                .build();
+
+        return fcr.save(fc);
+    }
+
+    public SecondCategory addSC (String title, FirstCategory firstCategory) {
+        SecondCategory sc = SecondCategory.builder()
+                .title(title)
+                .firstCategory(firstCategory)
+                .build();
+
+        return scr.save(sc);
+    }
+
+    public FirstCategory findByTitle(String title) {
+        return fcr.findByTitle(title)
+                .orElseThrow(() -> new NoSuchElementException("1차 카테고리를 정확히 입력해주세요 : " + title));
+    }
+
+    public FirstCategory findById (int id) {
+        return fcr.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("다음에 대한 검색 결과가 없습니다. : " + id));
+    }
+}

@@ -1,6 +1,5 @@
 package com.mily.user;
 
-import org.springframework.ui.Model;
 import com.mily.base.rq.Rq;
 import com.mily.base.rsData.RsData;
 import jakarta.validation.Valid;
@@ -11,7 +10,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -103,6 +104,7 @@ public class MilyUserController {
     @GetMapping("/findId")
     public String showFindId() {
         return "mily/milyuser/find_id_form";  // 해당 페이지의 경로와 이름을 알맞게 수정하세요.
+
     }
 
     // 비밀번호 찾기 페이지를 보여주는 핸들러
@@ -113,14 +115,16 @@ public class MilyUserController {
     }
 
     @PostMapping("/retrieveId")
-    public String retrieveId(@RequestParam String userEmail, Model model) {
-        Optional<MilyUser> user = milyUserService.findByUserEmail(userEmail); // 수정한 부분
-        if (user.isPresent()) {
-            model.addAttribute("foundId", user.get().getLoginId());
+    public String retrieveId(@RequestParam String userEmail, Model model, RedirectAttributes redirectAttributes) {
+        Optional<String> userLoginId = milyUserService.findLoginIdByUserEmail(userEmail);
+        if (userLoginId.isPresent()) {
+            model.addAttribute("foundId", userLoginId.get());
             return "mily/milyuser/retrieve_id_result";
         } else {
-            return "mily/error_page";
+            redirectAttributes.addFlashAttribute("errorMessage", "아이디를 찾을 수 없습니다.");
+            return "redirect:/findId";
         }
     }
+
 }
 

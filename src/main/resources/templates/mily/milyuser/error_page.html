@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Error</title>
+</head>
+<body>
+
+<div style="text-align: center;">
+    <h1>Oops! Something went wrong.</h1>
+    <p>Sorry for the inconvenience. We're working on it.</p>
+
+    &lt;!&ndash; 선택적으로 오류 세부 정보 표시 &ndash;&gt;
+    &lt;!&ndash; <p th:text="${errorMessage}"></p> &ndash;&gt;
+
+    <a href="/" th:href="@{/}">Go to Homepage</a>
+</div>
+
+</body>
+</html>
+
