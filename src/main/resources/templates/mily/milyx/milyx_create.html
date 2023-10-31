@@ -1,0 +1,123 @@
+<html layout:decorate="@{mily/common/layout}" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Mily > Mily X 질문</title>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="flex-1 flex items-center justify-center" layout:fragment="content">
+    <div class="container w-full px-4">
+        <h1 class="mb-4">
+            <i class="fa-solid fa-pen"></i>
+            <span>글쓰기</span>
+        </h1>
+
+        <form class="flex flex-col gap-6" method="POST" onsubmit="submitCreateForm(this); return false;"
+              th:action="@{/milyx/create}">
+            <div class="form-control">
+                대분류 :
+                <select name="firstCategory" id="firstCategory">
+                    <option value="0" disabled selected>전체</option>
+                    <option th:each="category : ${firstCategories}" th:text="${category.title}"
+                            th:value="${category.id}"></option>
+                </select>
+                소분류 :
+                <select name="secondCategory" id="secondCategory">
+                    <option value="0" disabled selected>대분류를 선택해주세요.</option>
+                </select>
+                <label class="label">
+                    <span class="label-text">제목</span>
+                </label>
+                <input class="input input-bordered" maxlength="100"
+                       name="subject" placeholder="제목" type="text">
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">내용</span>
+                </label>
+                <textarea class="textarea textarea-bordered h-[calc(100vh-450px)] min-h-[100px]" maxlength="20000"
+                          name="body" placeholder="내용"
+                ></textarea>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <button class="btn btn-block btn-primary gap-1">
+                    <i class="fa-solid fa-pen"></i>
+                    <span>글쓰기</span>
+                </button>
+            </div>
+        </form>
+
+        <script th:inline="javascript">
+            $('#firstCategory').change(function() {
+                var firstCategoryId = $(this).val();
+
+                // console.log('firstCategoryId:', firstCategoryId);
+
+                $.ajax({
+                    url: "/milyx/secondCategories",
+                    method: 'GET',
+                    data: { firstCategoryId: firstCategoryId },
+                    success: function(data) {
+                        // console.log('Data:', data);
+
+                        $("#secondCategory").empty();
+
+                        $.each(data, function (index, category) {
+                            const option = $("<option>", { value: category.id, text: category.title });
+                            $("#secondCategory").append(option);
+                        });
+                    },
+                    error: function(request,status,error){
+                        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                    }
+                });
+            });
+        </script>
+        <script>
+            let submitCreateFormDone = false;
+
+            function submitCreateForm(form) {
+                if (submitCreateFormDone) return;
+
+                form.firstCategory.value = form.firstCategoryId.value;
+                form.secondCategory.value = form.secondCategoryId.value;
+                form.subject.value = form.subject.value.trim();
+
+                if (form.subject.value.length == 0) {
+                    form.subject.focus();
+                    toastWarning('제목을 입력해주세요.');
+                    return;
+                }
+
+                if (form.subject.value.length < 2) {
+                    form.subject.focus();
+                    toastWarning('제목을 2글자 이상 입력해주세요.');
+                    return;
+                }
+
+                form.body.value = form.body.value.trim();
+
+                if (form.body.value.length == 0) {
+                    form.body.focus();
+                    toastWarning('내용을 입력해주세요.');
+                    return;
+                }
+
+                if (form.body.value.length < 2) {
+                    form.body.focus();
+                    toastWarning('내용을 2자 이상 입력해주세요.');
+                    return;
+                }
+
+                form.submit();
+                submitCreateFormDone = true;
+            }
+        </script>
+    </div>
+</div>
+</body>
+</html>

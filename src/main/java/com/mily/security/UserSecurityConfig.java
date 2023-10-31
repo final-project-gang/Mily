@@ -2,6 +2,7 @@ package com.mily.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,14 +13,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+@Order(2)
+public class UserSecurityConfig{
     @Bean
     SecurityFilterChain userFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
-                .csrf((csrf) -> csrf.disable())
-//                        .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
+//                .csrf((csrf) -> csrf.disable())
                 .headers((headers) -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
@@ -31,30 +32,6 @@ public class SecurityConfig {
                         .failureHandler(new CustomSimpleUrlAuthenticationFailureHandler()))
                 .logout((logout) -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-                        .logoutSuccessUrl("/")
-                        .invalidateHttpSession(true))
-        ;
-        return http.build();
-    }
-
-    @Bean
-    SecurityFilterChain lawyerFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
-                .csrf((csrf) -> csrf.disable())
-//                        .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
-                .headers((headers) -> headers
-                        .addHeaderWriter(new XFrameOptionsHeaderWriter(
-                                XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
-                .formLogin((formLogin) -> formLogin
-                        .loginPage("/lawyer/login")
-                        .usernameParameter("name")
-                        .passwordParameter("password")
-                        .successHandler(new CustomSimpleUrlAuthenticationSuccessHandler())
-                        .failureHandler(new CustomSimpleUrlAuthenticationFailureHandler()))
-                .logout((logout) -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/lawyer/logout"))
                         .logoutSuccessUrl("/")
                         .invalidateHttpSession(true))
         ;
