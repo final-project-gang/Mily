@@ -28,16 +28,17 @@
 
     <script src="https://js.tosspayments.com/v1"></script>
     <script>
-        var tossPayments = TossPayments("client key");
+        var tossPayments = TossPayments("ClientKey");
         var orderId = new Date().getTime();
 
         var button = document.getElementById('payment-button-50')
 
         button.addEventListener('click', function () {
+            var orderName = '밀리 포인트 50';
             tossPayments.requestPayment('카드', {
                 amount: 900,
                 orderId: orderId,
-                orderName: '50 밀리 포인트',
+                orderName: orderName,
                 customerName: '박토스',
                 successUrl: window.location.origin + "/payment/success",
                 failUrl: window.location.origin + "/payment/fail",
@@ -47,10 +48,11 @@
         var button = document.getElementById('payment-button-100')
 
         button.addEventListener('click', function () {
+            var orderName = '밀리 포인트 100';
             tossPayments.requestPayment('카드', {
                 amount: 1700,
                 orderId: orderId,
-                orderName: '100 밀리 포인트',
+                orderName: orderName,
                 customerName: '박토스',
                 successUrl: window.location.origin + "/payment/success",
                 failUrl: window.location.origin + "/payment/fail",
@@ -60,10 +62,11 @@
         var button = document.getElementById('payment-button-300')
 
         button.addEventListener('click', function () {
+            var orderName = '밀리 포인트 300';
             tossPayments.requestPayment('카드', {
                 amount: 4800,
                 orderId: orderId,
-                orderName: '300밀리 포인트',
+                orderName: orderName,
                 customerName: '박토스',
                 successUrl: window.location.origin + "/payment/success",
                 failUrl: window.location.origin + "/payment/fail",
@@ -73,10 +76,11 @@
         var button = document.getElementById('payment-button-500')
 
         button.addEventListener('click', function () {
+            var orderName = '밀리 포인트 500';
             tossPayments.requestPayment('카드', {
                 amount: 7500,
                 orderId: orderId,
-                orderName: '500 밀리 포인트',
+                orderName: orderName,
                 customerName: '박토스',
                 successUrl: window.location.origin + "/payment/success",
                 failUrl: window.location.origin + "/payment/fail",

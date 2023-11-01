@@ -51,6 +51,7 @@
                         <li th:if="${@rq.logout}"><a href="/user/login"><i class="fa-solid fa-arrow-right-to-bracket"></i>로그인</a></li>
                         <li th:if="${@rq.logout}"><a href="/user/signup"><i class="fa-solid fa-user-plus"></i>회원가입</a></li>
                         <li th:if="${@rq.login}"><a href="/user/mypage"><i class="fa-solid fa-user"></i>내 정보</a></li>
+                        <li th:if="${@rq.login}"><a href="/payment"><i class="fa-solid fa-user"></i>페이</a></li>
                         <li th:if="${@rq.login}"><a href="/user/logout"><i class="fa-solid fa-arrow-right-from-bracket"></i>로그아웃</a></li>
                     </ul>
                 </div>
