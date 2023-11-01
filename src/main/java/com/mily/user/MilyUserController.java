@@ -8,13 +8,12 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Optional;
 
 
 @RequestMapping("/user")
@@ -111,20 +110,44 @@ public class MilyUserController {
     @PreAuthorize("isAnonymous()")
     @GetMapping("/findPassword")
     public String showFindPassword() {
-        return "mily/milyuser/find_password_form";  // 해당 페이지의 경로와 이름을 알맞게 수정하세요.
+        return "mily/milyuser/find_password_form";
     }
+
+    @PreAuthorize("isAnonymous()")
+    @PostMapping("/findPassword")
+    public String findPassword(@RequestParam String userLoginId, @RequestParam String email, RedirectAttributes redirectAttributes) {
+        // findByUsernameAndEmail을 호출하여 사용자를 찾습니다.
+        return milyUserService.findByuserLoginIdAndEmail(userLoginId, email)
+                .map(member -> {
+                    // 임시 비밀번호 발송 로직을 실행합니다.
+                    milyUserService.sendTempPasswordToEmail(member);
+                    // 성공 메시지와 함께 로그인 페이지로 리다이렉트합니다.
+                    redirectAttributes.addFlashAttribute("message", "해당 회원의 이메일로 임시 비밀번호를 발송하였습니다.");
+                    return "redirect:/user/login?lastUsername=" + member.getUserLoginId();
+                })
+                .orElseGet(() -> {
+                    // 사용자를 찾을 수 없을 경우 에러 메시지를 설정하고 이전 페이지로 이동합니다.
+                    redirectAttributes.addFlashAttribute("errorMessage", "일치하는 회원이 존재하지 않습니다.");
+                    return "redirect:mily/milyuser/find_password_form";
+                });
+    }
+
 
     @PostMapping("/retrieveId")
     public String retrieveId(@RequestParam String userEmail, Model model, RedirectAttributes redirectAttributes) {
-        Optional<String> userLoginId = milyUserService.findLoginIdByUserEmail(userEmail);
-        if (userLoginId.isPresent()) {
-            model.addAttribute("foundId", userLoginId.get());
-            return "mily/milyuser/retrieve_id_result";
-        } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "아이디를 찾을 수 없습니다.");
-            return "redirect:/findId";
-        }
+        MilyUser milyUser = milyUserService.findUserLoginIdByEmail(userEmail);
+        model.addAttribute("foundId", milyUser.getUserLoginId());
+        return "mily/milyuser/retrieve_id_result";
     }
 
-}
+    @PostMapping("/findLoginIdPage")
+    public ResponseEntity<String> retrieveId(@RequestParam("userEmail") String userEmail) {
+        MilyUser milyUser = milyUserService.findUserLoginIdByEmail(userEmail);
+        if (milyUser.getUserEmail().equals(userEmail)) {
+            return ResponseEntity.ok("");
+        } else {
+            return ResponseEntity.badRequest().body("아이디를 찾을 수 없습니다.");
 
+        }
+    }
+}

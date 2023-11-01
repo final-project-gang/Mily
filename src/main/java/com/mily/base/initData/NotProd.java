@@ -27,25 +27,6 @@ public class NotProd {
     @Bean
     public ApplicationRunner init() {
         return args -> {
-<<<<<<< HEAD
-            milyUserService.signup("admin123", "9a9a9a9a", "administrator", "administrator", "admin123@email.com", "99999999999", "1996-10-05");
-            milyUserService.signup("testaccount", "qwerasdf", "testaccount", "testaccount", "testaccount@email.com", "88888888888", "1996-10-05");
-            // 더미 데이터 넣는곳 내가 원하는 만큼 추가해서 넣어도 됨
-            categoryService.addFC("성 범죄");
-            categoryService.addFC("재산 범죄");
-            categoryService.addFC("교통사고/범죄");
-            categoryService.addFC("폭행/협박");
-            categoryService.addFC("명예훼손/모욕");
-            categoryService.addFC("기타 형사범죄");
-            categoryService.addFC("부동산/임대차");
-            categoryService.addFC("금전/계약 문제");
-            categoryService.addFC("민사 절차");
-            categoryService.addFC("기타 민사 문제");
-            categoryService.addFC("가족");
-            categoryService.addFC("회사");
-            categoryService.addFC("의료/세금/행정");
-            categoryService.addFC("IT/지식재산/금융");
-=======
             Optional<MilyUser> mu = milyUserService.findByUserLoginId("admin123");
             if (mu.isEmpty()) {
                 MilyUser milyUser1 = milyUserService.signup("admin123", "9a9a9a9a", "administrator", "administrator", "admin123@email.com", "99999999999", "1996-10-05").getData();
@@ -65,44 +46,19 @@ public class NotProd {
                 categoryService.addFC("회사");
                 categoryService.addFC("의료/세금/행정");
                 categoryService.addFC("IT/지식재산/금융");
->>>>>>> 08fc0b8de45cb7e6bdb40c1c0edc5f9788f684b6
 
                 fc = categoryService.findByFTitle("성 범죄");
 
-<<<<<<< HEAD
-            categoryService.addSC("성매매", fc);
-            categoryService.addSC("성폭력/강제추행 등", fc);
-            categoryService.addSC("미성년 대상 성범죄", fc);
-            categoryService.addSC("디지털 성범죄", fc);
-
-            fc = categoryService.findByTitle("재산 범죄");
-
-            categoryService.addSC("횡령/배임", fc);
-            categoryService.addSC("사기/공갈", fc);
-            categoryService.addSC("기타 재산범죄", fc);
-
-            fc = categoryService.findByTitle("교통사고/범죄");
-
-            categoryService.addSC("교통사고/도주", fc);
-            categoryService.addSC("음주/무면허", fc);
-=======
                 categoryService.addSC("성매매", fc);
                 categoryService.addSC("성폭력/강제추행 등", fc);
                 categoryService.addSC("미성년 대상 성범죄", fc);
                 categoryService.addSC("디지털 성범죄", fc);
->>>>>>> 08fc0b8de45cb7e6bdb40c1c0edc5f9788f684b6
 
                 fc = categoryService.findByFTitle("재산 범죄");
 
-<<<<<<< HEAD
-            categoryService.addSC("폭행/협박/상해 일반", fc);
-
-            fc = categoryService.findByTitle("명예훼손/모욕");
-=======
                 categoryService.addSC("횡령/배임", fc);
                 categoryService.addSC("사기/공갈", fc);
                 categoryService.addSC("기타 재산범죄", fc);
->>>>>>> 08fc0b8de45cb7e6bdb40c1c0edc5f9788f684b6
 
                 fc = categoryService.findByFTitle("교통사고/범죄");
 
@@ -184,6 +140,5 @@ public class NotProd {
                 milyXService.create(milyUser1, firstCategory, secondCategory, "test", "test");
             }
         };
-
     }
 }

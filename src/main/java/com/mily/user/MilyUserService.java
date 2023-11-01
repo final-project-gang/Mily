@@ -18,7 +18,7 @@ public class MilyUserService {
 
 
     @Transactional
-    public RsData<MilyUser> signup (String userLoginId, String userPassword, String userNickName, String userName, String userEmail, String userPhoneNumber, String userDateOfBirth) {
+    public RsData<MilyUser> signup(String userLoginId, String userPassword, String userNickName, String userName, String userEmail, String userPhoneNumber, String userDateOfBirth) {
         if (findByUserLoginId(userLoginId).isPresent()) {
             return RsData.of("F-1", "%s은(는) 이미 사용 중인 아이디입니다.".formatted(userLoginId));
         }
@@ -52,46 +52,51 @@ public class MilyUserService {
         return RsData.of("S-1", "MILY 회원이 되신 것을 환영합니다!", mu);
     }
 
-    public Optional<MilyUser> findByUserLoginId (String userLoginId) {
+    public Optional<MilyUser> findByUserLoginId(String userLoginId) {
         return milyUserRepository.findByUserLoginId(userLoginId);
     }
 
-    public Optional<MilyUser> findByUserNickName (String userNickName) {
+    public Optional<MilyUser> findByUserNickName(String userNickName) {
         return milyUserRepository.findByUserNickName(userNickName);
     }
 
-    public Optional<MilyUser> findByUserEmail (String userEmail) {
+    public Optional<MilyUser> findByUserEmail(String userEmail) {
+        System.out.println("user33333 : " + milyUserRepository.findByUserEmail(userEmail));
         return milyUserRepository.findByUserEmail(userEmail);
     }
 
-    public Optional<MilyUser> findByUserPhoneNumber (String userPhoneNumber) {
+    public Optional<MilyUser> findByUserPhoneNumber(String userPhoneNumber) {
         return milyUserRepository.findByUserPhoneNumber(userPhoneNumber);
     }
 
-    public Optional<MilyUser> findById (long id) {
+    public Optional<MilyUser> findById(long id) {
         return milyUserRepository.findById(id);
     }
 
-    public RsData checkUserLoginIdDup (String userLoginId) {
-        if ( findByUserLoginId(userLoginId).isPresent() ) return RsData.of("F-1", "%s(은)는 이미 사용 중인 아이디입니다.".formatted(userLoginId));
+    public RsData checkUserLoginIdDup(String userLoginId) {
+        if (findByUserLoginId(userLoginId).isPresent())
+            return RsData.of("F-1", "%s(은)는 이미 사용 중인 아이디입니다.".formatted(userLoginId));
 
         return RsData.of("S-1", "%s(은)는 사용 가능한 아이디입니다.".formatted(userLoginId));
     }
 
-    public RsData checkUserNickNameDup (String userNickName) {
-        if ( findByUserNickName(userNickName).isPresent() ) return RsData.of("F-1", "%s(은)는 이미 사용 중인 닉네임입니다.".formatted(userNickName));
+    public RsData checkUserNickNameDup(String userNickName) {
+        if (findByUserNickName(userNickName).isPresent())
+            return RsData.of("F-1", "%s(은)는 이미 사용 중인 닉네임입니다.".formatted(userNickName));
 
         return RsData.of("S-1", "%s(은)는 사용 가능한 닉네임입니다.".formatted(userNickName));
     }
 
-    public RsData checkUserEmailDup (String userEmail) {
-        if ( findByUserEmail(userEmail).isPresent() ) return RsData.of("F-1", "%s(은)는 이미 인증 된 이메일입니다.".formatted(userEmail));
+    public RsData checkUserEmailDup(String userEmail) {
+        if (findByUserEmail(userEmail).isPresent())
+            return RsData.of("F-1", "%s(은)는 이미 인증 된 이메일입니다.".formatted(userEmail));
 
         return RsData.of("S-1", "%s(은)는 사용 가능한 이메일입니다.".formatted(userEmail));
     }
 
-    public RsData checkUserPhoneNumberDup (String userPhoneNumber) {
-        if ( findByUserPhoneNumber(userPhoneNumber).isPresent() ) return RsData.of("F-1", "%s(은)는 이미 인증 된 전화번호입니다.".formatted(userPhoneNumber));
+    public RsData checkUserPhoneNumberDup(String userPhoneNumber) {
+        if (findByUserPhoneNumber(userPhoneNumber).isPresent())
+            return RsData.of("F-1", "%s(은)는 이미 인증 된 전화번호입니다.".formatted(userPhoneNumber));
 
         return RsData.of("S-1", "%s(은)는 사용 가능한 전화번호입니다.".formatted(userPhoneNumber));
     }
@@ -102,8 +107,21 @@ public class MilyUserService {
 
     public Optional<String> findLoginIdByUserEmail(String userEmail) {
         Optional<MilyUser> user = findByUserEmail(userEmail);
+
+        System.out.println("user22211 : " + user.map(MilyUser::getLoginId));
         return user.map(MilyUser::getLoginId);
     }
 
+    public MilyUser findUserLoginIdByEmail(String userEmail) {
+        return milyUserRepository.findUserLoginIdByEmail(userEmail);
+    }
+
+    public Optional<MilyUser> findByuserLoginIdAndEmail(String userLoginId, String email) {
+        return milyUserRepository.findByUserLoginIdAndUserEmail(userLoginId, email);
+    }
+
+
+    public static void sendTempPasswordToEmail(MilyUser member) {
+    }
 }
 
