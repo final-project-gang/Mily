@@ -38,7 +38,7 @@ public class PaymentController {
         });
     }
 
-    private final String SECRET_KEY = "";
+    private final String SECRET_KEY = "secret key";
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("")
@@ -52,7 +52,7 @@ public class PaymentController {
             @RequestParam Long amount, Model model) throws Exception {
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Basic" + Base64.getEncoder().encodeToString((SECRET_KEY + ":").getBytes()));
+        headers.set("Authorization", "Basic " + Base64.getEncoder().encodeToString((SECRET_KEY + ":").getBytes()));
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         Map<String, String> payloadMap = new HashMap<>();
