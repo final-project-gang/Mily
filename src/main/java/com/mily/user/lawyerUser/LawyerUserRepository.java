@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LawyerUserRepository extends JpaRepository<LawyerUser, Long> {
-    Optional<LawyerUser> findByName(String name);
+    Optional<LawyerUser> findByUserLoginId(String UserLoginId);
     List<LawyerUser> findByCurrent(String current);
     Optional<LawyerUser> findByPhoneNumber(String userPhoneNumber);
     Optional<LawyerUser> findByEmail(String userEmail);

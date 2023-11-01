@@ -36,6 +36,7 @@ public class LawyerUserController {
     @PostMapping("/signup")
     public String doLawyerSignup(@Valid LawyerUserSignUpForm lawyerUserSignUpForm) {
         RsData<LawyerUser> signupRs = lawyerUserService.signup(
+                lawyerUserSignUpForm.getUserLoginId(),
                 lawyerUserSignUpForm.getName(),
                 lawyerUserSignUpForm.getPassword(),
                 lawyerUserSignUpForm.getPhoneNumber(),

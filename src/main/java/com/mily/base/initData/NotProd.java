@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
 
 import java.util.Optional;
@@ -25,7 +26,6 @@ public class NotProd {
     private final CategoryService categoryService;
     private final MilyXService milyXService;
     private FirstCategory fc;
-
     @Bean
     public ApplicationRunner init() {
         return args -> {
@@ -33,10 +33,10 @@ public class NotProd {
             if (mu.isEmpty()) {
                 MilyUser milyUser1 = milyUserService.signup("admin123", "9a9a9a9a", "administrator", "administrator", "admin123@email.com", "99999999999", "1996-10-05", "").getData();
                 MilyUser milyUser2 = milyUserService.signup("testaccount", "qwerasdf", "testaccount", "testaccount", "testaccount@email.com", "88888888888", "1996-10-05", "대전").getData();
-                lawyerUserService.signup("test1111", "test1111", "01011111111", "test1111@email.com", "", "", "형사", "1111", "서울").getData();
-                lawyerUserService.signup("test2222", "test2222", "01022222222", "test2222@email.com", "", "", "형사", "2222", "대전").getData();
-                lawyerUserService.signup("test3333", "test3333", "01033333333", "test3333@email.com", "", "", "민사", "3333", "서울").getData();
-                lawyerUserService.signup("test4444", "test4444", "01044444444", "test4444@email.com", "", "", "민사", "4444", "대전").getData();
+                lawyerUserService.signup("test1111","test1111", "test1111", "01011111111", "test1111@email.com", "", "", "형사", "1111", "서울");
+                lawyerUserService.signup("test2222","test2222", "test2222", "01022222222", "test2222@email.com", "", "", "형사", "2222", "대전");
+                lawyerUserService.signup("test3333","test3333", "test3333", "01033333333", "test3333@email.com", "", "", "민사", "3333", "서울");
+                lawyerUserService.signup("test4444","test4444", "test4444", "01044444444", "test4444@email.com", "", "", "민사", "4444", "대전");
 
                 categoryService.addFC("성 범죄");
                 categoryService.addFC("재산 범죄");

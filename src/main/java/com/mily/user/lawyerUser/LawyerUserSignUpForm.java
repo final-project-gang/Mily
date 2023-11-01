@@ -9,6 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LawyerUserSignUpForm {
+    @NotEmpty(message = "아이디은 필수항목입니다.")
+    private String userLoginId;
+
     @NotEmpty(message = "이름은 필수항목입니다.")
     private String name;
 

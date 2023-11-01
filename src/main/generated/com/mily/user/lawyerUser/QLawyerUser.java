@@ -39,9 +39,11 @@ public class QLawyerUser extends EntityPathBase<LawyerUser> {
 
     public final StringPath organizationNumber = createString("organizationNumber");
 
-    public final StringPath password = createString("password");
-
     public final StringPath phoneNumber = createString("phoneNumber");
+
+    public final StringPath userLoginId = createString("userLoginId");
+
+    public final StringPath userPassword = createString("userPassword");
 
     public QLawyerUser(String variable) {
         super(LawyerUser.class, forVariable(variable));

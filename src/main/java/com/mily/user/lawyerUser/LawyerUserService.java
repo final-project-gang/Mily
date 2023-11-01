@@ -22,9 +22,9 @@ public class LawyerUserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public RsData<LawyerUser> signup(String name, String password, String phoneNumber, String email, String organization, String organizationNumber, String major, String introduce, String area) {
-        if (findByName(name).isPresent()) {
-            return RsData.of("F-1", "%s은(는) 이미 사용 중인 아이디입니다.".formatted(name));
+    public RsData<LawyerUser> signup(String userLoginId, String password, String name, String phoneNumber, String email, String organization, String organizationNumber, String major, String introduce, String area) {
+        if (findByName(userLoginId).isPresent()) {
+            return RsData.of("F-1", "%s은(는) 이미 사용 중인 아이디입니다.".formatted(userLoginId));
         }
         if (findByEmail(email).isPresent()) {
             return RsData.of("F-1", "%s은(는) 이미 인증 된 이메일입니다.".formatted(email));
@@ -39,9 +39,10 @@ public class LawyerUserService {
 
         LawyerUser lu = LawyerUser
                 .builder()
-                .name(name)
-                .password(passwordEncoder.encode(password))
+                .userLoginId(userLoginId)
+                .userPassword(passwordEncoder.encode(password))
                 .phoneNumber(phoneNumber)
+                .name(name)
                 .email(email)
                 .major(major)
                 .organization(organization)
@@ -57,7 +58,7 @@ public class LawyerUserService {
     }
 
     public Optional<LawyerUser> findByName (String userLoginId) {
-        return lawyerUserRepository.findByName(userLoginId);
+        return lawyerUserRepository.findByUserLoginId(userLoginId);
     }
 
     public Optional<LawyerUser> findByEmail (String userEmail) {
@@ -88,8 +89,8 @@ public class LawyerUserService {
         }
     }
 
-    public LawyerUser getLawyer(String lawyerName) {
-        Optional<LawyerUser> lawyerUser = lawyerUserRepository.findByName(lawyerName);
+    public LawyerUser getLawyer(String UserLoginId) {
+        Optional<LawyerUser> lawyerUser = lawyerUserRepository.findByUserLoginId(UserLoginId);
         if (lawyerUser.isPresent()) {
             return lawyerUser.get();
         } else {

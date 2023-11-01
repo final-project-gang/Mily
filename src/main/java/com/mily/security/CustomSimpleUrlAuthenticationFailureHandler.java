@@ -12,13 +12,7 @@ import java.io.IOException;
 public class CustomSimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        if (exception.getMessage().contains("MilyUser")) {
-            setDefaultFailureUrl("/milyUser/login?failMsg=" + Ut.url.encode("올바르지 않은 회원 정보 입니다."));
-        } else if (exception.getMessage().contains("LawyerUser")) {
-            setDefaultFailureUrl("/lawyerUser/login?failMsg=" + Ut.url.encode("올바르지 않은 회원 정보 입니다."));
-        } else {
-            setDefaultFailureUrl("/user/login?failMsg=" + Ut.url.encode("올바르지 않은 회원 정보 입니다."));
-        }
+        setDefaultFailureUrl("/user/login?failMsg=" + Ut.url.encode("올바르지 않은 회원 정보 입니다."));
         super.onAuthenticationFailure(request, response, exception);
     }
 }

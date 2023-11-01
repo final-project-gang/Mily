@@ -1,86 +1,14 @@
-<html layout:decorate="@{mily/common/layout}" lang="ko">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>MILY 로그인</title>
+    <meta charset="utf-8">
 </head>
 <body>
+<h1>사용자 로그인</h1>
+<form action="/user/login" method="post">
+    <span>id : </span><input type="text" name="userLoginId" required />
+    <span>password : </span><input type="password" name="userPassword" required/>
 
-<div layout:fragment="content" class="flex-1 flex items-center justify-center">
-    <div class="max-w-2xl w-full px-4">
-        <h1 class="mb-4">
-            <i class="fa-solid fa-arrow-right-to-bracket"></i>
-            로그인
-        </h1>
-
-        <form th:action method="POST" onsubmit="submitLoginForm(this); return false;"
-              class="flex flex-col gap-6">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <div class="form-control">
-                <label class="label">
-                    <span class="label-text">아이디</span>
-                </label>
-                <input type="text" name="userLoginId" placeholder="아이디" class="input input-bordered" autofocus
-                       maxlength="30">
-            </div>
-
-            <div class="form-control">
-                <label class="label">
-                    <span class="label-text">비밀번호</span>
-                </label>
-                <input type="password" name="userPassword" placeholder="비밀번호" class="input input-bordered" maxlength="50">
-            </div>
-
-            <div>
-                <button class="btn btn-block btn-primary gap-1">
-                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                    <span>로그인</span>
-                </button>
-
-                <div class="text-center">
-                    <a href="/user/signup" class="btn btn-link">회원가입</a>
-                    <a href="#" class="btn btn-link">아이디 찾기</a>
-                    <a href="#" class="btn btn-link">비밀번호 찾기</a>
-                </div>
-            </div>
-        </form>
-
-        <script>
-            let submitLoginFormDone = false;
-            function submitLoginForm(form) {
-                if ( submitLoginFormDone ) return;
-
-                form.userLoginId.value = form.userLoginId.value.trim();
-
-                if ( form.userLoginId.value.length == 0 ) {
-                    form.userLoginId.focus();
-                    toastWarning('아이디 입력 란을 확인해주세요.');
-                    return;
-                }
-                if ( form.userLoginId.value.length < 8 ) {
-                    form.userLoginId.focus();
-                    toastWarning('아이디는 최소 8글자 이상입니다.');
-                    return;
-                }
-
-                form.userPassword.value = form.userPassword.value.trim();
-
-                if ( form.userPassword.value.length == 0 ) {
-                    form.userPassword.focus();
-                    toastWarning('비밀번호 입력 란을 확인해주세요.');
-                    return;
-                }
-                if ( form.userPassword.value.length < 8 ) {
-                    form.userPassword.focus();
-                    toastWarning('비밀번호는 최소 8글자 이상입니다.');
-                    return;
-                }
-
-                form.submit();
-                submitLoginFormDone = true;
-            }
-        </script>
-    </div>
-</div>
-
+    <input type="submit" value="로그인" />
+</form>
 </body>
 </html>

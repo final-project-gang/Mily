@@ -23,9 +23,11 @@ public class LawyerUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String userLoginId;
 
-    private String password;
+    private String userPassword;
+
+    private String name;
 
     @Email
     private String email;
