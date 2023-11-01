@@ -32,13 +32,11 @@ public class PaymentController {
             }
 
             @Override
-            public void handleError(ClientHttpResponse response) throws IOException {
-
-            }
+            public void handleError(ClientHttpResponse response) throws IOException {}
         });
     }
 
-    private final String SECRET_KEY = "";
+    private final String SECRET_KEY = "test_sk_nRQoOaPz8LLWOwWPNP1P8y47BMw6";
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("")
@@ -52,7 +50,8 @@ public class PaymentController {
             @RequestParam Long amount, Model model) throws Exception {
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Basic" + Base64.getEncoder().encodeToString((SECRET_KEY + ":").getBytes()));
+
+        headers.set("Authorization", "Basic " + Base64.getEncoder().encodeToString((SECRET_KEY + ":").getBytes()));
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         Map<String, String> payloadMap = new HashMap<>();
@@ -67,7 +66,7 @@ public class PaymentController {
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             JsonNode successNode = responseEntity.getBody();
             model.addAttribute("orderId", successNode.get("orderId").asText());
-            String secret = successNode.get("secret").asText();
+            String secret = successNode.get("secret").asText(); // 가상계좌의 경우 입금 callback 검증을 위해서 secret을 저장하기를 권장함
             return "mily/payment/success";
         } else {
             JsonNode failNode = responseEntity.getBody();
