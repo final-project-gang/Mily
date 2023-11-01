@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -22,6 +23,8 @@ public class QMilyUser extends EntityPathBase<MilyUser> {
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final NumberPath<Integer> milyPoint = createNumber("milyPoint", Integer.class);
+
+    public final ListPath<com.mily.payment.Payment, com.mily.payment.QPayment> payments = this.<com.mily.payment.Payment, com.mily.payment.QPayment>createList("payments", com.mily.payment.Payment.class, com.mily.payment.QPayment.class, PathInits.DIRECT2);
 
     public final StringPath userCreateDate = createString("userCreateDate");
 
