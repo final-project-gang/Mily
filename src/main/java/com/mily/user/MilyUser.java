@@ -47,6 +47,9 @@ public class MilyUser {
     private String userCreateDate;
     private String loginId;
 
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int milyPoint;
+
     public boolean isAdmin() {
         return "admin123".equals(userLoginId);
     }

@@ -21,7 +21,11 @@ public class QMilyUser extends EntityPathBase<MilyUser> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+<<<<<<< HEAD
     public final StringPath loginId = createString("loginId");
+=======
+    public final NumberPath<Integer> milyPoint = createNumber("milyPoint", Integer.class);
+>>>>>>> f919754214dda28d348a519ba4d12173cc94928b
 
     public final StringPath userCreateDate = createString("userCreateDate");
 
