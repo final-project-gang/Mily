@@ -128,7 +128,7 @@ public class MilyUserController {
                 .orElseGet(() -> {
                     // 사용자를 찾을 수 없을 경우 에러 메시지를 설정하고 이전 페이지로 이동합니다.
                     redirectAttributes.addFlashAttribute("errorMessage", "일치하는 회원이 존재하지 않습니다.");
-                    return "redirect:mily/milyuser/find_password_form";
+                    return "redirect:/mily/milyuser/find_password_form";
                 });
     }
 
