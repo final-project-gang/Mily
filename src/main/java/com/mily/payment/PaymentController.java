@@ -2,7 +2,10 @@ package com.mily.payment;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mily.user.MilyUser;
+import com.mily.user.MilyUserService;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,10 +21,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/payment")
 public class PaymentController {
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private final MilyUserService milyUserService;
+    private final PaymentService paymentService;
 
     @PostConstruct
     private void init () {
@@ -38,11 +45,16 @@ public class PaymentController {
         });
     }
 
-    private final String SECRET_KEY = "";
+    private final String SECRET_KEY = "SECRET_KEY";
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("")
     public String doPayment() {
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+
+        if (isLoginedUser == null) {
+            return "mily/milyuser/login_form";
+        }
         return "mily/payment/payment";
     }
 
@@ -51,8 +63,10 @@ public class PaymentController {
             @RequestParam String paymentKey, @RequestParam String orderId,
             @RequestParam Long amount, Model model) throws Exception {
 
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Basic" + Base64.getEncoder().encodeToString((SECRET_KEY + ":").getBytes()));
+        headers.set("Authorization", "Basic " + Base64.getEncoder().encodeToString((SECRET_KEY + ":").getBytes()));
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         Map<String, String> payloadMap = new HashMap<>();
@@ -68,6 +82,9 @@ public class PaymentController {
             JsonNode successNode = responseEntity.getBody();
             model.addAttribute("orderId", successNode.get("orderId").asText());
             String secret = successNode.get("secret").asText();
+
+            paymentService.doPayment(orderId, isLoginedUser, amount);
+            milyUserService.getPoint(isLoginedUser);
             return "mily/payment/success";
         } else {
             JsonNode failNode = responseEntity.getBody();

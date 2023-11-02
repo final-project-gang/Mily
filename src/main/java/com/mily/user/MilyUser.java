@@ -1,5 +1,6 @@
 package com.mily.user;
 
+import com.mily.payment.Payment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -49,6 +51,9 @@ public class MilyUser {
 
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int milyPoint;
+
+    @OneToMany(mappedBy = "customerName", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Payment> payments;
 
     public boolean isAdmin() {
         return "admin123".equals(userLoginId);

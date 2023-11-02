@@ -3,6 +3,8 @@ package com.mily.user;
 import com.mily.base.rsData.RsData;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +38,7 @@ public class MilyUserService {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm");
         String nowDate = now.format(dtf);
 
-        MilyUser mu = MilyUser
-                .builder()
+        MilyUser mu = MilyUser.builder()
                 .userLoginId(userLoginId)
                 .userPassword(passwordEncoder.encode(userPassword))
                 .userNickName(userNickName)
@@ -101,6 +102,7 @@ public class MilyUserService {
         return RsData.of("S-1", "%s(은)는 사용 가능한 전화번호입니다.".formatted(userPhoneNumber));
     }
 
+<<<<<<< HEAD
     public Optional<MilyUser> findUserByEmail(String userEmail) {
         return findByUserEmail(userEmail);
     }
@@ -125,3 +127,28 @@ public class MilyUserService {
     }
 }
 
+=======
+    public MilyUser getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof User user) {
+            return milyUserRepository.findByUserLoginId(user.getUsername()).orElse(null);
+        }
+        return null;
+    }
+
+    public RsData<MilyUser> getPoint (MilyUser isLoginedUser) {
+        // isLoginedUser 의 milyPoint 값을 가져온다.
+        int milyPoint = isLoginedUser.getMilyPoint();
+
+        // 가져온 milyPoint 값에 orderName을 더한다.
+        milyPoint += Integer.parseInt("밀리 포인트 200".substring(7));
+
+        // repository에 저장한다.
+        isLoginedUser.setMilyPoint(milyPoint);
+        milyUserRepository.save(isLoginedUser);
+
+        return RsData.of("S-1", "포인트 지급", null);
+    }
+}
+>>>>>>> 1ce2ade47b663d41e46ec9ed2f6da9304acd870f
