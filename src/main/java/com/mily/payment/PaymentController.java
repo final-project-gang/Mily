@@ -29,6 +29,7 @@ public class PaymentController {
 
     private final MilyUserService milyUserService;
     private final PaymentService paymentService;
+    private String lastOrderName;
 
     @PostConstruct
     private void init () {
@@ -58,6 +59,12 @@ public class PaymentController {
         return "mily/payment/payment";
     }
 
+    @PostMapping("/getordername")
+    public ResponseEntity<String> getOrderName (@RequestParam(value = "orderName") String orderName) {
+        lastOrderName = orderName;
+        return ResponseEntity.ok().body(orderName);
+    }
+
     @RequestMapping("/success")
     public String confirmPayment(
             @RequestParam String paymentKey, @RequestParam String orderId,
@@ -83,8 +90,8 @@ public class PaymentController {
             model.addAttribute("orderId", successNode.get("orderId").asText());
             String secret = successNode.get("secret").asText();
 
-            paymentService.doPayment(orderId, isLoginedUser, amount);
-            milyUserService.getPoint(isLoginedUser);
+            paymentService.doPayment(orderId, isLoginedUser, lastOrderName, amount);
+            milyUserService.getPoint(isLoginedUser, lastOrderName);
             return "mily/payment/success";
         } else {
             JsonNode failNode = responseEntity.getBody();

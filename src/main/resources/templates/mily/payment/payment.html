@@ -2,6 +2,9 @@
 <head>
     <meta charset="UTF-8">
     <title>결제하기</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -31,9 +34,12 @@
         var tossPayments = TossPayments("ClientKey");
         var orderId = new Date().getTime();
 
-        var button = document.getElementById('payment-button-50')
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
 
-        button.addEventListener('click', function () {
+        var button50 = document.getElementById('payment-button-50');
+
+        button50.addEventListener('click', function () {
             var orderName = '밀리 포인트 50';
             tossPayments.requestPayment('카드', {
                 amount: 900,
@@ -43,11 +49,25 @@
                 successUrl: window.location.origin + "/payment/success",
                 failUrl: window.location.origin + "/payment/fail",
             })
+            $.ajax({
+                url: "/payment/getordername",
+                type: "POST",
+                data: { orderName: orderName },
+                success: function(response) {
+                    console.log(response);
+                },
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
         })
 
-        var button = document.getElementById('payment-button-100')
+        var button100 = document.getElementById('payment-button-100')
 
-        button.addEventListener('click', function () {
+        button100.addEventListener('click', function () {
             var orderName = '밀리 포인트 100';
             tossPayments.requestPayment('카드', {
                 amount: 1700,
@@ -57,11 +77,25 @@
                 successUrl: window.location.origin + "/payment/success",
                 failUrl: window.location.origin + "/payment/fail",
             })
+            $.ajax({
+                url: "/payment/getordername",
+                type: "POST",
+                data: { orderName: orderName },
+                success: function(response) {
+                    console.log(response);
+                },
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
         })
 
-        var button = document.getElementById('payment-button-300')
+        var button300 = document.getElementById('payment-button-300')
 
-        button.addEventListener('click', function () {
+        button300.addEventListener('click', function () {
             var orderName = '밀리 포인트 300';
             tossPayments.requestPayment('카드', {
                 amount: 4800,
@@ -71,11 +105,25 @@
                 successUrl: window.location.origin + "/payment/success",
                 failUrl: window.location.origin + "/payment/fail",
             })
+            $.ajax({
+                url: "/payment/getordername",
+                type: "POST",
+                data: { orderName: orderName },
+                success: function(response) {
+                    console.log(response);
+                },
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
         })
 
-        var button = document.getElementById('payment-button-500')
+        var button500 = document.getElementById('payment-button-500')
 
-        button.addEventListener('click', function () {
+        button500.addEventListener('click', function () {
             var orderName = '밀리 포인트 500';
             tossPayments.requestPayment('카드', {
                 amount: 7500,
@@ -85,6 +133,20 @@
                 successUrl: window.location.origin + "/payment/success",
                 failUrl: window.location.origin + "/payment/fail",
             })
+            $.ajax({
+                url: "/payment/getordername",
+                type: "POST",
+                data: { orderName: orderName },
+                success: function(response) {
+                    console.log(response);
+                },
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
         })
     </script>
 </div>

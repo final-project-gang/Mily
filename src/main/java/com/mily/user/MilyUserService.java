@@ -105,12 +105,12 @@ public class MilyUserService {
         return null;
     }
 
-    public RsData<MilyUser> getPoint (MilyUser isLoginedUser) {
+    public RsData<MilyUser> getPoint (MilyUser isLoginedUser, String orderName) {
         // isLoginedUser 의 milyPoint 값을 가져온다.
         int milyPoint = isLoginedUser.getMilyPoint();
 
         // 가져온 milyPoint 값에 orderName을 더한다.
-        milyPoint += Integer.parseInt("밀리 포인트 200".substring(7));
+        milyPoint += Integer.parseInt(orderName.substring(7));
 
         // repository에 저장한다.
         isLoginedUser.setMilyPoint(milyPoint);
