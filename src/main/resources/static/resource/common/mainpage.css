@@ -1,0 +1,123 @@
+/* 폰트 설정 */
+@font-face {
+  font-family: "GmarketSansMedium";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
+  format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+html > body {
+  font-family: "GmarketSansMedium";
+  text-underline-position: under;
+}
+
+/* 노말라이즈 */
+
+/* 라이브러리 */
+
+/* 커스텀 */
+:root {
+  --site-width: 1280px;
+}
+
+.con {
+  max-width: var(--site-width);
+}
+
+.search-box {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.main-banner {
+  /*   height: 500px; */
+}
+
+.category-box-icon {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 35px 85px;
+}
+
+.category-btn-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 85px;
+  cursor: pointer;
+}
+
+.main-btn {
+  background: rgba(43, 45, 47, 0.6);
+  border-radius: 100px;
+  width: 200px;
+  height: 50px;
+  bottom: 12px;
+}
+
+.banner-img-box > .main-btn > .btn-text {
+  /*   border: 1px solid red; */
+}
+
+/* 어떤 지역 변호사 버튼 */
+.locationList-btn {
+  width: 150px;
+  height: 48px;
+  border: none;
+  background: #f7f7fa;
+  cursor: pointer;
+}
+
+.question-box {
+  width: 747px;
+  height: 100%;
+}
+
+/* 상담글/변호사사진 */
+.question-img > img {
+  width: 24px;
+  height: 24px;
+  border-radius: 30%;
+  border: solid 2px #fff;
+}
+
+.carousel-guide-card-wrap .guide-card__badge.hot {
+  background-color: rgba(255, 85, 0, 0.1);
+  color: #f50;
+}
+
+/* 법률정보 */
+.carousel-guide-card-wrap .guide-card__keyword {
+  color: #999;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* 푸터 */
+footer > .footer-top {
+/*   border: 1px solid red; */
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+footer > .footer-top > a {
+  color: #757575;
+  cursor: pointer;
+}
+
+footer > .footer-middle > .company-info > .mily-desktop > li {
+/*   border : 1px solid blue; */
+  margin-right : 20px;
+}
+
+footer > .footer-middle > .company-info > .location{
+  font-size : 1rem;
+  font-weight : 500;
+}
+
+footer > .footer-bottom > .sns-wrap > a{
+/*   border : 1px solid red; */
+  margin-right : 5px;
+  margin-left : 5px;
+}
