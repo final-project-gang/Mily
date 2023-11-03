@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>footer</title>
+
+    <!-- 제이쿼리 불러오기 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- toastr 불러오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://jhs512.github.io/toastr/toastr.css">
+
+    <!-- 폰트어썸 아이콘 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- 아이콘 목록 : https://fontawesome.com/search?o=r&m=free -->
+
+    <!-- 데이지 UI 불러오기 -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.css" rel="stylesheet" type="text/css" />
+    <!-- 테일윈드 불러오기 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<footer class="footer-wrap mt-24 border border-t-2 border-gray-300">
+    <!--  회사소개...  -->
+    <div class="footer-top flex justify-center items-center mt-24">
+        <a href="#" class="footer-link mr-32" style="--tw-text-opacity: 1;
+color: rgba(96, 165, 250, var(--tw-text-opacity));">회사소개</a>
+        <a href="#" class="footer-link mr-32">이용약관</a>
+        <a href="#" class="footer-link mr-32">개인정보처리방침</a>
+        <a href="#" class="footer-link mr-32">법적책임</a>
+        <a href="#" class="footer-link mr-32">운영정책</a>
+    </div>
+
+    <!-- footer중간 -->
+    <div class="footer-middle mt-10 flex justify-center items-center">
+        <div class="company-info -ml-80">
+            <p class="location mb-3">(주)밀리캠퍼니 대전광역시 서구 대덕대로 179, 밀리스빌딩 9층</p>
+            <ul class="mily-desktop flex justify-center items-center mb-3">
+                <li>대표자명 : 이재준 대표</li>
+                <li>사업자 번호 : 123-45-67890</li>
+                <li>대표번호 : 042-123-4567</li>
+                <li>이메일 : mily@lawcompany.co.kr</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- footer마지막 -->
+    <div class="footer-bottom flex justify-between items-center">
+        <!-- milylogo -->
+        <div class="footer-logo-wrap flex justify-center ml-72">
+            <a th:href="@{/}">
+                <img src="https://i.postimg.cc/DZ9cZsT1/mily-logo.png" alt="mily로고">
+            </a>
+            <div class="copyright flex items-end mb-6">(C)Law&Company Co.Ltd.All RIGHTS RESERVED.</div>
+        </div>
+
+        <!-- sns -->
+        <div class="sns-wrap flex justify-center items-center mr-60">
+            <a href="https://www.facebook.com/"><img src="https://i.postimg.cc/fWthhwJ6/image.png" alt="페이스북"></a>
+            <a href="https://twitter.com/"><img src="https://i.postimg.cc/zGddBgQp/image.png" alt="트위터"></a>
+            <a href="https://www.instagram.com/"><img src=https://i.postimg.cc/0jbkTmh3/image.png"" alt="인스타그램"></a>
+            <a href="https://www.youtube.com/"><img src="https://i.postimg.cc/zDsvs2XF/image.png" alt="유튜브"></a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
