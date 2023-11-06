@@ -1,7 +1,7 @@
 package com.mily.user;
 
 import com.mily.base.rsData.RsData;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -17,7 +16,6 @@ import java.util.Optional;
 public class MilyUserService {
     private final MilyUserRepository milyUserRepository;
     private final PasswordEncoder passwordEncoder;
-
 
     @Transactional
     public RsData<MilyUser> signup(String userLoginId, String userPassword, String userNickName, String userName, String userEmail, String userPhoneNumber, String userDateOfBirth) {
@@ -35,8 +33,6 @@ public class MilyUserService {
         }
 
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm");
-        String nowDate = now.format(dtf);
 
         MilyUser mu = MilyUser.builder()
                 .userLoginId(userLoginId)
@@ -46,7 +42,7 @@ public class MilyUserService {
                 .userEmail(userEmail)
                 .userPhoneNumber(userPhoneNumber)
                 .userDateOfBirth(userDateOfBirth)
-                .userCreateDate(nowDate)
+                .userCreateDate(now)
                 .build();
 
         mu = milyUserRepository.save(mu);
@@ -106,13 +102,6 @@ public class MilyUserService {
         return findByUserEmail(userEmail);
     }
 
-    public Optional<String> findLoginIdByUserEmail(String userEmail) {
-        Optional<MilyUser> user = findByUserEmail(userEmail);
-
-        System.out.println("user22211 : " + user.map(MilyUser::getLoginId));
-        return user.map(MilyUser::getLoginId);
-    }
-
     public MilyUser findUserLoginIdByEmail(String userEmail) {
         return milyUserRepository.findUserLoginIdByEmail(userEmail);
     }
@@ -121,10 +110,8 @@ public class MilyUserService {
         return milyUserRepository.findByUserLoginIdAndUserEmail(userLoginId, email);
     }
 
-
     public static void sendTempPasswordToEmail(MilyUser member) {
     }
-
 
     public MilyUser getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -135,7 +122,8 @@ public class MilyUserService {
         return null;
     }
 
-    public RsData<MilyUser> getPoint (MilyUser isLoginedUser, String orderName) {
+    @Transactional
+    public RsData<MilyUser> getPoint(MilyUser isLoginedUser, String orderName) {
         // isLoginedUser 의 milyPoint 값을 가져온다.
         int milyPoint = isLoginedUser.getMilyPoint();
 
@@ -149,4 +137,3 @@ public class MilyUserService {
         return RsData.of("S-1", "포인트 지급", null);
     }
 }
-
