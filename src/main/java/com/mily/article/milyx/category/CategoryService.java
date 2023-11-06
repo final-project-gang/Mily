@@ -71,4 +71,5 @@ public class CategoryService {
         System.out.println("서비스 정상인가? : " + firstCategoryId);
         return scr.findByFirstCategoryId(firstCategoryId);
     }
+
 }
