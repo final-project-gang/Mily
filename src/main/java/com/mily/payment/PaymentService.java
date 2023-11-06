@@ -16,13 +16,13 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final MilyUserRepository milyUserRepository;
 
-    public RsData<Payment> doPayment (String orderId, MilyUser milyUser, Long amount) {
+    public RsData<Payment> doPayment (String orderId, MilyUser milyUser, String orderName, Long amount) {
         LocalDateTime now = LocalDateTime.now();
 
         Payment payment = Payment.builder()
                 .orderId(orderId)
                 .orderDate(now)
-                .orderName("200")
+                .orderName(orderName)
                 .customerName(milyUser)
                 .amount(amount)
                 .build();
