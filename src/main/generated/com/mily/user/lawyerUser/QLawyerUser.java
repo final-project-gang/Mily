@@ -23,8 +23,6 @@ public class QLawyerUser extends EntityPathBase<LawyerUser> {
 
     public final StringPath createDate = createString("createDate");
 
-    public final StringPath current = createString("current");
-
     public final StringPath email = createString("email");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
@@ -34,10 +32,6 @@ public class QLawyerUser extends EntityPathBase<LawyerUser> {
     public final StringPath major = createString("major");
 
     public final StringPath name = createString("name");
-
-    public final StringPath organization = createString("organization");
-
-    public final StringPath organizationNumber = createString("organizationNumber");
 
     public final StringPath phoneNumber = createString("phoneNumber");
 

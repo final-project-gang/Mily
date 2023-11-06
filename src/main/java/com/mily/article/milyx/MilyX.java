@@ -3,7 +3,7 @@ package com.mily.article.milyx;
 import com.mily.article.milyx.category.entity.FirstCategory;
 import com.mily.article.milyx.category.entity.SecondCategory;
 import com.mily.article.milyx.comment.MilyXComment;
-import com.mily.user.milyUser.MilyUser;
+import com.mily.user.MilyUser;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -29,6 +29,9 @@ public class MilyX {
 
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
+
+    @Column(nullable = false)
+    private int milyPoint;
 
     private String subject;
 

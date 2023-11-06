@@ -34,7 +34,7 @@ public class QEstimate extends EntityPathBase<Estimate> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.mily.user.milyUser.QMilyUser milyUser;
+    public final com.mily.user.QMilyUser milyUser;
 
     public final StringPath name = createString("name");
 
@@ -58,7 +58,7 @@ public class QEstimate extends EntityPathBase<Estimate> {
 
     public QEstimate(Class<? extends Estimate> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.milyUser = inits.isInitialized("milyUser") ? new com.mily.user.milyUser.QMilyUser(forProperty("milyUser")) : null;
+        this.milyUser = inits.isInitialized("milyUser") ? new com.mily.user.QMilyUser(forProperty("milyUser"), inits.get("milyUser")) : null;
     }
 
 }

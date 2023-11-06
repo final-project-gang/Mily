@@ -1,6 +1,6 @@
 package com.mily.estimate;
 
-import com.mily.user.milyUser.MilyUser;
+import com.mily.user.MilyUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

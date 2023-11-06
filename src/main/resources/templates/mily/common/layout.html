@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html lang="ko" data-theme="winter">
+
+<!-- themes list -->
+<!-- https://daisyui.com/docs/themes/ -->
+<!-- light, dark, cupcake, bumblebee, emerald, corporate, synthwave,
+     retro, cyberpunk, valentine, halloween, garden, forest, aqua, lofi,
+     pastel, fantasy, wireframe, black, luxury, dracula, cmyk, autumn,
+     business, acid, lemonade, night, coffee, winter -->
+
 <head>
     <meta charset="UTF-8">
     <title></title>
 
     <!-- 제이쿼리 불러오기 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>-->
 
     <!-- toastr 불러오기 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
@@ -14,6 +23,11 @@
     <!-- 폰트어썸 아이콘 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- 아이콘 목록 : https://fontawesome.com/search?o=r&m=free -->
+
+    <!-- 데이지 UI 불러오기 -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.css" rel="stylesheet" type="text/css" />
+    <!-- 테일윈드 불러오기 -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
 </head>
 <body>
@@ -43,6 +57,7 @@
                         <li th:if="${@rq.logout}"><a href="/user/login"><i class="fa-solid fa-arrow-right-to-bracket"></i>로그인</a></li>
                         <li th:if="${@rq.logout}"><a href="/user/signup"><i class="fa-solid fa-user-plus"></i>회원가입</a></li>
                         <li th:if="${@rq.login}"><a href="/user/mypage"><i class="fa-solid fa-user"></i>내 정보</a></li>
+                        <li th:if="${@rq.login}"><a href="/payment"><i class="fa-solid fa-user"></i>페이</a></li>
                         <li th:if="${@rq.login}"><a href="/user/logout"><i class="fa-solid fa-arrow-right-from-bracket"></i>로그아웃</a></li>
                     </ul>
                 </div>

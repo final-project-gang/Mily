@@ -34,33 +34,11 @@ public class LawyerUser {
 
     private String phoneNumber;
 
-    private String organization;
-
-    private String organizationNumber;
-
     private String major;
 
     private String introduce;
 
-    private String current;
-
     private String createDate;
 
     private String area;
-
-    public boolean isApprove() {
-        return "approve".equals(current);
-    }
-
-    public List<? extends GrantedAuthority> getGrantedAuthorities() {
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-
-        grantedAuthorities.add(new SimpleGrantedAuthority("member"));
-
-        if (isApprove()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority("lawyer"));
-        }
-
-        return grantedAuthorities;
-    }
 }

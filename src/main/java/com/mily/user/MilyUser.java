@@ -1,5 +1,8 @@
-package com.mily.user.milyUser;
+package com.mily.user;
 
+import com.mily.payment.Payment;
+import com.mily.user.lawyerUser.LawyerUser;
+import com.mily.user.lawyerUser.LawyerUserSignUpForm;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,8 +13,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -44,7 +49,16 @@ public class MilyUser {
 
     private String userDateOfBirth;
 
-    private String userCreateDate;
+    private LocalDateTime userCreateDate;
+
+    @OneToOne(mappedBy = "milyUser", cascade = CascadeType.REMOVE)
+    private LawyerUserSignUpForm lawyerUser;
+
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int milyPoint;
+
+    @OneToMany(mappedBy = "customerName", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Payment> payments;
 
     private String area;
 
@@ -62,7 +76,14 @@ public class MilyUser {
         if (isAdmin()) {
             grantedAuthorities.add(new SimpleGrantedAuthority("admin123"));
         }
-
         return grantedAuthorities;
     }
+
+    public String getUserLoginId() {
+        return userLoginId;
+    }
 }
+
+// 아이디 찾기는 팝업이 아닌 페이지 내에서 알려주는 걸로 진행.
+// 이메일로 인증했을시 맞는 아이디 찾아주기
+// 비밀번호 찾기는 이메일 인증을 통해서 비밀번호를 변경할 수 있는 권한을 준다.

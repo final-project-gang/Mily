@@ -22,48 +22,18 @@ public class LawyerUserController {
     private final Rq rq;
     private final LawyerUserService lawyerUserService;
 
-    @PreAuthorize("isAnonymous()")
-    @GetMapping("/login")
-    public String showLogin() {
-        return "mily/lawyeruser/login_form";
-    }
 
-    @PreAuthorize("isAnonymous()")
-    @GetMapping("/signup")
-    public String showLawyerSignup() { return "mily/lawyeruser/signup_form"; }
 
-    @PreAuthorize("isAnonymous()")
-    @PostMapping("/signup")
-    public String doLawyerSignup(@Valid LawyerUserSignUpForm lawyerUserSignUpForm) {
-        RsData<LawyerUser> signupRs = lawyerUserService.signup(
-                lawyerUserSignUpForm.getUserLoginId(),
-                lawyerUserSignUpForm.getName(),
-                lawyerUserSignUpForm.getPassword(),
-                lawyerUserSignUpForm.getPhoneNumber(),
-                lawyerUserSignUpForm.getEmail(),
-                lawyerUserSignUpForm.getOrganization(),
-                lawyerUserSignUpForm.getOrganizationNumber(),
-                lawyerUserSignUpForm.getMajor(),
-                lawyerUserSignUpForm.getIntroduce(),
-                lawyerUserSignUpForm.getArea()
-        );
 
-        if(signupRs.isFail()) {
-            rq.historyBack(signupRs.getMsg());
-            return "common/js";
-        }
 
-        return rq.redirect("/", signupRs.getMsg());
-    }
-
-    @GetMapping("/getEstimate")
-    public String getEstimate(Principal principal, Model model) {
-        String lawyerName = principal.getName();
-        LawyerUser lawyerUser = lawyerUserService.getLawyer(lawyerName);
-        String category = lawyerUser.getMajor();
-        String area = lawyerUser.getArea();
-        List<Estimate> estimates = lawyerUserService.getEstimate(category, area);
-        model.addAttribute("estimates", estimates);
-        return "estimate_list";
-    }
+//    @GetMapping("/getEstimate")
+//    public String getEstimate(Principal principal, Model model) {
+//        String lawyerName = principal.getName();
+//        LawyerUser lawyerUser = lawyerUserService.getLawyer(lawyerName);
+//        String category = lawyerUser.getMajor();
+//        String area = lawyerUser.getArea();
+//        List<Estimate> estimates = lawyerUserService.getEstimate(category, area);
+//        model.addAttribute("estimates", estimates);
+//        return "estimate_list";
+//    }
 }

@@ -1,37 +1,37 @@
 package com.mily.user.lawyerUser;
 
+import com.mily.user.MilyUser;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+@Entity
 @Getter
 @Setter
+@AllArgsConstructor
 public class LawyerUserSignUpForm {
-    @NotEmpty(message = "아이디은 필수항목입니다.")
-    private String userLoginId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @NotEmpty(message = "이름은 필수항목입니다.")
-    private String name;
-
-    @NotEmpty(message = "비밀번호는 필수항목입니다.")
-    private String Password;
-
-    @NotEmpty(message = "이메일은 필수항목입니다.")
-    @Email
-    private String email;
-
-    @NotEmpty(message = "전화번호는 필수항목입니다.")
-    private String phoneNumber;
-
-    private String organization;
-
-    private String organizationNumber;
-
+    @NotBlank
     private String major;
 
+    @NotBlank
     private String introduce;
 
-    private String area;
+    @NotBlank
+    private String officeAddress;
+
+    @NotBlank
+    private String licenseNumber;
+
+    @OneToOne
+    @MapsId
+    private MilyUser milyUser;
 }
