@@ -102,7 +102,6 @@ public class MilyUserService {
         return RsData.of("S-1", "%s(은)는 사용 가능한 전화번호입니다.".formatted(userPhoneNumber));
     }
 
-<<<<<<< HEAD
     public Optional<MilyUser> findUserByEmail(String userEmail) {
         return findByUserEmail(userEmail);
     }
@@ -125,9 +124,8 @@ public class MilyUserService {
 
     public static void sendTempPasswordToEmail(MilyUser member) {
     }
-}
 
-=======
+
     public MilyUser getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -151,4 +149,4 @@ public class MilyUserService {
         return RsData.of("S-1", "포인트 지급", null);
     }
 }
->>>>>>> 1ce2ade47b663d41e46ec9ed2f6da9304acd870f
+

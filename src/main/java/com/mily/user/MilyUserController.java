@@ -140,6 +140,13 @@ public class MilyUserController {
         return "mily/milyuser/retrieve_id_result";
     }
 
+    @PostMapping("/retrievePassword")
+    public String retrievePassword(@RequestParam String userEmail, String userloginId, Model model, RedirectAttributes redirectAttributes) {
+        MilyUser milyUser = milyUserService.findUserLoginIdByEmail(userEmail);
+        model.addAttribute("foundPassword", milyUser.getUserPassword());
+        return "mily/milyuser/retrieve_password_result";
+    }
+
     @PostMapping("/findLoginIdPage")
     public ResponseEntity<String> retrieveId(@RequestParam("userEmail") String userEmail) {
         MilyUser milyUser = milyUserService.findUserLoginIdByEmail(userEmail);
