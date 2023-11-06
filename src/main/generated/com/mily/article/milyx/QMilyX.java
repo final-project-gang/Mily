@@ -34,6 +34,8 @@ public class QMilyX extends EntityPathBase<MilyX> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final NumberPath<Integer> milyPoint = createNumber("milyPoint", Integer.class);
+
     public final StringPath modifyDate = createString("modifyDate");
 
     public final com.mily.article.milyx.category.entity.QSecondCategory secondCategory;

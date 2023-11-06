@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 @RequestMapping("/user")
 @RequiredArgsConstructor
 @Controller
@@ -44,7 +43,6 @@ public class MilyUserController {
             rq.historyBack(signupRs.getMsg());
             return "common/js";
         }
-
         return rq.redirect("/", signupRs.getMsg());
     }
 
@@ -103,7 +101,6 @@ public class MilyUserController {
     @GetMapping("/findId")
     public String showFindId() {
         return "mily/milyuser/find_id_form";  // 해당 페이지의 경로와 이름을 알맞게 수정하세요.
-
     }
 
     // 비밀번호 찾기 페이지를 보여주는 핸들러
@@ -132,7 +129,6 @@ public class MilyUserController {
                 });
     }
 
-
     @PostMapping("/retrieveId")
     public String retrieveId(@RequestParam String userEmail, Model model, RedirectAttributes redirectAttributes) {
         MilyUser milyUser = milyUserService.findUserLoginIdByEmail(userEmail);
@@ -154,7 +150,6 @@ public class MilyUserController {
             return ResponseEntity.ok("");
         } else {
             return ResponseEntity.badRequest().body("아이디를 찾을 수 없습니다.");
-
         }
     }
 }

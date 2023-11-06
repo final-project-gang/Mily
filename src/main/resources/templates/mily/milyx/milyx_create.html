@@ -9,23 +9,39 @@
 <body>
 <div class="flex-1 flex items-center justify-center" layout:fragment="content">
     <div class="container w-full px-4">
-        <h1 class="mb-4">
+        <div style="display: flex !important;" class="my-4 justify-center">
             <i class="fa-solid fa-pen"></i>
             <span>글쓰기</span>
-        </h1>
+        </div>
 
         <form class="flex flex-col gap-6" method="POST" onsubmit="submitCreateForm(this); return false;"
               th:action="@{/milyx/create}">
             <div class="form-control">
-                대분류 :
-                <select name="firstCategory" id="firstCategory">
+                <span>
+                    <i class="fa-solid fa-arrow-down"></i>
+                    대분류를 선택해주세요.
+                </span>
+                <select name="firstCategory" id="firstCategory" class="my-2">
                     <option value="0" disabled selected>전체</option>
                     <option th:each="category : ${firstCategories}" th:text="${category.title}"
                             th:value="${category.id}"></option>
                 </select>
-                소분류 :
-                <select name="secondCategory" id="secondCategory">
+
+                <span>
+                    <i class="fa-solid fa-arrow-down"></i>
+                    소분류를 선택해주세요.
+                </span>
+                <select name="secondCategory" id="secondCategory" class="my-2">
                     <option value="0" disabled selected>대분류를 선택해주세요.</option>
+                </select>
+
+                <span>
+                    <i class="fa-solid fa-arrow-down"></i>
+                    포인트를 설정해주세요.
+                    <span th:text="'(보유 포인트 : ' + ${myPoint} + ')'"></span>
+                </span>
+                <select name="point" id="point" th:with="userPoint=${userPoint}" class="my-2">
+                    <option th:each="i : ${pointOptions}" th:value="${i}" th:text="${i}"></option>
                 </select>
                 <label class="label">
                     <span class="label-text">제목</span>
@@ -54,8 +70,6 @@
         <script th:inline="javascript">
             $('#firstCategory').change(function() {
                 var firstCategoryId = $(this).val();
-
-                // console.log('firstCategoryId:', firstCategoryId);
 
                 $.ajax({
                     url: "/milyx/secondCategories",
