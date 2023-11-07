@@ -26,11 +26,13 @@ public class QMilyUser extends EntityPathBase<MilyUser> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.mily.user.lawyerUser.QLawyerUserSignUpForm lawyerUser;
+    public final QLawyerUser lawyerUser;
 
     public final NumberPath<Integer> milyPoint = createNumber("milyPoint", Integer.class);
 
     public final ListPath<com.mily.payment.Payment, com.mily.payment.QPayment> payments = this.<com.mily.payment.Payment, com.mily.payment.QPayment>createList("payments", com.mily.payment.Payment.class, com.mily.payment.QPayment.class, PathInits.DIRECT2);
+
+    public final StringPath role = createString("role");
 
     public final DateTimePath<java.time.LocalDateTime> userCreateDate = createDateTime("userCreateDate", java.time.LocalDateTime.class);
 
@@ -66,7 +68,7 @@ public class QMilyUser extends EntityPathBase<MilyUser> {
 
     public QMilyUser(Class<? extends MilyUser> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.lawyerUser = inits.isInitialized("lawyerUser") ? new com.mily.user.lawyerUser.QLawyerUserSignUpForm(forProperty("lawyerUser"), inits.get("lawyerUser")) : null;
+        this.lawyerUser = inits.isInitialized("lawyerUser") ? new QLawyerUser(forProperty("lawyerUser"), inits.get("lawyerUser")) : null;
     }
 
 }

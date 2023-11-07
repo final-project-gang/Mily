@@ -4,8 +4,6 @@ import com.mily.base.rsData.RsData;
 import com.mily.estimate.Estimate;
 import com.mily.estimate.EstimateRepository;
 import com.mily.standard.util.Ut;
-import com.mily.user.lawyerUser.LawyerUser;
-import com.mily.user.lawyerUser.LawyerUserRepository;
 import jakarta.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
@@ -15,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +20,8 @@ import java.util.Optional;
 @Service
 public class MilyUserService {
     private final MilyUserRepository milyUserRepository;
-    private final EstimateRepository estimateRepository;
     private final LawyerUserRepository lawyerUserRepository;
+    private final EstimateRepository estimateRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -44,13 +41,15 @@ public class MilyUserService {
 
         LocalDateTime now = LocalDateTime.now();
 
-        MilyUser mu = MilyUser.builder()
+        MilyUser mu = MilyUser
+                .builder()
                 .userLoginId(userLoginId)
                 .userPassword(passwordEncoder.encode(userPassword))
                 .userNickName(userNickName)
                 .userName(userName)
                 .userEmail(userEmail)
                 .userPhoneNumber(userPhoneNumber)
+                .role("member")
                 .userDateOfBirth(userDateOfBirth)
                 .userCreateDate(now)
                 .area(area)
@@ -61,32 +60,18 @@ public class MilyUserService {
     }
 
     @Transactional
-    public RsData<MilyUser> lawyerSignup(String userLoginId, String password, String name, String phoneNumber, String email, String major, String introduce, String area, String userDateOfBirth) {
-        if (findByUserLoginId(userLoginId).isPresent()) {
-            return RsData.of("F-1", "%s은(는) 이미 사용 중인 아이디입니다.".formatted(userLoginId));
-        }
-        if (findByUserEmail(email).isPresent()) {
-            return RsData.of("F-1", "%s은(는) 이미 인증 된 이메일입니다.".formatted(email));
-        }
-        if (findByUserPhoneNumber(phoneNumber).isPresent()) {
-            return RsData.of("F-1", "%s은(는) 이미 인증 된 전화번호입니다.".formatted(phoneNumber));
-        }
-
-        LocalDateTime now = LocalDateTime.now();
-
-        MilyUser lu = MilyUser
+    public RsData<LawyerUser> lawyerSignup(String major, String introduce, String officeAddress, String licenseNumber, MilyUser milyUser) {
+        milyUser.setRole("waiting");
+        LawyerUser lu = LawyerUser
                 .builder()
-                .userLoginId(userLoginId)
-                .userPassword(passwordEncoder.encode(password))
-                .userPhoneNumber(phoneNumber)
-                .userName(name)
-                .userEmail(email)
-                .userCreateDate(now)
-                .area(area)
-                .userDateOfBirth(userDateOfBirth)
+                .major(major)
+                .introduce(introduce)
+                .officeAddress(officeAddress)
+                .licenseNumber(licenseNumber)
+                .milyUser(milyUser)
                 .build();
 
-        lu = milyUserRepository.save(lu);
+        lu = lawyerUserRepository.save(lu);
         return RsData.of("S-1", "변호사 가입 신청을 완료하였습니다.", lu);
     }
 
@@ -111,30 +96,26 @@ public class MilyUserService {
         return milyUserRepository.findById(id);
     }
 
-    public RsData checkUserLoginIdDup(String userLoginId) {
-        if (findByUserLoginId(userLoginId).isPresent())
-            return RsData.of("F-1", "%s(은)는 이미 사용 중인 아이디입니다.".formatted(userLoginId));
+    public RsData checkUserLoginIdDup (String userLoginId) {
+        if ( findByUserLoginId(userLoginId).isPresent() ) return RsData.of("F-1", "%s(은)는 이미 사용 중인 아이디입니다.".formatted(userLoginId));
 
         return RsData.of("S-1", "%s(은)는 사용 가능한 아이디입니다.".formatted(userLoginId));
     }
 
-    public RsData checkUserNickNameDup(String userNickName) {
-        if (findByUserNickName(userNickName).isPresent())
-            return RsData.of("F-1", "%s(은)는 이미 사용 중인 닉네임입니다.".formatted(userNickName));
+    public RsData checkUserNickNameDup (String userNickName) {
+        if ( findByUserNickName(userNickName).isPresent() ) return RsData.of("F-1", "%s(은)는 이미 사용 중인 닉네임입니다.".formatted(userNickName));
 
         return RsData.of("S-1", "%s(은)는 사용 가능한 닉네임입니다.".formatted(userNickName));
     }
 
-    public RsData checkUserEmailDup(String userEmail) {
-        if (findByUserEmail(userEmail).isPresent())
-            return RsData.of("F-1", "%s(은)는 이미 인증 된 이메일입니다.".formatted(userEmail));
+    public RsData checkUserEmailDup (String userEmail) {
+        if ( findByUserEmail(userEmail).isPresent() ) return RsData.of("F-1", "%s(은)는 이미 인증 된 이메일입니다.".formatted(userEmail));
 
         return RsData.of("S-1", "%s(은)는 사용 가능한 이메일입니다.".formatted(userEmail));
     }
 
-    public RsData checkUserPhoneNumberDup(String userPhoneNumber) {
-        if (findByUserPhoneNumber(userPhoneNumber).isPresent())
-            return RsData.of("F-1", "%s(은)는 이미 인증 된 전화번호입니다.".formatted(userPhoneNumber));
+    public RsData checkUserPhoneNumberDup (String userPhoneNumber) {
+        if ( findByUserPhoneNumber(userPhoneNumber).isPresent() ) return RsData.of("F-1", "%s(은)는 이미 인증 된 전화번호입니다.".formatted(userPhoneNumber));
 
         return RsData.of("S-1", "%s(은)는 사용 가능한 전화번호입니다.".formatted(userPhoneNumber));
     }
@@ -169,33 +150,34 @@ public class MilyUserService {
                 .isPresent();
     }
 
-//    public List<LawyerUser> getWaitingLawyerList() {
-//        List<LawyerUser> lawyerUsers = lawyerUserRepository.findByCurrent("waiting");
-//        if (lawyerUsers.isEmpty()) {
-//            throw new Ut.DataNotFoundException("승인 대기중인 변호사 목록이 없습니다.");
-//        }
-//        return lawyerUsers;
-//    }
+    public List<MilyUser> getWaitingLawyerList() {
+        List<MilyUser> lawyerUsers = milyUserRepository.findByRole("waiting");
+        if (lawyerUsers.isEmpty()) {
+            throw new Ut.DataNotFoundException("승인 대기중인 변호사 목록이 없습니다.");
+        }
+        return lawyerUsers;
+    }
 
-//    @Transactional
-//    public void approveLawyer(long id, String userLoginId) {
-//        if (!isAdmin(userLoginId)) {
-//            throw new Ut.UnauthorizedException("승인 권한이 없습니다.");
-//        }
-//
-//        Optional<LawyerUser> optionalLawyer = lawyerUserRepository.findById(id);
-//        if (optionalLawyer.isPresent()) {
-//            LawyerUser lawyer = optionalLawyer.get();
-//            if ("waiting".equals(lawyer.getCurrent())) {
-//                lawyer.setCurrent("approve");
-//                lawyerUserRepository.save(lawyer);
-//            } else {
-//                throw new Ut.InvalidDataException("선택된 변호사는 대기 중인 상태가 아닙니다.");
-//            }
-//        } else {
-//            throw new Ut.DataNotFoundException("변호사를 찾을 수 없습니다.");
-//        }
-//    }
+    @Transactional
+    public void approveLawyer(long id, String userLoginId) {
+        if (!isAdmin(userLoginId)) {
+            throw new Ut.UnauthorizedException("승인 권한이 없습니다.");
+        }
+
+        Optional<MilyUser> optionalLawyer = milyUserRepository.findById(id);
+
+        if (optionalLawyer.isPresent()) {
+            MilyUser lawyer = optionalLawyer.get();
+            if ("waiting".equals(lawyer.getRole())) {
+                lawyer.setRole("approve");
+                milyUserRepository.save(lawyer);
+            } else {
+                throw new Ut.InvalidDataException("선택된 변호사는 대기 중인 상태가 아닙니다.");
+            }
+        } else {
+            throw new Ut.DataNotFoundException("변호사를 찾을 수 없습니다.");
+        }
+    }
 
     public Optional<MilyUser> findUserByEmail(String userEmail) {
         return findByUserEmail(userEmail);
@@ -234,5 +216,28 @@ public class MilyUserService {
         milyUserRepository.save(isLoginedUser);
 
         return RsData.of("S-1", "포인트 지급", null);
+    }
+
+    public MilyUser getLawyer(String UserLoginId, String role) {
+        Optional<MilyUser> lawyerUser = milyUserRepository.findByUserLoginIdAndRole(UserLoginId, role);
+        if (lawyerUser.isPresent()) {
+            return lawyerUser.get();
+        } else {
+            throw new Ut.DataNotFoundException("변호사 정보가 없습니다.");
+        }
+    }
+
+    public List<Estimate> getEstimate(String category, String area) {
+        List<Estimate> estimate = estimateRepository.findByCategoryAndArea(category, area);
+        if (!estimate.isEmpty()) {
+            return estimate;
+        } else {
+            List<Estimate> estimateArea = estimateRepository.findByArea(area);
+            if (!estimateArea.isEmpty()) {
+                return estimateArea;
+            } else {
+                throw new Ut.DataNotFoundException("견적서에 해당되는 변호사가 없습니다.");
+            }
+        }
     }
 }

@@ -1,20 +1,24 @@
-package com.mily.user.lawyerUser;
+package com.mily.user;
 
-import com.mily.user.MilyUser;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+import org.springframework.stereotype.Component;
+
+import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
-public class LawyerUserSignUpForm {
+@Component
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PROTECTED)
+@SuperBuilder
+public class LawyerUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,5 +37,7 @@ public class LawyerUserSignUpForm {
 
     @OneToOne
     @MapsId
-    private MilyUser milyUser;
+    public MilyUser milyUser;
+
+    private String current;
 }

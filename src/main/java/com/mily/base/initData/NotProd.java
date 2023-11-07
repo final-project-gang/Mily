@@ -1,6 +1,5 @@
 package com.mily.base.initData;
 
-import com.mily.user.lawyerUser.LawyerUserService;
 import com.mily.user.MilyUserService;
 import com.mily.article.milyx.MilyXService;
 import com.mily.article.milyx.category.CategoryService;
@@ -20,7 +19,6 @@ import java.util.Optional;
 @Profile("!prod")
 public class NotProd {
     private final MilyUserService milyUserService;
-    private final LawyerUserService lawyerUserService;
     private final CategoryService categoryService;
     private final MilyXService milyXService;
     private FirstCategory fc;
@@ -32,6 +30,7 @@ public class NotProd {
                 MilyUser milyUser1 = milyUserService.userSignup("admin123", "9a9a9a9a", "administrator", "administrator", "admin123@email.com", "99999999999", "1975-01-21", "").getData();
                 MilyUser milyUser2 = milyUserService.userSignup("testaccount", "qwerasdf", "testaccount", "testaccount", "testaccount@email.com", "88888888888", "1988-05-10", "서울").getData();
                 MilyUser milyUser3 = milyUserService.userSignup("oizill5481", "a7586898", "슈펜형", "이재준", "oizill5481@icloud.com", "01045702579", "1996-10-05", "대전").getData();
+                milyUser1.setRole("admin");
 
                 categoryService.addFC("성 범죄");
                 categoryService.addFC("재산 범죄");

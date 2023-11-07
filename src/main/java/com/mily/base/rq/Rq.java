@@ -1,8 +1,6 @@
 package com.mily.base.rq;
 
 import com.mily.standard.util.Ut;
-import com.mily.user.lawyerUser.LawyerUser;
-import com.mily.user.lawyerUser.LawyerUserService;
 import com.mily.user.MilyUser;
 import com.mily.user.MilyUserService;
 import jakarta.servlet.http.Cookie;

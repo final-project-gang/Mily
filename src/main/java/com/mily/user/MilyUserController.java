@@ -2,8 +2,6 @@ package com.mily.user;
 
 import com.mily.base.rq.Rq;
 import com.mily.base.rsData.RsData;
-import com.mily.user.lawyerUser.LawyerUser;
-import com.mily.user.lawyerUser.LawyerUserSignUpForm;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -37,7 +35,7 @@ public class MilyUserController {
     @PreAuthorize("isAnonymous()")
     @GetMapping("/lawyerLogin")
     public String showLawyerLogin() {
-        return "mily/lawyeruser/login_form";
+        return "mily/milyuser/lawyer_login_form";
     }
 
     @PreAuthorize("isAnonymous()")
@@ -64,30 +62,43 @@ public class MilyUserController {
             rq.historyBack(signupRs.getMsg());
             return "common/js";
         }
+
         return rq.redirect("/", signupRs.getMsg());
     }
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/lawyerSignup")
-    public String showLawyerSignup() { return "mily/lawyeruser/signup_form"; }
+    public String showLawyerSignup() { return "mily/milyuser/lawyer_signup_form"; }
 
-//    @PreAuthorize("isAnonymous()")
-//    @PostMapping("/lawyerSignup")
-//    public String doLawyerSignup(@Valid LawyerUserSignUpForm lawyerUserSignUpForm) {
-//        RsData<MilyUser> signupRs = milyUserService.lawyerSignup(
-//                lawyerUserSignUpForm.getMajor(),
-//                lawyerUserSignUpForm.getIntroduce(),
-//                lawyerUserSignUpForm.getOfficeAddress(),
-//                lawyerUserSignUpForm.getLicenseNumber()
-//        );
-//
-//        if(signupRs.isFail()) {
-//            rq.historyBack(signupRs.getMsg());
-//            return "common/js";
-//        }
-//
-//        return rq.redirect("/", signupRs.getMsg());
-//    }
+    @PreAuthorize("isAnonymous()")
+    @PostMapping("/lawyerSignup")
+    public String doLawyerSignup(@Valid LawyerUser lawyerUser, @Valid SignupForm signupForm) {
+        RsData<MilyUser> signupRs1 = milyUserService.userSignup(
+                signupForm.getUserLoginId(),
+                signupForm.getUserPassword(),
+                signupForm.getUserNickName(),
+                signupForm.getUserName(),
+                signupForm.getUserEmail(),
+                signupForm.getUserPhoneNumber(),
+                signupForm.getUserDateOfBirth(),
+                signupForm.getArea()
+        );
+
+        RsData<LawyerUser> signupRs2 = milyUserService.lawyerSignup(
+                lawyerUser.getMajor(),
+                lawyerUser.getIntroduce(),
+                lawyerUser.getOfficeAddress(),
+                lawyerUser.getLicenseNumber(),
+                lawyerUser.getMilyUser()
+        );
+
+        if (signupRs2.isFail()) {
+            rq.historyBack(signupRs2.getMsg());
+            return "common/js";
+        }
+
+        return rq.redirect("/", signupRs2.getMsg());
+    }
 
     @Getter
     @AllArgsConstructor
@@ -165,24 +176,24 @@ public class MilyUserController {
         private String categoryItem;
     }
 
-//    @GetMapping("/waitLawyerList")
-//    public String getWaitingLawyerList(Principal principal, Model model) {
-//        String userLoginId = principal.getName();
-//        if (milyUserService.isAdmin(userLoginId)) {
-//            List<LawyerUser> waitingLawyers = milyUserService.getWaitingLawyerList();
-//            model.addAttribute("waitingLawyers", waitingLawyers);
-//            return "/mily/waiting_lawyer_list";
-//        } else {
-//            return "mily_main";
-//        }
-//    }
+    @GetMapping("/waitLawyerList")
+    public String getWaitingLawyerList(Principal principal, Model model) {
+        String userLoginId = principal.getName();
+        if (milyUserService.isAdmin(userLoginId)) {
+            List<MilyUser> waitingLawyers = milyUserService.getWaitingLawyerList();
+            model.addAttribute("waitingLawyers", waitingLawyers);
+            return "/mily/waiting_lawyer_list";
+        } else {
+            return "mily_main";
+        }
+    }
 
-//    @PostMapping("/approveLawyer/{id}")
-//    public String approveLawyer(@PathVariable int id, Principal principal) {
-//        String adminLoginId = principal.getName();
-//        this.milyUserService.approveLawyer(id, adminLoginId);
-//        return "redirect:/user/waitLawyerList";
-//    }
+    @PostMapping("/approveLawyer/{id}")
+    public String approveLawyer(@PathVariable int id, Principal principal) {
+        String adminLoginId = principal.getName();
+        this.milyUserService.approveLawyer(id, adminLoginId);
+        return "redirect:/user/waitLawyerList";
+    }
 
     // 아이디 찾기 페이지를 보여주는 핸들러
     @PreAuthorize("isAnonymous()")
