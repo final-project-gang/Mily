@@ -9,6 +9,7 @@ public class MilyHomeController {
 
     @GetMapping("/")
     public String showMilyMain() {
+
         return "mily/mily_main";
     }
 }

@@ -1,0 +1,24 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+    <table class="table">
+        <thead class="table-dark">
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성일시</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="lawyer, loop : ${lawyerList}">
+            <td th:text="${loop.count}"></td>
+            <td>
+                <a th:href="@{|/lawyer/detail/${lawyer.id}|}" th:text="${lawyer.subject}"></a>
+            </td>
+            <td th:text="${#temporals.format(lawyer.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+        </tr>
+        </tbody>
+    </table>
+<!--예약하기버튼-->
+    <a th:href="@{/lawyer/create}" class="btn btn-primary">예약하기</a>
+</div>
+</html>
