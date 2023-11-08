@@ -84,12 +84,15 @@ public class MilyUserController {
                 signupForm.getArea()
         );
 
+        MilyUser milyUser = signupRs1.getData();
+
         RsData<LawyerUser> signupRs2 = milyUserService.lawyerSignup(
                 lawyerUser.getMajor(),
                 lawyerUser.getIntroduce(),
                 lawyerUser.getOfficeAddress(),
                 lawyerUser.getLicenseNumber(),
-                lawyerUser.getMilyUser()
+                lawyerUser.getArea(),
+                milyUser
         );
 
         if (signupRs2.isFail()) {
@@ -191,7 +194,7 @@ public class MilyUserController {
     @PostMapping("/approveLawyer/{id}")
     public String approveLawyer(@PathVariable int id, Principal principal) {
         String adminLoginId = principal.getName();
-        this.milyUserService.approveLawyer(id, adminLoginId);
+        milyUserService.approveLawyer(id, adminLoginId);
         return "redirect:/user/waitLawyerList";
     }
 

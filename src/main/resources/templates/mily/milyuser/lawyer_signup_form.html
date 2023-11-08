@@ -13,13 +13,8 @@
             <i class="fa-solid fa-user-plus"></i>
             회원가입
         </div>
-
-<<<<<<< HEAD
         <form th:action method="POST" name="signup-form" onsubmit="submitSignupForm(this); return false;"
               class="flex flex-col gap-6">
-=======
-        <form th:action method="POST" name="signup-form" onsubmit="submitSignupForm(this); return false;" class="flex flex-col gap-6">
->>>>>>> b27fab74a2ea52104dc350a98159577ec60bd452
             <div class="form-control">
                 <label class="label">
                     <span class="label-text">아이디</span>
@@ -78,12 +73,7 @@
                 <label class="label">
                     <span class="label-text">전화번호</span>
                 </label>
-<<<<<<< HEAD
-                <input type="tel" name="userPhoneNumber" placeholder="'-' 없이 입력해주세요." class="input input-bordered"
-                       autofocus
-=======
                 <input type="tel" name="userPhoneNumber" placeholder="'-' 없이 입력해주세요." class="input input-bordered" autofocus
->>>>>>> b27fab74a2ea52104dc350a98159577ec60bd452
                        maxlength="11" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
                        onkeyup="checkUserPhoneNumberDupDebounce();">
                 <div class="mt-2 text-sm"></div>
@@ -96,7 +86,6 @@
                 <input type="date" name="userDateOfBirth" placeholder="생년월일" class="input input-bordered" autofocus
                        maxlength="30">
             </div>
-<<<<<<< HEAD
             <div class="form-control">
                 <label class="label">
                     <span class="label-text">전공분야</span>
@@ -136,28 +125,18 @@
                 </label>
                 <input type="text" name="area" placeholder="거주지" class="input input-bordered">
             </div>
-=======
->>>>>>> b27fab74a2ea52104dc350a98159577ec60bd452
 
             <div>
                 <button class="btn btn-block btn-primary gap-1">
                     <i class="fa-solid fa-user-plus"></i>
                     <span>가입하기</span>
                 </button>
-<<<<<<< HEAD
+
             </div>
             <div class="text-center">
                 <button class="btn btn-link">로그인</button>
                 <button class="btn btn-link">아이디 찾기</button>
                 <button class="btn btn-link">비밀번호 찾기</button>
-=======
-
-                <div class="text-center">
-                    <button class="btn btn-link">로그인</button>
-                    <button class="btn btn-link">아이디 찾기</button>
-                    <button class="btn btn-link">비밀번호 찾기</button>
-                </div>
->>>>>>> b27fab74a2ea52104dc350a98159577ec60bd452
             </div>
         </form>
 

@@ -55,8 +55,6 @@ public class MilyUser {
     @OneToMany(mappedBy = "customerName", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Payment> payments;
 
-    private String area;
-
     private String role;
 
     @OneToOne(mappedBy = "milyUser", cascade = CascadeType.REMOVE)

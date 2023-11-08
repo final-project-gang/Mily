@@ -38,5 +38,6 @@ public class LawyerUser {
     @OneToOne
     @MapsId
     public MilyUser milyUser;
-    private String current;
+
+    private String area;
 }

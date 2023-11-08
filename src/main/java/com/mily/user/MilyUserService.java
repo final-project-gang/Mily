@@ -52,7 +52,6 @@ public class MilyUserService {
                 .role("member")
                 .userDateOfBirth(userDateOfBirth)
                 .userCreateDate(now)
-                .area(area)
                 .build();
 
         mu = milyUserRepository.save(mu);
@@ -60,16 +59,15 @@ public class MilyUserService {
     }
 
     @Transactional
-    public RsData<LawyerUser> lawyerSignup(String major, String introduce, String officeAddress, String licenseNumber, MilyUser milyUser) {
+    public RsData<LawyerUser> lawyerSignup(String major, String introduce, String officeAddress, String licenseNumber, String area, MilyUser milyUser) {
         milyUser.setRole("waiting");
-        milyUser = milyUserRepository.save(milyUser);
-
         LawyerUser lu = LawyerUser
                 .builder()
                 .major(major)
                 .introduce(introduce)
                 .officeAddress(officeAddress)
                 .licenseNumber(licenseNumber)
+                .area(area)
                 .milyUser(milyUser)
                 .build();
 
@@ -131,7 +129,6 @@ public class MilyUserService {
         estimate.setBirth(milyUser.getUserDateOfBirth());
         estimate.setPhoneNumber(milyUser.getUserPhoneNumber());
         estimate.setMilyUser(milyUser);
-        estimate.setArea(milyUser.getArea());
         estimate.setCreateDate(LocalDateTime.now());
         this.estimateRepository.save(estimate);
     }
