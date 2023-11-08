@@ -39,6 +39,9 @@
                 <a th:href="@{/}">
                     <img src="https://i.postimg.cc/DZ9cZsT1/mily-logo.png" alt="mily로고">
                 </a>
+                <a th:href="@{/}">
+                    <img src="https://i.postimg.cc/DZ9cZsT1/mily-logo.png" alt="mily로고">
+                </a>
             </h2>
         </div>
 
@@ -54,8 +57,7 @@
                         <i class="fa-solid fa-user-plus"></i>회원가입</a>
                 </li>
             </div>
-            <button class="btn btn-primary btn-jelly" style="--tw-bg-opacity: 1;
-background-color: rgba(147, 197, 253, var(--tw-bg-opacity)); border : none;">변호사 가입
+            <button class="btn btn-primary btn-jelly" style="--tw-bg-opacity: 1; background-color: rgba(147, 197, 253, var(--tw-bg-opacity)); border : none;"><a href="/user/lawyerSignup"> 변호사 가입 </a>
             </button>
         </div>
     </header>
@@ -835,81 +837,118 @@ color: rgba(96, 165, 250, var(--tw-text-opacity));">회사소개</a>
 </footer>
 
 <script>
-<!-- 이미지 배너 슬라이드 -->
-    var slideIndex = 1; // 첫 번째 슬라이드부터 시작
-    var slides = document.getElementsByClassName("mySlides");
-    var slideCounter = document.getElementById('slideCounter');
-    var playing = true;
-    var slideInterval;
+    <!-- 이미지 배너 슬라이드 -->
+        var slideIndex = 1; // 첫 번째 슬라이드부터 시작
+        var slides = document.getElementsByClassName("mySlides");
+        var slideCounter = document.getElementById('slideCounter');
+        var playing = true;
+        var slideInterval;
 
-    function showSlides() {
-        var i;
-        for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
+        function showSlides() {
+            var i;
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            if (slideIndex > slides.length) {
+                slideIndex = 1;
+            }
+            slides[slideIndex - 1].style.display = "block";
+            slideCounter.textContent = slideIndex + " / " + slides.length;
         }
-        if (slideIndex > slides.length) {
-            slideIndex = 1;
-        }
-        slides[slideIndex - 1].style.display = "block";
-        slideCounter.textContent = slideIndex + " / " + slides.length;
-    }
 
-    // 웹 페이지 로드 시 첫 번째 슬라이드만 보이게 설정하고 슬라이드 쇼 시작
-    window.onload = function() {
-        showSlides();
-        slideInterval = setInterval(function() {
-            slideIndex++;
+        // 웹 페이지 로드 시 첫 번째 슬라이드만 보이게 설정하고 슬라이드 쇼 시작
+        window.onload = function() {
             showSlides();
-        }, 4000);
-    }
-
-    function pauseSlideShow(){
-        playing = false;
-        clearInterval(slideInterval);
-    }
-
-    function playSlideShow(){
-        playing = true;
-        slideInterval = setInterval(showSlides, 4000);
-    }
-
-    function nextSlide(){
-        slideIndex++; // 다음 슬라이드 인덱스로 이동
-        pauseSlideShow();
-        showSlides();
-        if (playing) {
-            playSlideShow();
+            slideInterval = setInterval(function() {
+                slideIndex++;
+                showSlides();
+            }, 4000);
         }
-    }
 
-    function previousSlide(){
-        slideIndex--; // 이전 슬라이드 인덱스로 이동
-        if (slideIndex < 1){ // 인덱스가 범위를 벗어나면 마지막 슬라이드로 이동
-            slideIndex = slides.length;
+        function pauseSlideShow(){
+            playing = false;
+            clearInterval(slideInterval);
         }
-        pauseSlideShow();
-        showSlides();
-        if (playing) {
-            playSlideShow();
-        }
-    }
 
-    // Assuming your buttons have the IDs "pause", "next", "previous"
-    document.getElementById('pause').onclick = function(){
-        if(playing){
+        function playSlideShow(){
+            playing = true;
+            slideInterval = setInterval(showSlides, 4000);
+        }
+
+        function nextSlide(){
+            slideIndex++; // 다음 슬라이드 인덱스로 이동
             pauseSlideShow();
-        } else {
-            playSlideShow();
+            showSlides();
+            if (playing) {
+                playSlideShow();
+            }
         }
-    };
 
-    document.getElementById('next').onclick = function(){
-        nextSlide();
-    };
+        function previousSlide(){
+            slideIndex--; // 이전 슬라이드 인덱스로 이동
+            if (slideIndex < 1){ // 인덱스가 범위를 벗어나면 마지막 슬라이드로 이동
+                slideIndex = slides.length;
+            }
+            pauseSlideShow();
+            showSlides();
+            if (playing) {
+                playSlideShow();
+            }
+        }
 
-    document.getElementById('previous').onclick = function(){
-        previousSlide();
-    };
+        // Assuming your buttons have the IDs "pause", "next", "previous"
+        document.getElementById('pause').onclick = function(){
+            if(playing){
+                pauseSlideShow();
+            } else {
+                playSlideShow();
+            }
+        };
+
+        document.getElementById('next').onclick = function(){
+            nextSlide();
+        };
+
+        document.getElementById('previous').onclick = function(){
+            previousSlide();
+        };
+       var slideIndex = 0;
+       showSlides();
+
+       function showSlides() {
+         var i;
+         var slides = document.getElementsByClassName("mySlides");
+
+         for (i = 0; i < slides.length; i++) {
+           slides[i].style.display = "none";
+         }
+         slideIndex++;
+         if (slideIndex > slides.length) {
+           slideIndex = 1;
+         }
+         slides[slideIndex - 1].style.display = "block";
+
+         setTimeout(showSlides, 4000); // 4초마다 이미지가 체인지됩니다
+       }
+        <!-- 이미지 배너 슬라이드 -->
+           var slideIndex = 0;
+           showSlides();
+
+           function showSlides() {
+             var i;
+             var slides = document.getElementsByClassName("mySlides");
+
+             for (i = 0; i < slides.length; i++) {
+               slides[i].style.display = "none";
+             }
+             slideIndex++;
+             if (slideIndex > slides.length) {
+               slideIndex = 1;
+             }
+             slides[slideIndex - 1].style.display = "block";
+
+             setTimeout(showSlides, 4000); // 4초마다 이미지가 체인지됩니다
+           }
 </script>
 
 </body>
@@ -1061,5 +1100,151 @@ color: rgba(96, 165, 250, var(--tw-text-opacity));">회사소개</a>
       margin-right : 5px;
       margin-left : 5px;
     }
+        /* 폰트 설정 */
+        @font-face {
+          font-family: "GmarketSansMedium";
+          src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
+            format("woff");
+          font-weight: normal;
+          font-style: normal;
+        }
+
+        html > body {
+          font-family: "GmarketSansMedium";
+          text-underline-position: under;
+        }
+
+        /* 노말라이즈 */
+        body, ul, li {
+            margin: 0;
+          padding : 0;
+            list-style: none;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        /* 라이브러리 */
+
+        /* 커스텀 */
+        :root {
+          --site-width: 1280px;
+        }
+
+        .con {
+          max-width: var(--site-width);
+        }
+
+        .search-box {
+          font-size: 1.5rem;
+          font-weight: 700;
+        }
+
+        .main-banner {
+          /*   height: 500px; */
+        }
+
+        .category-box-icon {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 35px 85px;
+        }
+
+        .category-btn-box {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 85px;
+          cursor: pointer;
+        }
+
+        .main-btn {
+          background: rgba(43, 45, 47, 0.6);
+          border-radius: 100px;
+          width: 200px;
+          height: 50px;
+          bottom: 12px;
+        }
+
+        .banner-img-box > .main-btn > .btn-text {
+          /*   border: 1px solid red; */
+        }
+
+        /* 슬라이드 */
+        .fade {
+          animation-name: fade;
+          animation-duration: 1.5s;
+        }
+
+        @keyframes fade {
+          from {
+            opacity: 0.4;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        /* 어떤 지역 변호사 버튼 */
+        .locationList-btn {
+          width: 150px;
+          height: 48px;
+          border: none;
+          background: #f7f7fa;
+          cursor: pointer;
+        }
+
+        .question-box {
+          width: 747px;
+          height: 100%;
+        }
+
+        /* 상담글/변호사사진 */
+        .question-img > img {
+          width: 24px;
+          height: 24px;
+          border-radius: 30%;
+          border: solid 2px #fff;
+        }
+
+        .carousel-guide-card-wrap .guide-card__badge.hot {
+          background-color: rgba(255, 85, 0, 0.1);
+          color: #f50;
+        }
+
+        /* 법률정보 */
+        .carousel-guide-card-wrap .guide-card__keyword {
+          color: #999;
+          font-size: 14px;
+          line-height: 1.5;
+        }
+
+        /* 푸터 */
+        footer > .footer-top {
+        /*   border: 1px solid red; */
+          font-size: 1.3rem;
+          font-weight: 700;
+        }
+
+        footer > .footer-top > a {
+          color: #757575;
+          cursor: pointer;
+        }
+
+        footer > .footer-middle > .company-info > .mily-desktop > li {
+        /*   border : 1px solid blue; */
+          margin-right : 20px;
+        }
+
+        footer > .footer-middle > .company-info > .location{
+          font-size : 1rem;
+          font-weight : 500;
+        }
+
+        footer > .footer-bottom > .sns-wrap > a{
+        /*   border : 1px solid red; */
+          margin-right : 5px;
+          margin-left : 5px;
+        }
 </style>
 </html>

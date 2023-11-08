@@ -55,6 +55,11 @@ public class MilyUser {
     @OneToMany(mappedBy = "customerName", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Payment> payments;
 
+    private String role;
+
+    @OneToOne(mappedBy = "milyUser", cascade = CascadeType.REMOVE)
+    public LawyerUser lawyerUser;
+
     public boolean isAdmin() {
         return "admin123".equals(userLoginId);
     }
@@ -67,7 +72,7 @@ public class MilyUser {
 
         // userLoginId 가 admin인 회원은 admin 권한도 가집니다.
         if (isAdmin()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority("admin123"));
+            grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
         }
         return grantedAuthorities;
     }

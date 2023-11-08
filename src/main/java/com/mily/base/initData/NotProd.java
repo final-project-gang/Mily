@@ -1,11 +1,11 @@
 package com.mily.base.initData;
 
+import com.mily.user.MilyUserService;
 import com.mily.article.milyx.MilyXService;
 import com.mily.article.milyx.category.CategoryService;
 import com.mily.article.milyx.category.entity.FirstCategory;
 import com.mily.article.milyx.category.entity.SecondCategory;
 import com.mily.user.MilyUser;
-import com.mily.user.MilyUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -22,16 +22,15 @@ public class NotProd {
     private final CategoryService categoryService;
     private final MilyXService milyXService;
     private FirstCategory fc;
-//    private MilyXComment mxc;
-
     @Bean
     public ApplicationRunner init() {
         return args -> {
             Optional<MilyUser> mu = milyUserService.findByUserLoginId("admin123");
             if (mu.isEmpty()) {
-                MilyUser milyUser1 = milyUserService.signup("admin123", "9a9a9a9a", "administrator", "administrator", "admin123@email.com", "99999999999", "1975-01-21").getData();
-                MilyUser milyUser2 = milyUserService.signup("testaccount", "qwerasdf", "testaccount", "testaccount", "testaccount@email.com", "88888888888", "1988-05-10").getData();
-                MilyUser milyUser3 = milyUserService.signup("oizill5481", "a7586898", "슈펜형", "이재준", "oizill5481@icloud.com", "01045702579", "1996-10-05").getData();
+                MilyUser milyUser1 = milyUserService.userSignup("admin123", "9a9a9a9a", "administrator", "administrator", "admin123@email.com", "99999999999", "1975-01-21", "").getData();
+                MilyUser milyUser2 = milyUserService.userSignup("testaccount", "qwerasdf", "testaccount", "testaccount", "testaccount@email.com", "88888888888", "1988-05-10", "서울").getData();
+                MilyUser milyUser3 = milyUserService.userSignup("oizill5481", "a7586898", "슈펜형", "이재준", "oizill5481@icloud.com", "01045702579", "1996-10-05", "대전").getData();
+                milyUser1.setRole("admin");
 
                 categoryService.addFC("성 범죄");
                 categoryService.addFC("재산 범죄");

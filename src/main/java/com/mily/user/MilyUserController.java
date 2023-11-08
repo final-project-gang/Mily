@@ -5,6 +5,7 @@ import com.mily.base.rsData.RsData;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequestMapping("/user")
@@ -24,8 +28,14 @@ public class MilyUserController {
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
-    public String showLogin() {
+    public String showUserLogin() {
         return "mily/milyuser/login_form";
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @GetMapping("/lawyerLogin")
+    public String showLawyerLogin() {
+        return "mily/milyuser/lawyer_login_form";
     }
 
     @PreAuthorize("isAnonymous()")
@@ -37,13 +47,60 @@ public class MilyUserController {
     @PreAuthorize("isAnonymous()")
     @PostMapping("/signup")
     public String doSignup(@Valid SignupForm signupForm) {
-        RsData<MilyUser> signupRs = milyUserService.signup(signupForm.getUserLoginId(), signupForm.getUserPassword(), signupForm.getUserNickName(), signupForm.getUserName(), signupForm.getUserEmail(), signupForm.getUserPhoneNumber(), signupForm.getUserDateOfBirth());
+        RsData<MilyUser> signupRs = milyUserService.userSignup(
+                signupForm.getUserLoginId(),
+                signupForm.getUserPassword(),
+                signupForm.getUserNickName(),
+                signupForm.getUserName(),
+                signupForm.getUserEmail(),
+                signupForm.getUserPhoneNumber(),
+                signupForm.getUserDateOfBirth(),
+                signupForm.getArea()
+        );
 
         if (signupRs.isFail()) {
             rq.historyBack(signupRs.getMsg());
             return "common/js";
         }
+
         return rq.redirect("/", signupRs.getMsg());
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @GetMapping("/lawyerSignup")
+    public String showLawyerSignup() { return "mily/milyuser/lawyer_signup_form"; }
+
+    @PreAuthorize("isAnonymous()")
+    @PostMapping("/lawyerSignup")
+    public String doLawyerSignup(@Valid LawyerUser lawyerUser, @Valid SignupForm signupForm) {
+        RsData<MilyUser> signupRs1 = milyUserService.userSignup(
+                signupForm.getUserLoginId(),
+                signupForm.getUserPassword(),
+                signupForm.getUserNickName(),
+                signupForm.getUserName(),
+                signupForm.getUserEmail(),
+                signupForm.getUserPhoneNumber(),
+                signupForm.getUserDateOfBirth(),
+                signupForm.getArea()
+        );
+
+        MilyUser milyUser = signupRs1.getData();
+
+        RsData<LawyerUser> signupRs2 = milyUserService.lawyerSignup(
+                lawyerUser.getMajor(),
+                lawyerUser.getIntroduce(),
+                lawyerUser.getOfficeAddress(),
+                lawyerUser.getLicenseNumber(),
+                lawyerUser.getArea(),
+                milyUser
+        );
+
+        if (signupRs2.isFail()) {
+            rq.historyBack(signupRs2.getMsg());
+            return "common/js";
+        }
+
+        return rq.redirect("/", signupRs2.getMsg());
     }
 
     @Getter
@@ -70,6 +127,9 @@ public class MilyUserController {
 
         @NotBlank
         private String userDateOfBirth;
+
+        @NotBlank
+        private String area;
     }
 
     @GetMapping("checkUserLoginIdDup")
@@ -94,6 +154,48 @@ public class MilyUserController {
     @ResponseBody
     public RsData checkUserPhoneNumber(String userPhoneNumber) {
         return milyUserService.checkUserPhoneNumberDup(userPhoneNumber);
+    }
+
+    @GetMapping("/estimate")
+    public String showForm(EstimateCreateForm estimateCreateForm) {
+        return "estimate";
+    }
+
+    @PostMapping("/estimate")
+    public String getEstimate(@Valid EstimateCreateForm estimateCreateForm, Principal principal) {
+        String userName = principal.getName();
+        MilyUser milyUser = milyUserService.getUser(userName);
+        milyUserService.sendEstimate(estimateCreateForm.getCategory(), estimateCreateForm.getCategoryItem(), milyUser);
+        return rq.redirect("/", "견적서가 전달되었습니다.");
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public class EstimateCreateForm {
+        @NotEmpty(message = "카테고리 선택은 필수입니다.")
+        private String category;
+
+        @NotEmpty(message = "상세 항목은 필수입니다.")
+        private String categoryItem;
+    }
+
+    @GetMapping("/waitLawyerList")
+    public String getWaitingLawyerList(Principal principal, Model model) {
+        String userLoginId = principal.getName();
+        if (milyUserService.isAdmin(userLoginId)) {
+            List<MilyUser> waitingLawyers = milyUserService.getWaitingLawyerList();
+            model.addAttribute("waitingLawyers", waitingLawyers);
+            return "/mily/waiting_lawyer_list";
+        } else {
+            return "mily_main";
+        }
+    }
+
+    @PostMapping("/approveLawyer/{id}")
+    public String approveLawyer(@PathVariable int id, Principal principal) {
+        String adminLoginId = principal.getName();
+        milyUserService.approveLawyer(id, adminLoginId);
+        return "redirect:/user/waitLawyerList";
     }
 
     // 아이디 찾기 페이지를 보여주는 핸들러
