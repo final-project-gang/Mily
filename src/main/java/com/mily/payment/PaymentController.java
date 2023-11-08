@@ -54,7 +54,7 @@ public class PaymentController {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
         if (isLoginedUser == null) {
-            return "mily/milyuser/login_form";
+            return "redirect:/user/login";
         }
         return "mily/payment/payment";
     }

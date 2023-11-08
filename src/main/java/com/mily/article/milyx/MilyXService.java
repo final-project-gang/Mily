@@ -30,9 +30,6 @@ public class MilyXService {
         LocalDateTime now = LocalDateTime.now();
         int point = author.getMilyPoint();
 
-        System.out.println(author.getUserNickName() + "의 포인트 : " + point);
-        System.out.println(author.getUserNickName() + "(이)가 글 작성에 사용한 포인트 : " + milyPoint);
-
         MilyX mx = MilyX.builder()
                 .firstCategory(firstCategory)
                 .secondCategory(secondCategory)
@@ -52,9 +49,40 @@ public class MilyXService {
         author.setMilyPoint(point);
         mur.save(author);
 
-        System.out.println(author.getUserNickName() + "의 글 작성 후 유저의 포인트 : " + author.getMilyPoint());
-
         return new RsData<>("S-1", "게시물 생성 완료", mx);
+    }
+
+    @Transactional
+    public RsData<MilyX> modify(Long id, String subject, String body) {
+        LocalDateTime now = LocalDateTime.now();
+
+        MilyX mx = mxr.findById(id).orElse(null);
+
+        if (mx == null) {
+            return new RsData<>("F-1", "게시물을 찾아 올 수 없습니다.", mx);
+        }
+
+        mx.setSubject(subject);
+        mx.setBody(body);
+        mx.setModifyDate(now);
+
+        mxr.save(mx);
+
+        return new RsData<>("S-1", "게시물 수정 완료", mx);
+    }
+
+    @Transactional
+    public RsData<MilyX> delete(Long id) {
+        Optional<MilyX> mxOptional = mxr.findById(id);
+
+        if (mxOptional.isEmpty()) {
+            return new RsData<>("F-1", "게시물을 찾아 올 수 없습니다.", null);
+        }
+
+        MilyX mx = mxOptional.get();
+        mxr.delete(mx);
+
+        return new RsData<>("S-1", "게시물 삭제 완료", mx);
     }
 
     public Optional<MilyX> findById(long id) {
