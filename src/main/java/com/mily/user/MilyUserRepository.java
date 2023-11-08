@@ -13,7 +13,6 @@ public interface MilyUserRepository extends JpaRepository<MilyUser, Long> {
     Optional<MilyUser> findByUserEmail (String userEmail);
     Optional<MilyUser> findByUserPhoneNumber (String userPhoneNumber);
     Optional<MilyUser> findByUserName(String userName);
-    MilyUser findFirstByOrderByUserCreateDateDesc();
 
     Optional<MilyUser> findByUserLoginIdAndUserEmail(String userLoginId, String userEmail);
 
