@@ -33,12 +33,6 @@ public class MilyUserController {
     }
 
     @PreAuthorize("isAnonymous()")
-    @GetMapping("/lawyerLogin")
-    public String showLawyerLogin() {
-        return "mily/milyuser/lawyer_login_form";
-    }
-
-    @PreAuthorize("isAnonymous()")
     @GetMapping("/signup")
     public String showSignup() {
         return "mily/milyuser/signup_form";
@@ -156,27 +150,32 @@ public class MilyUserController {
         return milyUserService.checkUserPhoneNumberDup(userPhoneNumber);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/estimate")
     public String showForm(EstimateCreateForm estimateCreateForm) {
         return "estimate";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/estimate")
     public String getEstimate(@Valid EstimateCreateForm estimateCreateForm, Principal principal) {
         String userName = principal.getName();
         MilyUser milyUser = milyUserService.getUser(userName);
-        milyUserService.sendEstimate(estimateCreateForm.getCategory(), estimateCreateForm.getCategoryItem(), milyUser);
+        milyUserService.sendEstimate(estimateCreateForm.getCategory(), estimateCreateForm.getCategoryItem(), estimateCreateForm.getArea(), milyUser);
         return rq.redirect("/", "견적서가 전달되었습니다.");
     }
 
     @Getter
     @AllArgsConstructor
     public class EstimateCreateForm {
-        @NotEmpty(message = "카테고리 선택은 필수입니다.")
+        @NotBlank
         private String category;
 
-        @NotEmpty(message = "상세 항목은 필수입니다.")
+        @NotBlank
         private String categoryItem;
+
+        @NotBlank
+        private String area;
     }
 
     @GetMapping("/waitLawyerList")
@@ -253,5 +252,12 @@ public class MilyUserController {
         } else {
             return ResponseEntity.badRequest().body("아이디를 찾을 수 없습니다.");
         }
+    }
+
+    @GetMapping("getEstimate")
+    public String getEstimate() {
+
+
+        return "estimate_list";
     }
 }
