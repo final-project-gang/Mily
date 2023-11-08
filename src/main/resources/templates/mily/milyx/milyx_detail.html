@@ -2,6 +2,8 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="|${milyx.subject}|"></title>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
     <script th:inline="javascript">
         const elapsedTime = (date) => {
             const start = new Date(date);
@@ -50,15 +52,23 @@
                         <div class="whitespace-pre-line" th:text="${milyx.body}"></div>
                     </div>
 
-                    <div class="form-control">
-                        <div th:id="'createDate_' + ${milyx.id}" th:text="${milyx.createDate}"></div>
+                    <div style="display: contents !important; justify-contents: space-between;"
+                         class="form-control col-span-full">
+                        <div class="form-control">
+                            <div th:id="'createDate_' + ${milyx.id}" th:text="${milyx.createDate}"></div>
+                        </div>
+                        <div class="form-control" style="display: -webkit-box">
+                            <i class="fa-regular fa-eye" style="font-size: 16px;"></i>
+                            <div>ㅤ</div>
+                            <div th:text="${milyx.view}"></div>
+                        </div>
                     </div>
-
-                    <div class="form-control" style="display: -webkit-box">
-                        <i class="fa-regular fa-eye" style="font-size: 16px;"></i>
-                        <div>ㅤ</div>
-                        <div th:text="${milyx.view}"></div>
-                    </div>
+                </div>
+                <div style="display: flex !important;" class="justify-end">
+                    <a th:if="${isAuthor}" th:href="@{|/milyx/modify/${milyx.id}|}" class="ml-4 mr-4" th:text="수정"></a>
+                    <form th:if="${isAuthor}" th:action="@{|/milyx/delete/${milyx.id}|}" method="post" style="display: inline;">
+                        <button type="submit" class="delete ml-4 mr-4" th:data-url="@{|/milyx/delete/${milyx.id}|}">삭제</button>
+                    </form>
                 </div>
             </div>
 
@@ -124,4 +134,25 @@
         form.submit();
         submitCommentFormDone = true;
     }
+
+    const delete_elements = document.getElementsByClassName("delete");
+    Array.from(delete_elements).forEach(function (element) {
+        element.addEventListener('click', function () {
+            event.preventDefault();
+            if (confirm("정말로 삭제하시겠습니까?")) {
+                var form = document.createElement('form');
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', this.dataset.url);
+
+                var csrfInput = document.createElement('input');
+                csrfInput.setAttribute('type', 'hidden');
+                csrfInput.setAttribute('name', '_csrf');
+                csrfInput.setAttribute('value', document.querySelector('meta[name="_csrf"]').getAttribute('content'));
+                form.appendChild(csrfInput);
+
+                document.body.appendChild(form);
+                form.submit();
+            };
+        });
+    });
 </script>
