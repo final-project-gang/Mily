@@ -54,8 +54,7 @@
                         <i class="fa-solid fa-user-plus"></i>회원가입</a>
                 </li>
             </div>
-            <button class="btn btn-primary btn-jelly" style="--tw-bg-opacity: 1;
-background-color: rgba(147, 197, 253, var(--tw-bg-opacity)); border : none;">변호사 가입
+            <button class="btn btn-primary btn-jelly" style="--tw-bg-opacity: 1; background-color: rgba(147, 197, 253, var(--tw-bg-opacity)); border : none;"><a href="/user/lawyerSignup"> 변호사 가입 </a>
             </button>
         </div>
     </header>
@@ -835,81 +834,81 @@ color: rgba(96, 165, 250, var(--tw-text-opacity));">회사소개</a>
 </footer>
 
 <script>
-<!-- 이미지 배너 슬라이드 -->
-    var slideIndex = 1; // 첫 번째 슬라이드부터 시작
-    var slides = document.getElementsByClassName("mySlides");
-    var slideCounter = document.getElementById('slideCounter');
-    var playing = true;
-    var slideInterval;
+    <!-- 이미지 배너 슬라이드 -->
+        var slideIndex = 1; // 첫 번째 슬라이드부터 시작
+        var slides = document.getElementsByClassName("mySlides");
+        var slideCounter = document.getElementById('slideCounter');
+        var playing = true;
+        var slideInterval;
 
-    function showSlides() {
-        var i;
-        for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
+        function showSlides() {
+            var i;
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            if (slideIndex > slides.length) {
+                slideIndex = 1;
+            }
+            slides[slideIndex - 1].style.display = "block";
+            slideCounter.textContent = slideIndex + " / " + slides.length;
         }
-        if (slideIndex > slides.length) {
-            slideIndex = 1;
-        }
-        slides[slideIndex - 1].style.display = "block";
-        slideCounter.textContent = slideIndex + " / " + slides.length;
-    }
 
-    // 웹 페이지 로드 시 첫 번째 슬라이드만 보이게 설정하고 슬라이드 쇼 시작
-    window.onload = function() {
-        showSlides();
-        slideInterval = setInterval(function() {
-            slideIndex++;
+        // 웹 페이지 로드 시 첫 번째 슬라이드만 보이게 설정하고 슬라이드 쇼 시작
+        window.onload = function() {
             showSlides();
-        }, 4000);
-    }
-
-    function pauseSlideShow(){
-        playing = false;
-        clearInterval(slideInterval);
-    }
-
-    function playSlideShow(){
-        playing = true;
-        slideInterval = setInterval(showSlides, 4000);
-    }
-
-    function nextSlide(){
-        slideIndex++; // 다음 슬라이드 인덱스로 이동
-        pauseSlideShow();
-        showSlides();
-        if (playing) {
-            playSlideShow();
+            slideInterval = setInterval(function() {
+                slideIndex++;
+                showSlides();
+            }, 4000);
         }
-    }
 
-    function previousSlide(){
-        slideIndex--; // 이전 슬라이드 인덱스로 이동
-        if (slideIndex < 1){ // 인덱스가 범위를 벗어나면 마지막 슬라이드로 이동
-            slideIndex = slides.length;
+        function pauseSlideShow(){
+            playing = false;
+            clearInterval(slideInterval);
         }
-        pauseSlideShow();
-        showSlides();
-        if (playing) {
-            playSlideShow();
-        }
-    }
 
-    // Assuming your buttons have the IDs "pause", "next", "previous"
-    document.getElementById('pause').onclick = function(){
-        if(playing){
+        function playSlideShow(){
+            playing = true;
+            slideInterval = setInterval(showSlides, 4000);
+        }
+
+        function nextSlide(){
+            slideIndex++; // 다음 슬라이드 인덱스로 이동
             pauseSlideShow();
-        } else {
-            playSlideShow();
+            showSlides();
+            if (playing) {
+                playSlideShow();
+            }
         }
-    };
 
-    document.getElementById('next').onclick = function(){
-        nextSlide();
-    };
+        function previousSlide(){
+            slideIndex--; // 이전 슬라이드 인덱스로 이동
+            if (slideIndex < 1){ // 인덱스가 범위를 벗어나면 마지막 슬라이드로 이동
+                slideIndex = slides.length;
+            }
+            pauseSlideShow();
+            showSlides();
+            if (playing) {
+                playSlideShow();
+            }
+        }
 
-    document.getElementById('previous').onclick = function(){
-        previousSlide();
-    };
+        // Assuming your buttons have the IDs "pause", "next", "previous"
+        document.getElementById('pause').onclick = function(){
+            if(playing){
+                pauseSlideShow();
+            } else {
+                playSlideShow();
+            }
+        };
+
+        document.getElementById('next').onclick = function(){
+            nextSlide();
+        };
+
+        document.getElementById('previous').onclick = function(){
+            previousSlide();
+        };
 </script>
 
 </body>

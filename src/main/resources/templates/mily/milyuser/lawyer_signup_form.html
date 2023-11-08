@@ -14,7 +14,8 @@
             회원가입
         </div>
 
-        <form th:action method="POST" name="signup-form" onsubmit="submitSignupForm(this); return false;" class="flex flex-col gap-6">
+        <form th:action method="POST" name="signup-form" onsubmit="submitSignupForm(this); return false;"
+              class="flex flex-col gap-6">
             <div class="form-control">
                 <label class="label">
                     <span class="label-text">아이디</span>
@@ -73,7 +74,8 @@
                 <label class="label">
                     <span class="label-text">전화번호</span>
                 </label>
-                <input type="tel" name="userPhoneNumber" placeholder="'-' 없이 입력해주세요." class="input input-bordered" autofocus
+                <input type="tel" name="userPhoneNumber" placeholder="'-' 없이 입력해주세요." class="input input-bordered"
+                       autofocus
                        maxlength="11" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
                        onkeyup="checkUserPhoneNumberDupDebounce();">
                 <div class="mt-2 text-sm"></div>
@@ -86,13 +88,44 @@
                 <input type="date" name="userDateOfBirth" placeholder="생년월일" class="input input-bordered" autofocus
                        maxlength="30">
             </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">전공분야</span>
+                </label>
+                <input type="text" name="major" placeholder="전공분야" class="input input-bordered" autofocus
+                       maxlength="12" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
+                       onkeyup="checkUserLoginIdDupDebounce();">
+                <div class="mt-2 text-sm"></div>
+            </div>
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text">지역</span>
+                    <span class="label-text">사무실 주소</span>
                 </label>
-                <input type="text" name="area" placeholder="지역" class="input input-bordered" autofocus
+                <input type="text" name="officeAddress" placeholder="사무실 주소" class="input input-bordered"
                        maxlength="30">
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">면허증 번호</span>
+                </label>
+                <input type="text" name="licenseNumber" placeholder="비밀번호 확인" class="input input-bordered"
+                       maxlength="30">
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">자기소개</span>
+                </label>
+                <input type="text" name="introduce" placeholder="자기소개" class="input input-bordered">
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">거주지</span>
+                </label>
+                <input type="text" name="area" placeholder="거주지" class="input input-bordered">
             </div>
 
             <div>
@@ -100,12 +133,11 @@
                     <i class="fa-solid fa-user-plus"></i>
                     <span>가입하기</span>
                 </button>
-
-                <div class="text-center">
-                    <button class="btn btn-link">로그인</button>
-                    <button class="btn btn-link">아이디 찾기</button>
-                    <button class="btn btn-link">비밀번호 찾기</button>
-                </div>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-link">로그인</button>
+                <button class="btn btn-link">아이디 찾기</button>
+                <button class="btn btn-link">비밀번호 찾기</button>
             </div>
         </form>
 

@@ -18,13 +18,21 @@ public class QMilyUser extends EntityPathBase<MilyUser> {
 
     private static final long serialVersionUID = 1654759167L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QMilyUser milyUser = new QMilyUser("milyUser");
 
+    public final StringPath area = createString("area");
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final QLawyerUser lawyerUser;
 
     public final NumberPath<Integer> milyPoint = createNumber("milyPoint", Integer.class);
 
     public final ListPath<com.mily.payment.Payment, com.mily.payment.QPayment> payments = this.<com.mily.payment.Payment, com.mily.payment.QPayment>createList("payments", com.mily.payment.Payment.class, com.mily.payment.QPayment.class, PathInits.DIRECT2);
+
+    public final StringPath role = createString("role");
 
     public final DateTimePath<java.time.LocalDateTime> userCreateDate = createDateTime("userCreateDate", java.time.LocalDateTime.class);
 
@@ -43,15 +51,24 @@ public class QMilyUser extends EntityPathBase<MilyUser> {
     public final StringPath userPhoneNumber = createString("userPhoneNumber");
 
     public QMilyUser(String variable) {
-        super(MilyUser.class, forVariable(variable));
+        this(MilyUser.class, forVariable(variable), INITS);
     }
 
     public QMilyUser(Path<? extends MilyUser> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QMilyUser(PathMetadata metadata) {
-        super(MilyUser.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QMilyUser(PathMetadata metadata, PathInits inits) {
+        this(MilyUser.class, metadata, inits);
+    }
+
+    public QMilyUser(Class<? extends MilyUser> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.lawyerUser = inits.isInitialized("lawyerUser") ? new QLawyerUser(forProperty("lawyerUser"), inits.get("lawyerUser")) : null;
     }
 
 }

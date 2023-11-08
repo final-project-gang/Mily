@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Waiting Lawyer List</title>
+</head>
+<body>
+<h1>승인 대기중인 변호사 목록</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>id_number</th>
+        <th>email</th>
+        <th>phoneNumber</th>
+        <th>organization</th>
+        <th>organizationNumber</th>
+        <th>major</th>
+        <th>introduce</th>
+        <th>approve</th>
+        <!-- 필요한 다른 필드들 -->
+    </tr>
+    </thead>
+
+    <tbody th:each="lawyer : ${waitingLawyers}">
+    <tr>
+        <td th:text="${lawyer.id}"></td>
+        <td th:text="${lawyer.name}"></td>
+        <td th:text="${lawyer.email}"></td>
+        <td th:text="${lawyer.phoneNumber}"></td>
+        <td th:text="${lawyer.organization}"></td>
+        <td th:text="${lawyer.organizationNumber}"></td>
+        <td th:text="${lawyer.major}"></td>
+        <td th:text="${lawyer.introduce}"></td>
+        <td>
+            <div class="button">
+                <form th:action="@{/user/approveLawyer/{id}(id=${lawyer.id})}" method="post">
+                    <input type="submit" value="Approve"/>
+                </form>
+            </div></tr>
+        </td>
+    </tbody>
+    </tr>
+
+    </tbody>
+
+</table>
+
+<a href="/">홈</a>
+
+</body>
+

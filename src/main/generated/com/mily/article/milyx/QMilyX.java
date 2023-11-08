@@ -62,7 +62,7 @@ public class QMilyX extends EntityPathBase<MilyX> {
 
     public QMilyX(Class<? extends MilyX> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.author = inits.isInitialized("author") ? new com.mily.user.QMilyUser(forProperty("author")) : null;
+        this.author = inits.isInitialized("author") ? new com.mily.user.QMilyUser(forProperty("author"), inits.get("author")) : null;
         this.firstCategory = inits.isInitialized("firstCategory") ? new com.mily.article.milyx.category.entity.QFirstCategory(forProperty("firstCategory")) : null;
         this.secondCategory = inits.isInitialized("secondCategory") ? new com.mily.article.milyx.category.entity.QSecondCategory(forProperty("secondCategory"), inits.get("secondCategory")) : null;
     }
