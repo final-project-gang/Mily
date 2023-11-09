@@ -2,6 +2,7 @@ package com.mily.user;
 
 import com.mily.base.rq.Rq;
 import com.mily.base.rsData.RsData;
+import com.mily.estimate.Estimate;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -62,7 +64,9 @@ public class MilyUserController {
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/lawyerSignup")
-    public String showLawyerSignup() { return "mily/milyuser/lawyer_signup_form"; }
+    public String showLawyerSignup() {
+        return "mily/milyuser/lawyer_signup_form";
+    }
 
     @PreAuthorize("isAnonymous()")
     @PostMapping("/lawyerSignup")
@@ -255,9 +259,11 @@ public class MilyUserController {
     }
 
     @GetMapping("getEstimate")
-    public String getEstimate() {
-
-
+    public String getEstimate(Model model) {
+        String category = milyUserService.getCurrentUser().getLawyerUser().getMajor();
+        String area = milyUserService.getCurrentUser().getLawyerUser().getArea();
+        List<Estimate> estimates = milyUserService.getEstimate(LocalDateTime.now(), category, area);
+        model.addAttribute("estimates", estimates);
         return "estimate_list";
     }
 }

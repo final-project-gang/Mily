@@ -29,6 +29,6 @@ public class Estimate {
 
     private String area;
 
-    @OneToOne
+    @ManyToOne
     private MilyUser milyUser;
 }
