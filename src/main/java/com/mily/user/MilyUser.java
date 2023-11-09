@@ -30,12 +30,10 @@ public class MilyUser {
 
     @Column(unique = true)
     private String userLoginId;
-
     private String userPassword;
 
     @Column(unique = true)
     private String userNickName;
-
     private String userName;
 
     @Column(unique = true)
@@ -43,9 +41,7 @@ public class MilyUser {
 
     @Column(unique = true)
     private String userPhoneNumber;
-
     private String userDateOfBirth;
-
     private String userCreateDate;
     private String loginId;
 
@@ -75,6 +71,10 @@ public class MilyUser {
 
     public String getUserLoginId() {
         return userLoginId;
+    }
+
+    public String getEmail() {
+        return userEmail;
     }
 }
 

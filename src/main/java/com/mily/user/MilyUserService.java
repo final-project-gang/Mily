@@ -3,6 +3,7 @@ package com.mily.user;
 import com.mily.base.rsData.RsData;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class MilyUserService {
     private final MilyUserRepository milyUserRepository;
     private final PasswordEncoder passwordEncoder;
+
 
 
     @Transactional
@@ -102,16 +104,6 @@ public class MilyUserService {
         return RsData.of("S-1", "%s(은)는 사용 가능한 전화번호입니다.".formatted(userPhoneNumber));
     }
 
-    public Optional<MilyUser> findUserByEmail(String userEmail) {
-        return findByUserEmail(userEmail);
-    }
-
-    public Optional<String> findLoginIdByUserEmail(String userEmail) {
-        Optional<MilyUser> user = findByUserEmail(userEmail);
-
-        System.out.println("user22211 : " + user.map(MilyUser::getLoginId));
-        return user.map(MilyUser::getLoginId);
-    }
 
     public MilyUser findUserLoginIdByEmail(String userEmail) {
         return milyUserRepository.findUserLoginIdByEmail(userEmail);
@@ -121,9 +113,6 @@ public class MilyUserService {
         return milyUserRepository.findByUserLoginIdAndUserEmail(userLoginId, email);
     }
 
-
-    public static void sendTempPasswordToEmail(MilyUser member) {
-    }
 
 
     public MilyUser getCurrentUser() {
@@ -147,6 +136,24 @@ public class MilyUserService {
         milyUserRepository.save(isLoginedUser);
 
         return RsData.of("S-1", "포인트 지급", null);
+    }
+
+    /*public void sendTempPasswordToEmail(MilyUser member) {
+    }
+*/
+    public Optional<MilyUser> findByUserLoginIdAndEmail(String userLoginId, String userEmail) {
+        return Optional.empty();
+
+    }
+
+    public void sendTempPasswordToEmail(String email, String tempPassword) {
+    }
+
+    public String generateTempPassword() {
+        return RandomStringUtils.randomAlphanumeric(10);
+    }
+
+    public void updateUserPassword(long id, String tempPassword) {
     }
 }
 
