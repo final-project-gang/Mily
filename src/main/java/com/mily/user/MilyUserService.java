@@ -25,7 +25,7 @@ public class MilyUserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public RsData<MilyUser> userSignup(String userLoginId, String userPassword, String userNickName, String userName, String userEmail, String userPhoneNumber, String userDateOfBirth, String area) {
+    public RsData<MilyUser> userSignup(String userLoginId, String userPassword, String userNickName, String userName, String userEmail, String userPhoneNumber, String userDateOfBirth) {
         if (findByUserLoginId(userLoginId).isPresent()) {
             return RsData.of("F-1", "%s은(는) 이미 사용 중인 아이디입니다.".formatted(userLoginId));
         }
@@ -121,7 +121,7 @@ public class MilyUserService {
     }
 
     @Transactional
-    public void sendEstimate(String category, String categoryItem, String area, MilyUser milyUser) {
+    public Estimate sendEstimate(String category, String categoryItem, String area, MilyUser milyUser) {
         Estimate estimate = new Estimate();
         estimate.setCategory(category);
         estimate.setCategoryItem(categoryItem);
@@ -131,7 +131,21 @@ public class MilyUserService {
         estimate.setArea(area);
         estimate.setMilyUser(milyUser);
         estimate.setCreateDate(LocalDateTime.now());
-        this.estimateRepository.save(estimate);
+        return estimateRepository.save(estimate);
+    }
+
+    @Transactional
+    public Estimate createEstimate(String category, String categoryItem, String area, MilyUser milyUser) {
+        Estimate estimate = new Estimate();
+        estimate.setCategory(category);
+        estimate.setCategoryItem(categoryItem);
+        estimate.setName(milyUser.getUserName());
+        estimate.setBirth(milyUser.getUserDateOfBirth());
+        estimate.setPhoneNumber(milyUser.getUserPhoneNumber());
+        estimate.setArea(area);
+        estimate.setMilyUser(milyUser);
+        estimate.setCreateDate(LocalDateTime.now().minusDays(7));
+        return estimateRepository.save(estimate);
     }
 
     public MilyUser getUser(String userName) {

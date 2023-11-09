@@ -6,7 +6,6 @@ import com.mily.estimate.Estimate;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -50,8 +49,7 @@ public class MilyUserController {
                 signupForm.getUserName(),
                 signupForm.getUserEmail(),
                 signupForm.getUserPhoneNumber(),
-                signupForm.getUserDateOfBirth(),
-                signupForm.getArea()
+                signupForm.getUserDateOfBirth()
         );
 
         if (signupRs.isFail()) {
@@ -78,8 +76,7 @@ public class MilyUserController {
                 signupForm.getUserName(),
                 signupForm.getUserEmail(),
                 signupForm.getUserPhoneNumber(),
-                signupForm.getUserDateOfBirth(),
-                signupForm.getArea()
+                signupForm.getUserDateOfBirth()
         );
 
         MilyUser milyUser = signupRs1.getData();
@@ -125,9 +122,6 @@ public class MilyUserController {
 
         @NotBlank
         private String userDateOfBirth;
-
-        @NotBlank
-        private String area;
     }
 
     @GetMapping("checkUserLoginIdDup")
