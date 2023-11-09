@@ -1,5 +1,8 @@
 package com.mily.standard.util;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -56,6 +59,30 @@ public class Ut {
             String urlAfter = url.substring(startPoint + endPoint + 1);
 
             return url.substring(0, startPoint) + urlAfter;
+        }
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "entity not found")
+    public static class DataNotFoundException extends RuntimeException {
+        private static final long serialVersionUID = 1L;
+        public DataNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "unauthorized")
+    public static class UnauthorizedException extends RuntimeException {
+        private static final long serialVersionUID = 1L;
+        public UnauthorizedException(String message) {
+            super(message);
+        }
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "invalidData")
+    public static class InvalidDataException extends RuntimeException {
+        private static final long serialVersionUID = 1L;
+        public InvalidDataException(String message) {
+            super(message);
         }
     }
 }

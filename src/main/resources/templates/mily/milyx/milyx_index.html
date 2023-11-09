@@ -73,7 +73,6 @@
     window.onload = function() {
         document.querySelectorAll("[id^='createDate_']").forEach(function(element) {
             const createDateInMillis = Date.parse(element.textContent);
-            console.log(createDateInMillis);
             element.textContent = elapsedTime(createDateInMillis);
         });
     };

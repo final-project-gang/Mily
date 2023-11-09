@@ -25,10 +25,13 @@ public class MilyX {
 
     private LocalDateTime createDate;
 
-    private String modifyDate;
+    private LocalDateTime modifyDate;
 
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
+
+    @Column(nullable = false)
+    private int milyPoint;
 
     private String subject;
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -26,5 +27,13 @@ public class MilyXCommentService {
         milyXCommentRepository.save(milyXComment);
 
         return new RsData<>("S-1", "답변 등록 완료", milyXComment);
+    }
+
+    public List<MilyXComment> findAll () {
+        return milyXCommentRepository.findAll();
+    }
+
+    public List<MilyXComment> findByMilyX (MilyX milyX) {
+        return milyXCommentRepository.findByMilyX(milyX);
     }
 }

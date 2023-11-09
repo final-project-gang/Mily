@@ -34,7 +34,9 @@ public class QMilyX extends EntityPathBase<MilyX> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath modifyDate = createString("modifyDate");
+    public final NumberPath<Integer> milyPoint = createNumber("milyPoint", Integer.class);
+
+    public final DateTimePath<java.time.LocalDateTime> modifyDate = createDateTime("modifyDate", java.time.LocalDateTime.class);
 
     public final com.mily.article.milyx.category.entity.QSecondCategory secondCategory;
 
@@ -60,7 +62,7 @@ public class QMilyX extends EntityPathBase<MilyX> {
 
     public QMilyX(Class<? extends MilyX> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.author = inits.isInitialized("author") ? new com.mily.user.QMilyUser(forProperty("author")) : null;
+        this.author = inits.isInitialized("author") ? new com.mily.user.QMilyUser(forProperty("author"), inits.get("author")) : null;
         this.firstCategory = inits.isInitialized("firstCategory") ? new com.mily.article.milyx.category.entity.QFirstCategory(forProperty("firstCategory")) : null;
         this.secondCategory = inits.isInitialized("secondCategory") ? new com.mily.article.milyx.category.entity.QSecondCategory(forProperty("secondCategory"), inits.get("secondCategory")) : null;
     }
