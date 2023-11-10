@@ -96,4 +96,24 @@ public class MilyXService {
 
         milyX.updateView(milyX.getView());
     }
+
+    /* 더미 데이터용입니다 */
+    @Transactional
+    public RsData<MilyX> dummyCreate(MilyUser author, FirstCategory firstCategory, SecondCategory secondCategory, String subject, String body, int milyPoint) {
+        LocalDateTime now = LocalDateTime.now();
+
+        MilyX mx = MilyX.builder()
+                .firstCategory(firstCategory)
+                .secondCategory(secondCategory)
+                .subject(subject)
+                .body(body)
+                .author(author)
+                .milyPoint(milyPoint)
+                .createDate(now)
+                .build();
+
+        mx = mxr.save(mx);
+
+        return new RsData<>("S-1", "게시물 생성 완료", mx);
+    }
 }

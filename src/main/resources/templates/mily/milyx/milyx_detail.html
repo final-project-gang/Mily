@@ -66,8 +66,10 @@
                 </div>
                 <div style="display: flex !important;" class="justify-end">
                     <a th:if="${isAuthor}" th:href="@{|/milyx/modify/${milyx.id}|}" class="ml-4 mr-4" th:text="수정"></a>
-                    <form th:if="${isAuthor}" th:action="@{|/milyx/delete/${milyx.id}|}" method="post" style="display: inline;">
-                        <button type="submit" class="delete ml-4 mr-4" th:data-url="@{|/milyx/delete/${milyx.id}|}">삭제</button>
+                    <form th:if="${isAuthor}" th:action="@{|/milyx/delete/${milyx.id}|}" method="post"
+                          style="display: inline;">
+                        <button type="submit" class="delete ml-4 mr-4" th:data-url="@{|/milyx/delete/${milyx.id}|}">삭제
+                        </button>
                     </form>
                 </div>
             </div>
@@ -79,11 +81,12 @@
                 <div th:text="${#lists.size(milyx.comments)}|"></div>
             </div>
 
-            <form th:if="${@rq.login}" method="POST" onsubmit="submitCommentForm(this); return false;"
+            <form th:if="${@rq.login and role == 'approve'}" method="POST"
+                  onsubmit="submitCommentForm(this); return false;"
                   th:action="@{|/milyxcomment/create/${milyx.id}|}">
                 <div class="mt-6 form-control">
                 <textarea class="textarea textarea-bordered h-[calc(100vh-850px)] min-h-[100px]" maxlength="20000"
-                          name="body" placeholder="답변 달기"
+                          name="body" placeholder="한 번 등록한 답변은 수정이 불가능합니다. 답변 등록 전 확인 부탁드립니다."
                 ></textarea>
                 </div>
 
@@ -97,16 +100,29 @@
 
 
             <div class="form-control">
-                <ul>
-                    <li th:each="milyxcomment : ${milyx.comments}" th:text="${milyxcomment.body}"></li>
+                <ul th:each="milyxcomment : ${milyx.comments}">
+                    <li>
+                        <span th:text="${milyxcomment.author.userName} + ' 변호사'"></span>
+                    </li>
+                    <li>
+                        <span th:text="${milyxcomment.body}"></span>
+                        <div th:if="${user != null and user.userName == milyxcomment.author.userName}">
+                            <form th:action="@{|/milyxcomment/delete/${milyxcomment.id}|}" method="post"
+                                  style="display: inline;">
+                                <button type="submit" class="delete ml-4 mr-4"
+                                        th:data-url="@{|/milyxcomment/delete/${milyxcomment.id}|}">삭제
+                                </button>
+                            </form>
+                        </div>
+                    </li>
                 </ul>
             </div>
 
-            <!--div class="mt-6">
+            <div class="mt-6">
                 <div class="text-center">
-                    <a class="btn btn-link" th:href="|/milyx|">목록</a>
+                    <a class="btn btn-link" href="/milyx">목록</a>
                 </div>
-            </div-->
+            </div>
         </div>
     </div>
 </div>

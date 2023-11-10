@@ -1,8 +1,12 @@
 package com.mily.article.milyx.comment;
 
 import com.mily.article.milyx.MilyX;
+import com.mily.user.MilyUser;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
@@ -22,13 +26,13 @@ public class MilyXComment {
 
     private LocalDateTime createDate;
 
-    private String modifyDate;
+    private LocalDateTime modifyDate;
 
     @Column(columnDefinition = "TEXT")
     private String body;
 
-//    @ManyToOne
-//    private MilyLawyer author;
+    @ManyToOne
+    private MilyUser author;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "milyx_id")

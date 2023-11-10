@@ -22,6 +22,8 @@ public class QMilyUser extends EntityPathBase<MilyUser> {
 
     public static final QMilyUser milyUser = new QMilyUser("milyUser");
 
+    public final StringPath area = createString("area");
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final QLawyerUser lawyerUser;
@@ -41,8 +43,6 @@ public class QMilyUser extends EntityPathBase<MilyUser> {
     public final StringPath userLoginId = createString("userLoginId");
 
     public final StringPath userName = createString("userName");
-
-    public final StringPath userNickName = createString("userNickName");
 
     public final StringPath userPassword = createString("userPassword");
 

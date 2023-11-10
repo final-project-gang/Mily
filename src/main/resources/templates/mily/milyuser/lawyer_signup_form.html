@@ -43,16 +43,6 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text">닉네임</span>
-                </label>
-                <input type="text" name="userNickName" placeholder="닉네임" class="input input-bordered" autofocus
-                       maxlength="13" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
-                       onkeyup="checkUserNickNameDupDebounce();">
-                <div class="mt-2 text-sm"></div>
-            </div>
-
-            <div class="form-control">
-                <label class="label">
                     <span class="label-text">이름</span>
                 </label>
                 <input type="text" name="userName" placeholder="이름" class="input input-bordered" autofocus
@@ -73,7 +63,8 @@
                 <label class="label">
                     <span class="label-text">전화번호</span>
                 </label>
-                <input type="tel" name="userPhoneNumber" placeholder="'-' 없이 입력해주세요." class="input input-bordered" autofocus
+                <input type="tel" name="userPhoneNumber" placeholder="'-' 없이 입력해주세요." class="input input-bordered"
+                       autofocus
                        maxlength="11" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
                        onkeyup="checkUserPhoneNumberDupDebounce();">
                 <div class="mt-2 text-sm"></div>
@@ -90,10 +81,11 @@
                 <label class="label">
                     <span class="label-text">전공분야</span>
                 </label>
-                <input type="text" name="major" placeholder="전공분야" class="input input-bordered" autofocus
-                       maxlength="12" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
-                       onkeyup="checkUserLoginIdDupDebounce();">
-                <div class="mt-2 text-sm"></div>
+                <select name="major" id="major" class="my-2">
+                    <option value="0" disabled selected>전체</option>
+                    <option th:each="categories : ${categories}" th:text="${categories.title}"
+                            th:value="${categories.title}"></option>
+                </select>
             </div>
 
             <div class="form-control">
@@ -121,9 +113,27 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text">거주지</span>
+                    <span class="label-text">활동 지역</span>
                 </label>
-                <input type="text" name="area" placeholder="거주지" class="input input-bordered">
+                <select name="area" id="area">
+                    <option value="서울">서울</option>
+                    <option value="경기">경기</option>
+                    <option value="강원">강원</option>
+                    <option value="경북">경북</option>
+                    <option value="경남">경남</option>
+                    <option value="충북">충북</option>
+                    <option value="충남">충남</option>
+                    <option value="전남">전남</option>
+                    <option value="전북">전북</option>
+                    <option value="인천">인천</option>
+                    <option value="세종">세종</option>
+                    <option value="대전">대전</option>
+                    <option value="대구">대구</option>
+                    <option value="광주">광주</option>
+                    <option value="울산">울산</option>
+                    <option value="부산">부산</option>
+                    <option value="제주">제주</option>
+                </select>
             </div>
 
             <div>
@@ -169,38 +179,6 @@
                             validUserLoginId = form.userLoginId.value;
                         }
                         setUserLoginIdInputMsg(rsData.success, rsData.msg);
-                    });
-
-            }
-
-            function checkUserNickNameDup(form) {
-                form.userNickName.value = form.userNickName.value.trim();
-
-                if ( form.userNickName.value.length == 0 ) {
-                    clearUserNickNameInputMsg();
-                    return;
-                }
-                if ( form.userNickName.value.length < 4 ) {
-                    clearUserNickNameInputMsg();
-                    return;
-                }
-
-                if ( validUserNickName == form.userNickName.value ) return;
-                if ( lastCheckedUserNickName == form.userNickName.value ) return;
-
-                lastCheckedUserNickName = form.userNickName.value;
-
-                clearUserNickNameInputMsg();
-
-                fetch(
-                    'checkUserNickNameDup?userNickName=' + form.userNickName.value
-                )
-                    .then(res => res.json())
-                    .then((rsData) => {
-                        if ( rsData.success ) {
-                            validUserNickName = form.userNickName.value;
-                        }
-                        setUserNickNameInputMsg(rsData.success, rsData.msg);
                     });
 
             }

@@ -43,16 +43,6 @@
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text">닉네임</span>
-                </label>
-                <input type="text" name="userNickName" placeholder="닉네임" class="input input-bordered" autofocus
-                       maxlength="13" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
-                       onkeyup="checkUserNickNameDupDebounce();">
-                <div class="mt-2 text-sm"></div>
-            </div>
-
-            <div class="form-control">
-                <label class="label">
                     <span class="label-text">이름</span>
                 </label>
                 <input type="text" name="userName" placeholder="이름" class="input input-bordered" autofocus
@@ -138,38 +128,6 @@
                             validUserLoginId = form.userLoginId.value;
                         }
                         setUserLoginIdInputMsg(rsData.success, rsData.msg);
-                    });
-
-            }
-
-            function checkUserNickNameDup(form) {
-                form.userNickName.value = form.userNickName.value.trim();
-
-                if ( form.userNickName.value.length == 0 ) {
-                    clearUserNickNameInputMsg();
-                    return;
-                }
-                if ( form.userNickName.value.length < 4 ) {
-                    clearUserNickNameInputMsg();
-                    return;
-                }
-
-                if ( validUserNickName == form.userNickName.value ) return;
-                if ( lastCheckedUserNickName == form.userNickName.value ) return;
-
-                lastCheckedUserNickName = form.userNickName.value;
-
-                clearUserNickNameInputMsg();
-
-                fetch(
-                    'checkUserNickNameDup?userNickName=' + form.userNickName.value
-                )
-                    .then(res => res.json())
-                    .then((rsData) => {
-                        if ( rsData.success ) {
-                            validUserNickName = form.userNickName.value;
-                        }
-                        setUserNickNameInputMsg(rsData.success, rsData.msg);
                     });
 
             }
@@ -298,12 +256,12 @@
 
             let validUserLoginId = '';
             let lastCheckedUserLoginId = '';
-            let validUserNickName = '';
             let lastCheckedUserNickName = '';
             let validUserEmail = '';
             let lastCheckedUserEmail = '';
             let validUserPhoneNumber = '';
             let lastCheckedUserPhoneNumber = '';
+            let validArea = '';
 
             let submitSignupFormDone = false;
             function submitSignupForm(form) {
@@ -340,19 +298,6 @@
                 if ( form.userPassword.value != form.userPassword2.value ) {
                     form.userPassword2.focus();
                     toastWarning('두 개의 비밀번호가 일치하지 않습니다.');
-                    return;
-                }
-
-                form.userNickName.value = form.userNickName.value.trim();
-
-                if ( form.userNickName.value.length == 0 ) {
-                    form.userNickName.focus();
-                    toastWarning('닉네임 입력 란을 확인해주세요.');
-                    return;
-                }
-                if ( form.userNickName.value.length < 4 ) {
-                    form.userNickName.focus();
-                    toastWarning('닉네임은 최소 4글자 이상이어야 합니다.');
                     return;
                 }
 
@@ -410,6 +355,14 @@
                 if ( validUserPhoneNumber != form.userPhoneNumber.value ) {
                     $(form.userPhoneNumber).next().focus();
                     toastWarning('전화번호 중복 체크를 해주세요.');
+                    return;
+                }
+
+                form.area.value = form.area.value.trim();
+
+                if ( form.area.value.length == 0 ) {
+                    form.area.focus();
+                    toastWarning('지역 입력 란을 확인해주세요.');
                     return;
                 }
 

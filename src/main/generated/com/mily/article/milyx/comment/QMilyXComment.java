@@ -22,6 +22,8 @@ public class QMilyXComment extends EntityPathBase<MilyXComment> {
 
     public static final QMilyXComment milyXComment = new QMilyXComment("milyXComment");
 
+    public final com.mily.user.QMilyUser author;
+
     public final StringPath body = createString("body");
 
     public final DateTimePath<java.time.LocalDateTime> createDate = createDateTime("createDate", java.time.LocalDateTime.class);
@@ -30,7 +32,7 @@ public class QMilyXComment extends EntityPathBase<MilyXComment> {
 
     public final com.mily.article.milyx.QMilyX milyX;
 
-    public final StringPath modifyDate = createString("modifyDate");
+    public final DateTimePath<java.time.LocalDateTime> modifyDate = createDateTime("modifyDate", java.time.LocalDateTime.class);
 
     public QMilyXComment(String variable) {
         this(MilyXComment.class, forVariable(variable), INITS);
@@ -50,6 +52,7 @@ public class QMilyXComment extends EntityPathBase<MilyXComment> {
 
     public QMilyXComment(Class<? extends MilyXComment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.author = inits.isInitialized("author") ? new com.mily.user.QMilyUser(forProperty("author"), inits.get("author")) : null;
         this.milyX = inits.isInitialized("milyX") ? new com.mily.article.milyx.QMilyX(forProperty("milyX"), inits.get("milyX")) : null;
     }
 
