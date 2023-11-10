@@ -2,11 +2,15 @@ package com.mily.user;
 
 import com.mily.payment.Payment;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -23,6 +27,8 @@ import static lombok.AccessLevel.PROTECTED;
 @Component
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
+@DynamicInsert
+@DynamicUpdate
 @SuperBuilder
 public class MilyUser {
     @Id
@@ -34,9 +40,6 @@ public class MilyUser {
 
     private String userPassword;
 
-    @Column(unique = true)
-    private String userNickName;
-
     private String userName;
 
     @Column(unique = true)
@@ -47,15 +50,23 @@ public class MilyUser {
 
     private String userDateOfBirth;
 
+    @NotBlank
+    private String area;
+
     private LocalDateTime userCreateDate;
 
-    @Column(columnDefinition = "integer default 0", nullable = false)
-    private int milyPoint;
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    public int milyPoint;
 
     @OneToMany(mappedBy = "customerName", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Payment> payments;
 
-    private String role;
+    /* 모든 유저는 회원 가입 시에 기본 Role 이 member 가 됩니다. */
+    @Column(nullable = false)
+    @ColumnDefault("'member'")
+    public String role;
+    /* role : member, waiting, lawyer, admin */
 
     @OneToOne(mappedBy = "milyUser", cascade = CascadeType.REMOVE)
     public LawyerUser lawyerUser;

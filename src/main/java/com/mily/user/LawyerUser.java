@@ -20,8 +20,12 @@ import static lombok.AccessLevel.PROTECTED;
 @SuperBuilder
 public class LawyerUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "milyUserId")
+    public MilyUser milyUser;
 
     @NotBlank
     private String major;
@@ -34,10 +38,6 @@ public class LawyerUser {
 
     @NotBlank
     private String licenseNumber;
-
-    @OneToOne
-    @MapsId
-    public MilyUser milyUser;
 
     private String area;
 }

@@ -25,12 +25,9 @@ public class MilyUserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public RsData<MilyUser> userSignup(String userLoginId, String userPassword, String userNickName, String userName, String userEmail, String userPhoneNumber, String userDateOfBirth) {
+    public RsData<MilyUser> userSignup(String userLoginId, String userPassword, String userName, String userEmail, String userPhoneNumber, String userDateOfBirth, String area) {
         if (findByUserLoginId(userLoginId).isPresent()) {
             return RsData.of("F-1", "%s은(는) 이미 사용 중인 아이디입니다.".formatted(userLoginId));
-        }
-        if (findByUserNickName(userNickName).isPresent()) {
-            return RsData.of("F-1", "%s은(는) 이미 사용 중인 닉네임입니다.".formatted(userNickName));
         }
         if (findByUserEmail(userEmail).isPresent()) {
             return RsData.of("F-1", "%s은(는) 이미 인증 된 이메일입니다.".formatted(userEmail));
@@ -45,22 +42,24 @@ public class MilyUserService {
                 .builder()
                 .userLoginId(userLoginId)
                 .userPassword(passwordEncoder.encode(userPassword))
-                .userNickName(userNickName)
                 .userName(userName)
                 .userEmail(userEmail)
                 .userPhoneNumber(userPhoneNumber)
-                .role("member")
                 .userDateOfBirth(userDateOfBirth)
+                .area(area)
                 .userCreateDate(now)
                 .build();
 
         mu = milyUserRepository.save(mu);
+
         return RsData.of("S-1", "MILY 회원이 되신 것을 환영합니다!", mu);
     }
 
     @Transactional
     public RsData<LawyerUser> lawyerSignup(String major, String introduce, String officeAddress, String licenseNumber, String area, MilyUser milyUser) {
         milyUser.setRole("waiting");
+        milyUser = milyUserRepository.save(milyUser);
+
         LawyerUser lu = LawyerUser
                 .builder()
                 .major(major)
@@ -72,15 +71,14 @@ public class MilyUserService {
                 .build();
 
         lu = lawyerUserRepository.save(lu);
-        return RsData.of("S-1", "변호사 가입 신청을 완료하였습니다.", lu);
+
+        milyUser = milyUserRepository.save(milyUser);
+
+        return RsData.of("S-1", "변호사 가입 신청을 완료 했습니다.", lu);
     }
 
     public Optional<MilyUser> findByUserLoginId(String userLoginId) {
         return milyUserRepository.findByUserLoginId(userLoginId);
-    }
-
-    public Optional<MilyUser> findByUserNickName(String userNickName) {
-        return milyUserRepository.findByUserNickName(userNickName);
     }
 
     public Optional<MilyUser> findByUserEmail(String userEmail) {
@@ -100,12 +98,6 @@ public class MilyUserService {
         if ( findByUserLoginId(userLoginId).isPresent() ) return RsData.of("F-1", "%s(은)는 이미 사용 중인 아이디입니다.".formatted(userLoginId));
 
         return RsData.of("S-1", "%s(은)는 사용 가능한 아이디입니다.".formatted(userLoginId));
-    }
-
-    public RsData checkUserNickNameDup (String userNickName) {
-        if ( findByUserNickName(userNickName).isPresent() ) return RsData.of("F-1", "%s(은)는 이미 사용 중인 닉네임입니다.".formatted(userNickName));
-
-        return RsData.of("S-1", "%s(은)는 사용 가능한 닉네임입니다.".formatted(userNickName));
     }
 
     public RsData checkUserEmailDup (String userEmail) {

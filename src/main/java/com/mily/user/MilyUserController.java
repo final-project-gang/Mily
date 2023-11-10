@@ -1,5 +1,7 @@
 package com.mily.user;
 
+import com.mily.article.milyx.category.CategoryService;
+import com.mily.article.milyx.category.entity.FirstCategory;
 import com.mily.base.rq.Rq;
 import com.mily.base.rsData.RsData;
 import com.mily.estimate.Estimate;
@@ -14,11 +16,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class MilyUserController {
     private final Rq rq;
     private final MilyUserService milyUserService;
+    private final CategoryService categoryService;
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
@@ -45,11 +48,11 @@ public class MilyUserController {
         RsData<MilyUser> signupRs = milyUserService.userSignup(
                 signupForm.getUserLoginId(),
                 signupForm.getUserPassword(),
-                signupForm.getUserNickName(),
                 signupForm.getUserName(),
                 signupForm.getUserEmail(),
                 signupForm.getUserPhoneNumber(),
-                signupForm.getUserDateOfBirth()
+                signupForm.getUserDateOfBirth(),
+                signupForm.getArea()
         );
 
         if (signupRs.isFail()) {
@@ -62,7 +65,9 @@ public class MilyUserController {
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/lawyerSignup")
-    public String showLawyerSignup() {
+    public String showLawyerSignup(Model model) {
+        List<FirstCategory> categories = categoryService.getFirstCategories();
+        model.addAttribute("categories", categories);
         return "mily/milyuser/lawyer_signup_form";
     }
 
@@ -72,12 +77,12 @@ public class MilyUserController {
         RsData<MilyUser> signupRs1 = milyUserService.userSignup(
                 signupForm.getUserLoginId(),
                 signupForm.getUserPassword(),
-                signupForm.getUserNickName(),
                 signupForm.getUserName(),
                 signupForm.getUserEmail(),
                 signupForm.getUserPhoneNumber(),
-                signupForm.getUserDateOfBirth()
-        );
+                signupForm.getUserDateOfBirth(),
+                signupForm.getArea()
+                );
 
         MilyUser milyUser = signupRs1.getData();
 
@@ -108,9 +113,6 @@ public class MilyUserController {
         private String userPassword;
 
         @NotBlank
-        private String userNickName;
-
-        @NotBlank
         private String userName;
 
         @NotBlank
@@ -122,18 +124,15 @@ public class MilyUserController {
 
         @NotBlank
         private String userDateOfBirth;
+
+        @NotBlank
+        private String area;
     }
 
     @GetMapping("checkUserLoginIdDup")
     @ResponseBody
     public RsData checkUserLoginIdDup(String userLoginId) {
         return milyUserService.checkUserLoginIdDup(userLoginId);
-    }
-
-    @GetMapping("checkUserNickNameDup")
-    @ResponseBody
-    public RsData checkUserNickName(String userNickName) {
-        return milyUserService.checkUserNickNameDup(userNickName);
     }
 
     @GetMapping("checkUserEmailDup")
