@@ -113,16 +113,31 @@ public class MilyUserService {
     }
 
     @Transactional
-    public void sendEstimate(String category, String categoryItem, MilyUser milyUser) {
+    public Estimate sendEstimate(String category, String categoryItem, String area, MilyUser milyUser) {
         Estimate estimate = new Estimate();
         estimate.setCategory(category);
         estimate.setCategoryItem(categoryItem);
         estimate.setName(milyUser.getUserName());
         estimate.setBirth(milyUser.getUserDateOfBirth());
         estimate.setPhoneNumber(milyUser.getUserPhoneNumber());
+        estimate.setArea(area);
         estimate.setMilyUser(milyUser);
         estimate.setCreateDate(LocalDateTime.now());
-        this.estimateRepository.save(estimate);
+        return estimateRepository.save(estimate);
+    }
+
+    @Transactional
+    public Estimate createEstimate(String category, String categoryItem, String area, MilyUser milyUser) {
+        Estimate estimate = new Estimate();
+        estimate.setCategory(category);
+        estimate.setCategoryItem(categoryItem);
+        estimate.setName(milyUser.getUserName());
+        estimate.setBirth(milyUser.getUserDateOfBirth());
+        estimate.setPhoneNumber(milyUser.getUserPhoneNumber());
+        estimate.setArea(area);
+        estimate.setMilyUser(milyUser);
+        estimate.setCreateDate(LocalDateTime.now().minusDays(7));
+        return estimateRepository.save(estimate);
     }
 
     public MilyUser getUser(String userName) {
@@ -218,17 +233,27 @@ public class MilyUserService {
         }
     }
 
-    public List<Estimate> getEstimate(String category, String area) {
-        List<Estimate> estimate = estimateRepository.findByCategoryAndArea(category, area);
+    public List<Estimate> getEstimate(LocalDateTime localDateTime, String category, String area) {
+        List<Estimate> estimate = findDataWithin7DaysByLocationAndCategory(area, category);
         if (!estimate.isEmpty()) {
             return estimate;
         } else {
-            List<Estimate> estimateArea = estimateRepository.findByArea(area);
+            List<Estimate> estimateArea = findDataWithin7DaysByLocation(area);
             if (!estimateArea.isEmpty()) {
                 return estimateArea;
             } else {
                 throw new Ut.DataNotFoundException("견적서에 해당되는 변호사가 없습니다.");
             }
         }
+    }
+
+    public List<Estimate> findDataWithin7DaysByLocationAndCategory(String area, String category) {
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+        return estimateRepository.findByCreateDateGreaterThanEqualAndAreaAndCategory(sevenDaysAgo, area, category);
+    }
+
+    public List<Estimate> findDataWithin7DaysByLocation(String area) {
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+        return estimateRepository.findByCreateDateGreaterThanEqualAndArea(sevenDaysAgo, area);
     }
 }

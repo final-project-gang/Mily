@@ -1,18 +1,20 @@
 package com.mily.base.initData;
 
+import com.mily.estimate.Estimate;
+import com.mily.user.MilyUserService;
 import com.mily.article.milyx.MilyXService;
 import com.mily.article.milyx.category.CategoryService;
 import com.mily.article.milyx.category.entity.FirstCategory;
 import com.mily.article.milyx.category.entity.SecondCategory;
 import com.mily.user.MilyUser;
 import com.mily.user.MilyUserRepository;
-import com.mily.user.MilyUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Configuration
@@ -34,6 +36,8 @@ public class NotProd {
 //                milyUserRepository.save(milyUser1);
                 MilyUser milyUser2 = milyUserService.userSignup("testaccount", "qwerasdf", "testaccount", "testaccount@email.com", "88888888888", "1988-05-10", "서울").getData();
                 MilyUser milyUser3 = milyUserService.userSignup("oizill5481", "a7586898", "이재준", "oizill5481@icloud.com", "01045702579", "1996-10-05", "대전").getData();
+                Estimate estimate1 = milyUserService.createEstimate("형사", "폭행", "대전", milyUser2);
+                Estimate estimate2 = milyUserService.createEstimate("민사", "이혼", "대전", milyUser2);
 
 //                System.out.println("np 39, milyUser3 : " + milyUser3);
 //                LawyerUser lawyerUser = milyUserService.lawyerSignup("성범죄", "안녕하세요", "042-123-4567", "1217129", "대전", milyUser3).getData();
