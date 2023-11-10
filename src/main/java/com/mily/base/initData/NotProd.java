@@ -1,17 +1,20 @@
 package com.mily.base.initData;
 
+import com.mily.estimate.Estimate;
 import com.mily.user.MilyUserService;
 import com.mily.article.milyx.MilyXService;
 import com.mily.article.milyx.category.CategoryService;
 import com.mily.article.milyx.category.entity.FirstCategory;
 import com.mily.article.milyx.category.entity.SecondCategory;
 import com.mily.user.MilyUser;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Configuration
@@ -27,9 +30,11 @@ public class NotProd {
         return args -> {
             Optional<MilyUser> mu = milyUserService.findByUserLoginId("admin123");
             if (mu.isEmpty()) {
-                MilyUser milyUser1 = milyUserService.userSignup("admin123", "9a9a9a9a", "administrator", "administrator", "admin123@email.com", "99999999999", "1975-01-21", "").getData();
-                MilyUser milyUser2 = milyUserService.userSignup("testaccount", "qwerasdf", "testaccount", "testaccount", "testaccount@email.com", "88888888888", "1988-05-10", "서울").getData();
-                MilyUser milyUser3 = milyUserService.userSignup("oizill5481", "a7586898", "슈펜형", "이재준", "oizill5481@icloud.com", "01045702579", "1996-10-05", "대전").getData();
+                MilyUser milyUser1 = milyUserService.userSignup("admin123", "9a9a9a9a", "administrator", "administrator", "admin123@email.com", "99999999999", "1975-01-21").getData();
+                MilyUser milyUser2 = milyUserService.userSignup("testaccount", "qwerasdf", "testaccount", "testaccount", "testaccount@email.com", "88888888888", "1988-05-10").getData();
+                MilyUser milyUser3 = milyUserService.userSignup("oizill5481", "a7586898", "슈펜형", "이재준", "oizill5481@icloud.com", "01045702579", "1996-10-05").getData();
+                Estimate estimate1 = milyUserService.createEstimate("형사", "폭행", "대전", milyUser2);
+                Estimate estimate2 = milyUserService.createEstimate("민사", "이혼", "대전", milyUser2);
                 milyUser1.setRole("admin");
 
                 categoryService.addFC("성 범죄");

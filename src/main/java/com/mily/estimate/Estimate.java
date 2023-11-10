@@ -4,6 +4,7 @@ import com.mily.user.MilyUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ManyToAny;
 
 import java.time.LocalDateTime;
 
@@ -29,6 +30,6 @@ public class Estimate {
 
     private String area;
 
-    @OneToOne
+    @ManyToOne
     private MilyUser milyUser;
 }
