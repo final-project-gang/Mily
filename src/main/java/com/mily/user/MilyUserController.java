@@ -14,15 +14,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-<<<<<<< HEAD
-import java.util.Optional;
-
-=======
 import java.security.Principal;
 import java.util.List;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
->>>>>>> 2d6423cc72e2a42843ef688d4d7e1c14dbe22566
+import java.util.Optional;
+
 
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -73,7 +70,9 @@ public class MilyUserController {
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/lawyerSignup")
-    public String showLawyerSignup() { return "mily/milyuser/lawyer_signup_form"; }
+    public String showLawyerSignup() {
+        return "mily/milyuser/lawyer_signup_form";
+    }
 
     @PreAuthorize("isAnonymous()")
     @PostMapping("/lawyerSignup")
@@ -217,8 +216,6 @@ public class MilyUserController {
         return "mily/milyuser/find_password_form";
     }
 
-<<<<<<< HEAD
-=======
     @PreAuthorize("isAnonymous()")
     @PostMapping("/findPassword")
     public String findPassword(@RequestParam String userLoginId, @RequestParam String email, RedirectAttributes redirectAttributes) {
@@ -237,7 +234,7 @@ public class MilyUserController {
                     return "redirect:/mily/milyuser/find_password_form";
                 });
     }
->>>>>>> 2d6423cc72e2a42843ef688d4d7e1c14dbe22566
+
 
     @PostMapping("/retrieveId")
     public String retrieveId(@RequestParam String userEmail, Model model, RedirectAttributes redirectAttributes) {
@@ -279,9 +276,4 @@ public class MilyUserController {
             return ResponseEntity.badRequest().body("아이디를 찾을 수 없습니다.");
         }
     }
-<<<<<<< HEAD
 }
-
-=======
-}
->>>>>>> 2d6423cc72e2a42843ef688d4d7e1c14dbe22566

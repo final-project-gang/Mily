@@ -24,12 +24,6 @@ public class MilyUserService {
     private final LawyerUserRepository lawyerUserRepository;
     private final EstimateRepository estimateRepository;
     private final PasswordEncoder passwordEncoder;
-
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 2d6423cc72e2a42843ef688d4d7e1c14dbe22566
     @Transactional
     public RsData<MilyUser> userSignup(String userLoginId, String userPassword, String userNickName, String userName, String userEmail, String userPhoneNumber, String userDateOfBirth, String area) {
         if (findByUserLoginId(userLoginId).isPresent()) {
@@ -57,7 +51,7 @@ public class MilyUserService {
                 .userPhoneNumber(userPhoneNumber)
                 .role("member")
                 .userDateOfBirth(userDateOfBirth)
-                .userCreateDate(now)
+                .userCreateDate(String.valueOf(now))
                 .build();
 
         mu = milyUserRepository.save(mu);
@@ -126,8 +120,6 @@ public class MilyUserService {
         return RsData.of("S-1", "%s(은)는 사용 가능한 전화번호입니다.".formatted(userPhoneNumber));
     }
 
-<<<<<<< HEAD
-=======
     @Transactional
     public void sendEstimate(String category, String categoryItem, MilyUser milyUser) {
         Estimate estimate = new Estimate();
@@ -189,7 +181,7 @@ public class MilyUserService {
     public Optional<MilyUser> findUserByEmail(String userEmail) {
         return findByUserEmail(userEmail);
     }
->>>>>>> 2d6423cc72e2a42843ef688d4d7e1c14dbe22566
+
 
     public MilyUser findUserLoginIdByEmail(String userEmail) {
         return milyUserRepository.findUserLoginIdByEmail(userEmail);
@@ -199,12 +191,9 @@ public class MilyUserService {
         return milyUserRepository.findByUserLoginIdAndUserEmail(userLoginId, email);
     }
 
-<<<<<<< HEAD
-
-=======
     public static void sendTempPasswordToEmail(MilyUser member) {
     }
->>>>>>> 2d6423cc72e2a42843ef688d4d7e1c14dbe22566
+
 
     public MilyUser getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -229,7 +218,7 @@ public class MilyUserService {
 
         return RsData.of("S-1", "포인트 지급", null);
     }
-<<<<<<< HEAD
+
 
     /*public void sendTempPasswordToEmail(MilyUser member) {
     }
@@ -248,9 +237,8 @@ public class MilyUserService {
 
     public void updateUserPassword(long id, String tempPassword) {
     }
-}
-=======
->>>>>>> 2d6423cc72e2a42843ef688d4d7e1c14dbe22566
+
+
 
     public MilyUser getLawyer(String UserLoginId, String role) {
         Optional<MilyUser> lawyerUser = milyUserRepository.findByUserLoginIdAndRole(UserLoginId, role);

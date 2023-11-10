@@ -11,7 +11,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,13 +42,11 @@ public class MilyUser {
     @Column(unique = true)
     private String userPhoneNumber;
     private String userDateOfBirth;
-<<<<<<< HEAD
+
     private String userCreateDate;
     private String loginId;
-=======
+    /*private LocalDateTime userCreateDate;*/
 
-    private LocalDateTime userCreateDate;
->>>>>>> 2d6423cc72e2a42843ef688d4d7e1c14dbe22566
 
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int milyPoint;

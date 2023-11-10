@@ -26,13 +26,15 @@ public class QMilyUser extends EntityPathBase<MilyUser> {
 
     public final QLawyerUser lawyerUser;
 
+    public final StringPath loginId = createString("loginId");
+
     public final NumberPath<Integer> milyPoint = createNumber("milyPoint", Integer.class);
 
     public final ListPath<com.mily.payment.Payment, com.mily.payment.QPayment> payments = this.<com.mily.payment.Payment, com.mily.payment.QPayment>createList("payments", com.mily.payment.Payment.class, com.mily.payment.QPayment.class, PathInits.DIRECT2);
 
     public final StringPath role = createString("role");
 
-    public final DateTimePath<java.time.LocalDateTime> userCreateDate = createDateTime("userCreateDate", java.time.LocalDateTime.class);
+    public final StringPath userCreateDate = createString("userCreateDate");
 
     public final StringPath userDateOfBirth = createString("userDateOfBirth");
 
