@@ -202,7 +202,7 @@ public class MilyUserService {
         return milyUserRepository.findUserLoginIdByEmail(userEmail);
     }
 
-    public Optional<MilyUser> findByuserLoginIdAndEmail(String userLoginId, String email) {
+    public MilyUser findByuserLoginIdAndEmail(String userLoginId, String email) {
         return milyUserRepository.findByUserLoginIdAndUserEmail(userLoginId, email);
     }
 
@@ -238,9 +238,8 @@ public class MilyUserService {
     /*public void sendTempPasswordToEmail(MilyUser member) {
     }
 */
-    public Optional<MilyUser> findByUserLoginIdAndEmail(String userLoginId, String userEmail) {
-        return Optional.empty();
-
+    public MilyUser findByUserLoginIdAndEmail(String userLoginId, String userEmail) {
+        return milyUserRepository.findByUserLoginIdAndUserEmail(userLoginId, userEmail);
     }
 
     public void sendTempPasswordToEmail(String email, String tempPassword) {
@@ -252,9 +251,6 @@ public class MilyUserService {
 
     public void updateUserPassword(long id, String tempPassword) {
     }
-
-
-
     public MilyUser getLawyer(String UserLoginId, String role) {
         Optional<MilyUser> lawyerUser = milyUserRepository.findByUserLoginIdAndRole(UserLoginId, role);
         if (lawyerUser.isPresent()) {
