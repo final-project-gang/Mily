@@ -52,6 +52,11 @@ public class MilyXController {
             return "redirect:/milyx";
         }
 
+        // 권한 확인 후 권한 없을 시 돌려 보냄
+        if (!isLoginedUser.getRole().equals("member")) {
+            return "redirect:/milyx";
+        }
+
         int userPoint = isLoginedUser.getMilyPoint();
         model.addAttribute("myPoint", userPoint);
 
@@ -104,29 +109,32 @@ public class MilyXController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/detail/{id}")
     public String showDetail(Model model, @PathVariable long id) {
-        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+        try {
+            MilyUser isLoginedUser = milyUserService.getCurrentUser();
+            if (isLoginedUser != null) {
+                String confirmRole = isLoginedUser.getRole();
+                model.addAttribute("role", confirmRole);
+                model.addAttribute("user", isLoginedUser);
+            }
+            MilyX milyX = milyXService.findById(id).get();
+            int view = milyX.getView() + 1;
 
-        MilyX milyX = milyXService.findById(id).get();
-        int view = milyX.getView() + 1;
+            MilyX mx = MilyX.builder()
+                    .view(view)
+                    .build();
 
-        MilyX mx = MilyX.builder()
-                .view(view)
-                .build();
+            milyX.updateView(view);
+            milyXService.updateView(milyX.getId(), mx);
 
-        milyX.updateView(view);
-        milyXService.updateView(milyX.getId(), mx);
+            model.addAttribute("milyx", milyX);
+            model.addAttribute("isAuthor", milyX.getAuthor().getId() == (isLoginedUser.getId()));
 
-        model.addAttribute("milyx", milyX);
-        model.addAttribute("isAuthor", milyX.getAuthor().getId() == (isLoginedUser.getId()));
-
-        return "mily/milyx/milyx_detail";
+            return "mily/milyx/milyx_detail";
+        } catch (NullPointerException e) {
+            return "mily/milyx/milyx_detail";
+        }
     }
 
-    /*  수정, 삭제 기능 만들기
-        단, 댓글이 있을 시 수정 및 삭제 불가
-        댓글이 있는 지 여부는 list 의 length 가 1 이상인 지 체크하면 될 듯?
-        Optional 로 findById 를 체크할 때 인자로 넘길 값이 불확실해서 이건 불가
-     */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
     public String getModify(Model model, @PathVariable long id) {
@@ -165,7 +173,6 @@ public class MilyXController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/delete/{id}")
     public RedirectView doDelete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        System.out.println("작동하나? id : " + id);
         MilyX mx = milyXService.findById(id).orElse(null);
 
         if (mx == null) {
@@ -176,16 +183,16 @@ public class MilyXController {
         // 현재 로그인 한 유저의 정보
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
-        // 수정하려는 게시물의 정보 찾아오기
+        // 삭제하려는 게시물의 정보 찾아오기
         MilyX milyX = milyXService.findById(id).get();
 
-        // 수정하려는 게시물의 작성자가 맞는 지 체크
+        // 삭제하려는 게시물의 작성자가 맞는 지 체크
         if (milyX.getAuthor().getId() != isLoginedUser.getId()) {
             redirectAttributes.addFlashAttribute("message", "게시물 수정 권한이 없습니다.");
             return new RedirectView("/milyx/detail/" + id, true);
         }
 
-        // 수정하려는 게시물의 댓글 유무 확인
+        // 삭제하려는 게시물의 댓글 유무 확인
         if (!milyX.getComments().isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "게시물에 댓글이 있어서 삭제할 수 없습니다.");
             return new RedirectView("/milyx/detail/" + id, true);
