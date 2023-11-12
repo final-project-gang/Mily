@@ -31,18 +31,19 @@ public class NotProd {
         return args -> {
             Optional<MilyUser> mu = milyUserService.findByUserLoginId("admin123");
             if (mu.isEmpty()) {
-                MilyUser milyUser1 = milyUserService.userSignup("admin123", "9a9a9a9a", "administrator", "admin123@email.com", "99999999999", "1975-01-21", "전국").getData();
+                MilyUser milyUser1 = milyUserService.userSignup("admin123", "9a9a9a9a", "administrator", "admin123@email.com", "99999999999", "1975-01-21").getData();
                 milyUser1.setRole("admin");
-//                milyUserRepository.save(milyUser1);
-                MilyUser milyUser2 = milyUserService.userSignup("testaccount", "qwerasdf", "testaccount", "testaccount@email.com", "88888888888", "1988-05-10", "서울").getData();
-                MilyUser milyUser3 = milyUserService.userSignup("oizill5481", "a7586898", "이재준", "oizill5481@icloud.com", "01045702579", "1996-10-05", "대전").getData();
-                Estimate estimate1 = milyUserService.createEstimate("형사", "폭행", "대전", milyUser2);
-                Estimate estimate2 = milyUserService.createEstimate("민사", "이혼", "대전", milyUser2);
-
-//                System.out.println("np 39, milyUser3 : " + milyUser3);
-//                LawyerUser lawyerUser = milyUserService.lawyerSignup("성범죄", "안녕하세요", "042-123-4567", "1217129", "대전", milyUser3).getData();
-//                System.out.println("np 41, lawyerUser : " + lawyerUser);
-//                System.out.println("np 42, milyUser3.getLawyerUser : " + milyUser3.getLawyerUser().getId());
+                milyUserRepository.save(milyUser1);
+                MilyUser milyUser2 = milyUserService.userSignup("testaccount", "qwerasdf", "testaccount", "testaccount@email.com", "88888888888", "1988-05-10").getData();
+                MilyUser milyUser3 = milyUserService.userSignup("oizill5481", "a7586898", "이재준", "oizill5481@icloud.com", "01045702579", "1996-10-05").getData();
+                MilyUser milyUser4 = milyUserService.userSignup("test1111", "test1111", "홍길동", "test1111@email.com", "01011111111", "1996-01-01").getData();
+                milyUserService.lawyerSignup("형사", "안녕하세요 형사전문 변호사입니다.", "대전 둔산동 1111-1111", "1111-1111-1111", "대전", milyUser4);
+                MilyUser milyUser5 = milyUserService.userSignup("test2222", "test2222", "홍길동", "test2222@email.com", "01022222222", "1995-01-01").getData();
+                milyUserService.lawyerSignup("민사", "안녕하세요 민사전문 변호사입니다.", "대전 둔산동 2222-2222", "2222-2222-2222", "대전", milyUser5);
+                Estimate estimate1 = milyUserService.sevenCreateEstimate("형사", "폭행", "대전", milyUser2);
+                Estimate estimate2 = milyUserService.sevenCreateEstimate("민사", "이혼", "대전", milyUser2);
+                Estimate estimate3 = milyUserService.sixCreateEstimate("형사", "폭행", "대전", milyUser2);
+                Estimate estimate4 = milyUserService.sixCreateEstimate("민사", "이혼", "대전", milyUser2);
 
                 categoryService.addFC("성 범죄");
                 categoryService.addFC("재산 범죄");

@@ -3,6 +3,7 @@ package com.mily.security;
 import com.mily.user.MilyUser;
 import com.mily.user.MilyUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +20,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userLoginId) throws UsernameNotFoundException {
         MilyUser mu = milyUserRepository.findByUserLoginId(userLoginId).orElseThrow(() -> new UsernameNotFoundException("userLoginId(%s) not found".formatted(userLoginId)));
+
+        if(mu.getRole().equals("waiting")) {
+            throw new BadCredentialsException("현재 가입 승인 대기중입니다.");
+        }
 
         return new User(mu.getUserLoginId(), mu.getUserPassword(), mu.getGrantedAuthorities());
     }

@@ -50,9 +50,6 @@ public class MilyUser {
 
     private String userDateOfBirth;
 
-    @NotBlank
-    private String area;
-
     private LocalDateTime userCreateDate;
 
     @Column(nullable = false)
