@@ -74,12 +74,30 @@ public class MilyXService {
     @Transactional
     public RsData<MilyX> delete(Long id) {
         Optional<MilyX> mxOptional = mxr.findById(id);
+        int point;
 
         if (mxOptional.isEmpty()) {
             return new RsData<>("F-1", "게시물을 찾아 올 수 없습니다.", null);
         }
 
         MilyX mx = mxOptional.get();
+
+        // 글의 point 값을 가져 온다.
+        point = mx.getMilyPoint();
+
+        // 글 작성자의 정보를 가져 온다.
+        MilyUser author = mx.getAuthor();
+
+        // 글 작성자의 milyPoint 값을 가져 온다.
+        int milyPoint = author.getMilyPoint();
+
+        // 글 작성 시 소모한 포인트만큼 반환 한다.
+        milyPoint += point;
+
+        // repository 에 저장 한다.
+        author.setMilyPoint(milyPoint);
+        mur.save(author);
+
         mxr.delete(mx);
 
         return new RsData<>("S-1", "게시물 삭제 완료", mx);
