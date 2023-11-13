@@ -51,8 +51,7 @@ public class MilyUserController {
                 signupForm.getUserName(),
                 signupForm.getUserEmail(),
                 signupForm.getUserPhoneNumber(),
-                signupForm.getUserDateOfBirth(),
-                signupForm.getArea()
+                signupForm.getUserDateOfBirth()
         );
 
         if (signupRs.isFail()) {
@@ -80,9 +79,8 @@ public class MilyUserController {
                 signupForm.getUserName(),
                 signupForm.getUserEmail(),
                 signupForm.getUserPhoneNumber(),
-                signupForm.getUserDateOfBirth(),
-                signupForm.getArea()
-                );
+                signupForm.getUserDateOfBirth()
+        );
 
         MilyUser milyUser = signupRs1.getData();
 
@@ -124,9 +122,6 @@ public class MilyUserController {
 
         @NotBlank
         private String userDateOfBirth;
-
-        @NotBlank
-        private String area;
     }
 
     @GetMapping("checkUserLoginIdDup")
@@ -147,17 +142,20 @@ public class MilyUserController {
         return milyUserService.checkUserPhoneNumberDup(userPhoneNumber);
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/estimate")
     public String showForm(EstimateCreateForm estimateCreateForm) {
         return "estimate";
     }
 
-    @PreAuthorize("isAuthenticated()")
     @PostMapping("/estimate")
     public String getEstimate(@Valid EstimateCreateForm estimateCreateForm, Principal principal) {
         String userName = principal.getName();
         MilyUser milyUser = milyUserService.getUser(userName);
+
+        if(!milyUser.getRole().equals("member")) {
+            return "redirect:/";
+        }
+
         milyUserService.sendEstimate(estimateCreateForm.getCategory(), estimateCreateForm.getCategoryItem(), estimateCreateForm.getArea(), milyUser);
         return rq.redirect("/", "견적서가 전달되었습니다.");
     }
@@ -261,6 +259,12 @@ public class MilyUserController {
 
     @GetMapping("getEstimate")
     public String getEstimate(Model model) {
+        MilyUser user = milyUserService.getCurrentUser();
+
+        if(user.getRole().equals("member")) {
+            return "redirect:/";
+        }
+
         String category = milyUserService.getCurrentUser().getLawyerUser().getMajor();
         String area = milyUserService.getCurrentUser().getLawyerUser().getArea();
         List<Estimate> estimates = milyUserService.getEstimate(LocalDateTime.now(), category, area);

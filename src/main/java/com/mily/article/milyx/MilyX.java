@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static lombok.AccessLevel.PROTECTED;
+
 @Entity
 @Getter
 @Setter
@@ -50,11 +51,14 @@ public class MilyX {
     @ManyToOne
     private SecondCategory secondCategory;
 
-    public void updateView (int view) {
+    @Column(columnDefinition = "boolean default false")
+    private boolean hasAdoptedAnswer;
+
+    public void updateView(int view) {
         this.view = view;
     }
 
-    public void increaseiew () {
+    public void increaseiew() {
         view++;
     }
 }

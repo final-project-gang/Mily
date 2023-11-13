@@ -2,8 +2,6 @@
 <head>
     <meta charset="UTF-8">
     <title>결제하기</title>
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
@@ -34,9 +32,6 @@
         var tossPayments = TossPayments("ClientKey");
         var orderId = new Date().getTime();
 
-        var csrfToken = $("meta[name='_csrf']").attr("content");
-        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-
         var button50 = document.getElementById('payment-button-50');
 
         button50.addEventListener('click', function () {
@@ -55,9 +50,6 @@
                 data: { orderName: orderName },
                 success: function(response) {
                     console.log(response);
-                },
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
                 },
                 error: function(error) {
                     console.log(error);
@@ -84,9 +76,6 @@
                 success: function(response) {
                     console.log(response);
                 },
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                },
                 error: function(error) {
                     console.log(error);
                 }
@@ -112,9 +101,6 @@
                 success: function(response) {
                     console.log(response);
                 },
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                },
                 error: function(error) {
                     console.log(error);
                 }
@@ -139,9 +125,6 @@
                 data: { orderName: orderName },
                 success: function(response) {
                     console.log(response);
-                },
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
                 },
                 error: function(error) {
                     console.log(error);

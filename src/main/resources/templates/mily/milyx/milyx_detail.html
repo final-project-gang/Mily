@@ -2,8 +2,6 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="|${milyx.subject}|"></title>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}">
-    <meta name="_csrf" th:content="${_csrf.token}">
     <script th:inline="javascript">
         const elapsedTime = (date) => {
             const start = new Date(date);
@@ -81,13 +79,14 @@
                 <div th:text="${#lists.size(milyx.comments)}|"></div>
             </div>
 
-            <form th:if="${@rq.login and role == 'approve'}" method="POST"
+            <form th:if="${@rq.login and role == 'approve' and !milyx.hasAdoptedAnswer}" method="POST"
                   onsubmit="submitCommentForm(this); return false;"
                   th:action="@{|/milyxcomment/create/${milyx.id}|}">
                 <div class="mt-6 form-control">
                 <textarea class="textarea textarea-bordered h-[calc(100vh-850px)] min-h-[100px]" maxlength="20000"
-                          name="body" placeholder="한 번 등록한 답변은 수정이 불가능합니다. 답변 등록 전 확인 부탁드립니다."
-                ></textarea>
+                          name="body" placeholder="한 번 등록한 답변은 수정이 불가능합니다. 답변 등록 전 확인 부탁드립니다.">
+
+                </textarea>
                 </div>
 
                 <div>
@@ -100,13 +99,25 @@
 
 
             <div class="form-control">
-                <ul th:each="milyxcomment : ${milyx.comments}">
+                <ul th:each="milyxcomment : ${milyx.comments.?[isAdopt == true]}"
+                    style="border: 1px solid #93c5fd; border-radius: 15px;">
+                    <li>
+                        <span>작성자 체택 답변</span>
+                    </li>
                     <li>
                         <span th:text="${milyxcomment.author.userName} + ' 변호사'"></span>
                     </li>
                     <li>
                         <span th:text="${milyxcomment.body}"></span>
-                        <div th:if="${user != null and user.userName == milyxcomment.author.userName}">
+                    </li>
+                </ul>
+                <ul th:each="milyxcomment : ${milyx.comments.?[isAdopt == false]}">
+                    <li>
+                        <span th:text="${milyxcomment.author.userName} + ' 변호사'"></span>
+                    </li>
+                    <li>
+                        <span th:text="${milyxcomment.body}"></span>
+                        <div th:if="${user != null and user.userName == milyxcomment.author.userName and !milyx.hasAdoptedAnswer}">
                             <form th:action="@{|/milyxcomment/delete/${milyxcomment.id}|}" method="post"
                                   style="display: inline;">
                                 <button type="submit" class="delete ml-4 mr-4"
@@ -114,6 +125,15 @@
                                 </button>
                             </form>
                         </div>
+                        <div th:if="${user != null and user.userName == milyx.author.userName and !milyx.hasAdoptedAnswer}">
+                            <form th:action="@{|/milyxcomment/adopt/${milyxcomment.id}|}" method="post"
+                                  style="display: inline;">
+                                <button type="submit" class="adopt btn btn-primary"
+                                        th:data-url="@{|/milyxcomment/adopt/${milyxcomment.id}|}">채택
+                                </button>
+                            </form>
+                        </div>
+
                     </li>
                 </ul>
             </div>
@@ -160,11 +180,20 @@
                 form.setAttribute('method', 'post');
                 form.setAttribute('action', this.dataset.url);
 
-                var csrfInput = document.createElement('input');
-                csrfInput.setAttribute('type', 'hidden');
-                csrfInput.setAttribute('name', '_csrf');
-                csrfInput.setAttribute('value', document.querySelector('meta[name="_csrf"]').getAttribute('content'));
-                form.appendChild(csrfInput);
+                document.body.appendChild(form);
+                form.submit();
+            };
+        });
+    });
+
+    const adopt_elements = document.getElementsByClassName("adopt");
+    Array.from(adopt_elements).forEach(function (element) {
+        element.addEventListener('click', function (event) {
+            event.preventDefault();
+            if (confirm("정말로 이 답변을 채택하시겠습니까?")) {
+                var form = document.createElement('form');
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', this.dataset.url);
 
                 document.body.appendChild(form);
                 form.submit();

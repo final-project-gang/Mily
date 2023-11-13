@@ -27,6 +27,7 @@ public class MilyXCommentService {
                 .milyX(milyX)
                 .author(isLoginedUser)
                 .body(body)
+                .adopt(false)
                 .createDate(now)
                 .build();
 
