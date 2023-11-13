@@ -234,14 +234,25 @@ public class MilyUserService {
         return milyUserRepository.findByUserLoginIdAndUserEmail(userLoginId, userEmail);
     }
 
-    public void sendTempPasswordToEmail(String email, String tempPassword) {
+    public boolean sendTempPasswordToEmail(String email, String tempPassword) {
+        // 이메일 전송 로직 구현
+        boolean emailSent = false;
+        // 이메일 전송 성공 여부에 따라 emailSent 값을 설정
+        // 예: emailSent = emailService.sendEmail(email, tempPassword);
+        return emailSent;
     }
+
 
     public String generateTempPassword() {
         return RandomStringUtils.randomAlphanumeric(10);
     }
 
-    public void updateUserPassword(long id, String tempPassword) {
+    public boolean updateUserPassword(long id, String tempPassword) {
+        // 비밀번호 업데이트 로직 구현
+        boolean updateSuccess = false;
+        // 비밀번호 업데이트 성공 여부에 따라 updateSuccess 값을 설정
+        // 예: updateSuccess = userRepository.updatePassword(id, tempPassword);
+        return updateSuccess;
     }
     public MilyUser getLawyer(String UserLoginId, String role) {
         Optional<MilyUser> lawyerUser = milyUserRepository.findByUserLoginIdAndRole(UserLoginId, role);

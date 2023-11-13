@@ -220,25 +220,34 @@ public class MilyUserController {
         System.out.println("ID : " + userLoginId + ", Email : " + userEmail);
 
         MilyUser confirmUser = milyUserService.findByUserLoginIdAndEmail(userLoginId, userEmail);
-        System.out.println("ID : " + confirmUser.getUserLoginId() + ", Email : " + confirmUser.getUserEmail());
+        // confirmUser가 null인지 확인
+        if (confirmUser != null) {
+            System.out.println("ID : " + confirmUser.getUserLoginId() + ", Email : " + confirmUser.getUserEmail());
 
-        if (confirmUser.getUserLoginId().equals(userLoginId) && confirmUser.getUserEmail().equals(userEmail)) {
-            // 임시 비밀번호 생성 및 저장 로직
-            String tempPassword = milyUserService.generateTempPassword();
+            if (confirmUser.getUserLoginId().equals(userLoginId) && confirmUser.getUserEmail().equals(userEmail)) {
+                // 임시 비밀번호 생성 및 저장 로직
+                String tempPassword = milyUserService.generateTempPassword();
 
-            milyUserService.updateUserPassword(confirmUser.getId(), tempPassword);
-            // 임시 비밀번호 이메일 발송 로직
-            milyUserService.sendTempPasswordToEmail(confirmUser.getEmail(), tempPassword);
+                milyUserService.updateUserPassword(confirmUser.getId(), tempPassword);
+                // 임시 비밀번호 이메일 발송 로직
+                milyUserService.sendTempPasswordToEmail(confirmUser.getEmail(), tempPassword);
 
-            // 성공 메시지를 리다이렉트 애트리뷰트에 추가
-            redirectAttributes.addFlashAttribute("message", "임시 비밀번호를 이메일로 발송하였습니다.");
-            return "mily/milyuser/retrieve_password_result";
+                // 성공 메시지를 리다이렉트 애트리뷰트에 추가
+                redirectAttributes.addFlashAttribute("message", "임시 비밀번호를 이메일로 발송하였습니다.");
+                return "mily/milyuser/retrieve_password_result";
+            } else {
+                // 에러 메시지를 리다이렉트 애트리뷰트에 추가
+                redirectAttributes.addFlashAttribute("errorMessage", "일치하는 사용자 정보가 없습니다.");
+                return "redirect:/user/findPassword";
+            }
         } else {
-            // 에러 메시지를 리다이렉트 애트리뷰트에 추가
+            // confirmUser가 null일 경우 실행되는 로직
+            System.out.println("일치하는 사용자 정보가 없습니다.");
             redirectAttributes.addFlashAttribute("errorMessage", "일치하는 사용자 정보가 없습니다.");
             return "redirect:/user/findPassword";
         }
     }
+
 
     @PostMapping("/findLoginIdPage")
     public ResponseEntity<String> retrieveId(@RequestParam("userEmail") String userEmail) {
