@@ -3,6 +3,7 @@ package com.mily.user;
 import com.mily.base.rsData.RsData;
 import com.mily.estimate.Estimate;
 import com.mily.estimate.EstimateRepository;
+import com.mily.reservation.Reservation;
 import com.mily.standard.util.Ut;
 import jakarta.transaction.Transactional;
 
@@ -268,5 +269,9 @@ public class MilyUserService {
     public List<Estimate> findDataWithin7DaysByLocation(String area) {
         LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
         return estimateRepository.findByCreateDateGreaterThanEqualAndArea(sevenDaysAgo, area);
+    }
+
+    public Reservation reserve() {
+
     }
 }
