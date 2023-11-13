@@ -153,7 +153,7 @@ public class MilyUserController {
         MilyUser milyUser = milyUserService.getUser(userName);
 
         if(!milyUser.getRole().equals("member")) {
-            return "redirect:/";
+            return rq.redirect("/", "접근 권한이 없습니다.");
         }
 
         milyUserService.sendEstimate(estimateCreateForm.getCategory(), estimateCreateForm.getCategoryItem(), estimateCreateForm.getArea(), milyUser);
@@ -181,7 +181,7 @@ public class MilyUserController {
             model.addAttribute("waitingLawyers", waitingLawyers);
             return "/mily/waiting_lawyer_list";
         } else {
-            return "mily_main";
+            return rq.redirect("/", "접근 권한이 없습니다.");
         }
     }
 
@@ -254,7 +254,7 @@ public class MilyUserController {
         MilyUser user = milyUserService.getCurrentUser();
 
         if(user.getRole().equals("member")) {
-            return "redirect:/";
+            return rq.redirect("/", "접근 권한이 없습니다.");
         }
 
         String category = milyUserService.getCurrentUser().getLawyerUser().getMajor();
