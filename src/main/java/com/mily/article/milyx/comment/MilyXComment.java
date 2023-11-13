@@ -37,4 +37,7 @@ public class MilyXComment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "milyx_id")
     private MilyX milyX;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean adopt;
 }

@@ -22,6 +22,8 @@ public class QMilyXComment extends EntityPathBase<MilyXComment> {
 
     public static final QMilyXComment milyXComment = new QMilyXComment("milyXComment");
 
+    public final BooleanPath adopt = createBoolean("adopt");
+
     public final com.mily.user.QMilyUser author;
 
     public final StringPath body = createString("body");

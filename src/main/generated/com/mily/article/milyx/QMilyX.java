@@ -32,6 +32,8 @@ public class QMilyX extends EntityPathBase<MilyX> {
 
     public final com.mily.article.milyx.category.entity.QFirstCategory firstCategory;
 
+    public final BooleanPath hasAdoptedAnswer = createBoolean("hasAdoptedAnswer");
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final NumberPath<Integer> milyPoint = createNumber("milyPoint", Integer.class);
