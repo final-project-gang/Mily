@@ -270,7 +270,7 @@ public class MilyUserController {
     }
 
     /* 마이 페이지, 관리자 대시 보드, 변호사 대시 보드 */
-    @GetMapping("/mypage")
+    @GetMapping("/mypage/info")
     public String showMyPage(HttpServletRequest hsr, Model model) {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
@@ -331,7 +331,7 @@ public class MilyUserController {
     }
 
     /* 내 정보 수정 */
-    @GetMapping("/mypage/member/edit")
+    @GetMapping("/mypage/edit")
     public String getEditInformation(HttpServletRequest hsr, Model model) {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
