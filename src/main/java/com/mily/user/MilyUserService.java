@@ -56,6 +56,11 @@ public class MilyUserService {
         return RsData.of("S-1", "MILY 회원이 되신 것을 환영합니다!", mu);
     }
 
+    /* 암호화 된 비밀 번호를 확인함 */
+    public boolean checkPassword (MilyUser user, String rawPassword) {
+        return passwordEncoder.matches(rawPassword, user.getUserPassword());
+    }
+
     @Transactional
     public RsData<LawyerUser> lawyerSignup(String major, String introduce, String officeAddress, String licenseNumber, String area, MilyUser milyUser) {
         milyUser.setRole("waiting");
@@ -287,5 +292,28 @@ public class MilyUserService {
     public List<Estimate> findDataWithin7DaysByLocation(String area) {
         LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
         return estimateRepository.findByCreateDateGreaterThanEqualAndArea(sevenDaysAgo, area);
+    }
+
+    public String maskEmail (String email) {
+        int atIndex = email.indexOf("@");
+
+        if (atIndex == -1) {
+            return email;
+        }
+
+        String localPart = email.substring(0, atIndex);
+        String domainPart = email.substring(atIndex + 1);
+
+        int dotIndex = domainPart.indexOf(".");
+
+        if (localPart.length() > 4) {
+            localPart = localPart.substring(0, localPart.length() - 4) + "****";
+        }
+
+        if (dotIndex > 2) {
+            domainPart = domainPart.substring(0, 2) + "***" + domainPart.substring(dotIndex);
+        }
+
+        return localPart + "@" + domainPart;
     }
 }
