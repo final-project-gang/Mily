@@ -1,10 +1,13 @@
 package com.mily.user;
 
+import com.mily.article.milyx.MilyX;
+import com.mily.article.milyx.MilyXService;
 import com.mily.article.milyx.category.CategoryService;
 import com.mily.article.milyx.category.entity.FirstCategory;
 import com.mily.base.rq.Rq;
 import com.mily.base.rsData.RsData;
 import com.mily.estimate.Estimate;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -21,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -29,6 +33,7 @@ public class MilyUserController {
     private final Rq rq;
     private final MilyUserService milyUserService;
     private final CategoryService categoryService;
+    private final MilyXService milyXService;
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
@@ -90,7 +95,8 @@ public class MilyUserController {
                 lawyerUser.getOfficeAddress(),
                 lawyerUser.getLicenseNumber(),
                 lawyerUser.getArea(),
-                milyUser
+                milyUser,
+                lawyerUser.getProfileImg()
         );
 
         if (signupRs2.isFail()) {
@@ -152,7 +158,7 @@ public class MilyUserController {
         String userName = principal.getName();
         MilyUser milyUser = milyUserService.getUser(userName);
 
-        if(!milyUser.getRole().equals("member")) {
+        if (!milyUser.getRole().equals("member")) {
             return rq.redirect("/", "접근 권한이 없습니다.");
         }
 
@@ -208,11 +214,12 @@ public class MilyUserController {
 
     @PreAuthorize("isAnonymous()")
     @PostMapping("/findPassword")
-    public String findPassword(@RequestParam String userLoginId, @RequestParam String email, RedirectAttributes redirectAttributes) {
+    public String findPassword(@RequestParam String userLoginId, @RequestParam String userEmail, RedirectAttributes redirectAttributes) {
         // findByUsernameAndEmail을 호출하여 사용자를 찾습니다.
-        return milyUserService.findByuserLoginIdAndEmail(userLoginId, email)
+        return milyUserService.findByuserLoginIdAndEmail(userLoginId, userEmail)
                 .map(member -> {
                     // 임시 비밀번호 발송 로직을 실행합니다.
+
                     milyUserService.sendTempPasswordToEmail(member);
                     // 성공 메시지와 함께 로그인 페이지로 리다이렉트합니다.
                     redirectAttributes.addFlashAttribute("message", "해당 회원의 이메일로 임시 비밀번호를 발송하였습니다.");
@@ -253,7 +260,7 @@ public class MilyUserController {
     public String getEstimate(Model model) {
         MilyUser user = milyUserService.getCurrentUser();
 
-        if(user.getRole().equals("member")) {
+        if (user.getRole().equals("member")) {
             return rq.redirect("/", "접근 권한이 없습니다.");
         }
 
@@ -262,5 +269,143 @@ public class MilyUserController {
         List<Estimate> estimates = milyUserService.getEstimate(LocalDateTime.now(), category, area);
         model.addAttribute("estimates", estimates);
         return "estimate_list";
+    }
+
+    /* 마이 페이지, 관리자 대시 보드, 변호사 대시 보드 */
+    @GetMapping("/mypage/info")
+    public String showMyPage(HttpServletRequest hsr, Model model) {
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+
+        // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
+        String referer = hsr.getHeader("Referer");
+
+        // 현재 로그인 상태가 아닌 유저의 요청을 받으면 돌려 보냄.
+        if (isLoginedUser == null) {
+            return "redirect:" + referer;
+        }
+
+        // 현재 로그인 된 사용자의 권한이 "member"일 때
+        if (isLoginedUser.getRole().equals("member")) {
+            // 사용자의 전화 번호를 가리는 작업
+            String phoneNumber = isLoginedUser.getUserPhoneNumber();
+            phoneNumber = phoneNumber.substring(0, 3) + "-***" + phoneNumber.substring(6, 7) + "-**" + phoneNumber.substring(9);
+
+            // 사용자의 이메일을 가리는 작업
+            String email = milyUserService.maskEmail(isLoginedUser.getUserEmail());
+
+            model.addAttribute("user", isLoginedUser);
+            model.addAttribute("userPhone", phoneNumber);
+            model.addAttribute("userEmail", email);
+
+            // 사용자가 작성 한 글
+            List<MilyX> userPosts = milyXService.findByAuthor(isLoginedUser);
+            int posts;
+            posts = userPosts.size();
+            System.out.println("up : " + userPosts + ", po : " + posts);
+
+            model.addAttribute("posts", posts);
+            model.addAttribute("userPosts", userPosts);
+
+            // 사용자의 포인트 충전 내역
+            if (isLoginedUser.getPayments() != null) {
+                System.out.println("payments : " + isLoginedUser.getPayments());
+                model.addAttribute("payments", isLoginedUser.getPayments());
+            } else {
+                System.out.println("없음");
+            }
+
+            /* 내 정보 페이지가 기본값으로 적용 됨 */
+            return "/mily/milyuser/information/member/info";
+        }
+
+        // 현재 로그인 된 사용자의 권한이 "lawyer"일 때
+        if (isLoginedUser.getRole().equals("lawyer")) {
+            return "/mily/milyuser/information/lawyer/lawyer_dashboard";
+        }
+
+        // 현재 로그인 된 사용자의 권한이 "admin"일 때
+        if (isLoginedUser.getRole().equals("admin")) {
+            model.addAttribute("user", isLoginedUser);
+            return "/mily/milyuser/information/admin/admin_dashboard";
+        }
+
+        return "redirect:" + referer;
+    }
+
+    /* 내 정보 수정 */
+    @GetMapping("/mypage/edit")
+    public String getEditInformation(HttpServletRequest hsr, Model model) {
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+
+        // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
+        String referer = hsr.getHeader("Referer");
+
+        if (isLoginedUser != null) {
+            model.addAttribute("user", isLoginedUser);
+            return "mily/milyuser/information/member/edit";
+        }
+
+        return "redirect:" + referer;
+    }
+
+    @PostMapping("/mypage/member/edit")
+    public String postEditInformation(HttpServletRequest hsr, @PathVariable long id) {
+        // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
+        String referer = hsr.getHeader("Referer");
+
+        return "redirect:" + referer;
+    }
+
+    /* 비밀번호 체크 */
+    @PostMapping("/checkpassword")
+    public ResponseEntity<Boolean> checkPassword(@RequestBody Map<String, String> payload) {
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+        String rawPassword = payload.get("password");
+
+        boolean passwordMatches = milyUserService.checkPassword(isLoginedUser, rawPassword);
+
+        return ResponseEntity.ok(milyUserService.checkPassword(isLoginedUser, rawPassword));
+    }
+
+    /* 포인트 충전 내역 */
+    @GetMapping("/mypage/member/payments")
+    public String myPayments(HttpServletRequest hsr, Model model) {
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+
+        // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
+        String referer = hsr.getHeader("Referer");
+
+        return "mily/milyuser/information/member/payments";
+//        return "redirect:" + referer;
+    }
+
+    /* 내가 쓴 글 */
+    @GetMapping("/mypage/member/posts")
+    public String getMyPosts(HttpServletRequest hsr, Model model) {
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+
+        // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
+        String referer = hsr.getHeader("Referer");
+
+        if (isLoginedUser != null) {
+            List<MilyX> userPosts = milyXService.findByAuthor(isLoginedUser);
+            model.addAttribute("posts", userPosts);
+
+            return "mily/milyuser/information/member/posts";
+        }
+
+        return "redirect:" + referer;
+    }
+
+    /* 회원 탈퇴 */
+    @GetMapping("/mypage/member/withdraw")
+    public String doWithdraw(HttpServletRequest hsr, Model model) {
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+
+        // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
+        String referer = hsr.getHeader("Referer");
+
+        return "mily/milyuser/information/member/withdraw";
+//        return "redirect:" + referer;
     }
 }

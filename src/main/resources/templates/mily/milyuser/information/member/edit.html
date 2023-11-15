@@ -1,0 +1,156 @@
+<html layout:decorate="@{mily/common/layout}" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>마이 페이지 > 회원 정보 수정</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function checkPassword() {
+            $.ajax({
+                url: '/user/checkpassword',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify ({
+                    password: $('#password').val()
+                }),
+                success: function(response) {
+                    if (response === true) {
+                        $('#edit-form').show();
+                        $('#password-check-form').hide();
+                    } else {
+                        // 비밀번호가 일치하지 않으면 경고 메시지 표시
+                        alert('비밀번호가 일치하지 않습니다.');
+                    }
+                }
+            });
+        }
+
+        $('#user-info-form').submit(function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: '/user/updateinfo',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    username: $('#username').val(),
+                    email: $('#email').val(),
+                    // 기타 수정할 정보
+                }),
+                success: function(response) {
+                    if (response === true) {
+                        // 정보 수정이 성공하면 성공 메시지를 보여줌
+                        alert('회원 정보가 성공적으로 수정되었습니다.');
+                    } else {
+                        // 정보 수정이 실패하면 실패 메시지를 보여줌
+                        alert('회원 정보 수정에 실패하였습니다. 다시 시도해 주세요.');
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<section layout:fragment="content">
+    <div th:include="mily/milyuser/information/layout/mypage_navbar :: navbar"
+         style="display: block; align-items: center; margin-bottom: 30px;"></div>
+    <span style="margin: 0 13%; font-size: 20px; font-weight: bold;" th:text="'회원 정보 수정'"></span>
+    <div style="display: flex; min-height: 35vh; border: 1px solid #c8c8c8; border-radius: 10px; margin: 5px 12.5% 15px 12.5%; padding: 15px;font-size: 16px;" class="flex flex-col gap-6">
+        <form id="password-check-form" onsubmit="event.preventDefault(); checkPassword();">
+            <label for="password" style="display: block;" class="label">
+                <span class="label-text">비밀번호 확인</span>
+            </label>
+            <input type="password" id="password" name="password" placeholder="비밀번호 확인" class="input input-bordered"
+                   maxlength="30" style="width: 125px; height: 40px; border: 1px solid #c8c8c8; border-radius: 10px 0 0 10px; margin-right: -4.4px;">
+            <input type="submit" value="확인" style="height: 40px; border: 1px solid #000000; border-radius: 0 10px 10px 0; padding: 0 10px; background-color: #93C5FD;"><br>
+            <div style="margin: 50px 0 20px 0; font-size: 16px;">
+                <span style="color: blue;" th:text="'안전한 비밀번호로 내 정보를 보호'"></span>
+                <span style="color: black;" th:text="'하세요.'"></span><br>
+                <span style="color: green;" th:text="'다른 아이디/사이트에서 사용한 적 없는 비밀번호'"></span><br>
+                <span style="color: green;" th:text="'이전에 사용한 적 없는 비밀번호'"></span>
+                <span style="color: black;" th:text="'가 안전합니다.'"></span><br>
+            </div>
+            <a th:href="@{user/mypage/editpassword}" th:text="'비밀번호 변경'"></a>
+        </form>
+
+        <form th:action="POST" name="edit-form" id="edit-form" onsubmit="submitEditForm(this); return false;" style="display:none;" class="flex flex-col gap-6">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">이메일</span>
+                </label>
+                <input type="email" name="userEmail" placeholder="이메일" class="input input-bordered" autofocus
+                       maxlength="30" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
+                       onkeyup="checkUserEmailDupDebounce();">
+                <div class="mt-2 text-sm"></div>
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">전화번호</span>
+                </label>
+                <input type="tel" name="userPhoneNumber" placeholder="'-' 없이 입력해주세요." class="input input-bordered" autofocus
+                       maxlength="11" onchange="$(this).keyup();" onpaste="setTimeoutZero(() => $(this).keyup());"
+                       onkeyup="checkUserPhoneNumberDupDebounce();">
+                <div class="mt-2 text-sm"></div>
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">생년월일</span>
+                </label>
+                <input type="date" name="userDateOfBirth" placeholder="생년월일" class="input input-bordered" autofocus
+                       maxlength="30">
+            </div>
+
+            <button class="btn btn-block btn-primary gap-1">
+                <i class="fa-solid fa-rotate"></i>
+                <span>변경하기</span>
+            </button>
+        </form>
+    </div>
+    <a target="_blank" th:href="@{/user/mypage/member/withdraw}" style="margin: 0 13%;">
+        <i class="fa-solid fa-delete-left" style="width: 18px; text-align: center;"></i>
+        회원 탈퇴</a>
+    <section th:replace="mily/common/footer :: footer"></section>
+</section>
+<script>
+    let submitEditFormDone = false;
+    function submitEditForm(form) {
+        if ( submitEditFormDone ) return;
+
+        form.userEmail.value = form.userEmail.value.trim();
+        if ( form.userEmail.value.length == 0 ) {
+            form.userEmail.focus();
+            toastWarning('이메일 입력 란을 확인해주세요.');
+            return;
+        }
+
+        form.userPhoneNumber.value = form.userPhoneNumber.value.trim();
+
+        if ( orm.userPhoneNumber.value.length < 11 ) {
+            form.userPhoneNumber.focus();
+            toastWarning('전화번호 입력 란을 확인해주세요.');
+            return;
+        }
+
+        form.userDateOfBirth.value = form.userDateOfBirth.value.trim();
+
+        if ( form.userDateOfBirth.value.length == 0 ) {
+            form.userDateOfBirth.focus();
+            toastWarning('생년월일 입력 란을 확인해주세요.');
+            return;
+        }
+
+        if ( validUserEmail != form.userEmail.value ) {
+            $(form.userEmail).next().focus();
+            toastWarning('이메일 중복 체크를 해주세요.');
+            return;
+        }
+
+        if ( validUserPhoneNumber != form.userPhoneNumber.value ) {
+            $(form.userPhoneNumber).next().focus();
+            toastWarning('전화번호 중복 체크를 해주세요.');
+            return;
+        }
+</script>
+</body>
+</html>

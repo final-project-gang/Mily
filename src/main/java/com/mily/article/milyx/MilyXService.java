@@ -25,6 +25,10 @@ public class MilyXService {
         return mxr.findAll();
     }
 
+    public List<MilyX> findByAuthor(MilyUser author) {
+        return mxr.findByAuthor(author);
+    }
+
     @Transactional
     public RsData<MilyX> create(MilyUser author, FirstCategory firstCategory, SecondCategory secondCategory, String subject, String body, int milyPoint) {
         LocalDateTime now = LocalDateTime.now();

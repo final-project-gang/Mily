@@ -3,10 +3,7 @@ package com.mily.user;
 import com.mily.payment.Payment;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -37,9 +34,7 @@ public class MilyUser {
 
     @Column(unique = true)
     private String userLoginId;
-
     private String userPassword;
-
     private String userName;
 
     @Column(unique = true)
@@ -47,7 +42,6 @@ public class MilyUser {
 
     @Column(unique = true)
     private String userPhoneNumber;
-
     private String userDateOfBirth;
 
     private LocalDateTime userCreateDate;
@@ -83,10 +77,6 @@ public class MilyUser {
             grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
         }
         return grantedAuthorities;
-    }
-
-    public String getUserLoginId() {
-        return userLoginId;
     }
 }
 

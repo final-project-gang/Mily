@@ -19,4 +19,5 @@ public interface MilyUserRepository extends JpaRepository<MilyUser, Long> {
     MilyUser findUserLoginIdByEmail(@Param("userEmail") String userEmail); // 이 메소드만 사용
     Optional<MilyUser> findByUserLoginIdAndRole(String userLoginId, String role);
     List<MilyUser> findByRole(String role);
+
 }
