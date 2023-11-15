@@ -1,0 +1,79 @@
+<html layout:decorate="@{mily/common/layout}" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>마이 페이지 > 회원 정보 수정</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function checkPassword() {
+            $.ajax({
+                url: '/user/checkpassword',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify ({
+                    password: $('#password').val()
+                }),
+                success: function(response) {
+                    if (response === true) {
+                        $('#user-info-form').show();
+                        $('#password-check-form').hide();
+                    } else {
+                        // 비밀번호가 일치하지 않으면 경고 메시지 표시
+                        alert('비밀번호가 일치하지 않습니다.');
+                    }
+                }
+            });
+        }
+
+        $('#user-info-form').submit(function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: '/user/updateinfo',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    username: $('#username').val(),
+                    email: $('#email').val(),
+                    // 기타 수정할 정보
+                }),
+                success: function(response) {
+                    if (response === true) {
+                        // 정보 수정이 성공하면 성공 메시지를 보여줌
+                        alert('회원 정보가 성공적으로 수정되었습니다.');
+                    } else {
+                        // 정보 수정이 실패하면 실패 메시지를 보여줌
+                        alert('회원 정보 수정에 실패하였습니다. 다시 시도해 주세요.');
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<section layout:fragment="content" style="display: flex !important; justify-content: space-between; margin: 50px 100px;">
+    <div th:include="mily/milyuser/information/layout/mypage_navbar :: navbar"
+         style="display: flex; align-items: center;"></div>
+    <div style="display: flex; align-items: center;">
+        <form id="password-check-form" onsubmit="event.preventDefault(); checkPassword();">
+            <label for="password">비밀번호 확인:</label>
+            <input type="password" id="password" name="password" style="border: 1px solid #c8c8c8; border-radius: 5px;">
+            <input type="submit" value="확인">
+        </form>
+        <form id="user-info-form" style="display:none;">
+            <div style="display: table-caption;">
+                <label for="username"></label>
+                <input type="text" id="username" name="username" style="border: 1px solid #c8c8c8; border-radius: 5px;">
+
+                <label for="email">이메일:</label>
+                <input type="email" id="email" name="email">
+
+                <!-- 기타 수정할 정보의 입력 필드를 추가 -->
+
+                <input type="submit" value="제출">
+            </div>
+        </form>
+
+    </div>
+</section>
+</body>
+</html>
