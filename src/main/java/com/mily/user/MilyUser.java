@@ -46,14 +46,14 @@ public class MilyUser {
     @Column(unique = true)
     private String userPhoneNumber;
     private String userDateOfBirth;
-<<<<<<< HEAD
+
     private String loginId;
     /*private LocalDateTime userCreateDate;*/
     @NotBlank
     private String area;
-=======
 
->>>>>>> f307d97d5c010d1fb7d565a4cb74c6d2b58ed664
+
+
     private LocalDateTime userCreateDate;
 
     @Column(nullable = false)

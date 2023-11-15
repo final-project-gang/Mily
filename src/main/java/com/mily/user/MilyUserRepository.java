@@ -13,10 +13,11 @@ public interface MilyUserRepository extends JpaRepository<MilyUser, Long> {
     Optional<MilyUser> findByUserPhoneNumber (String userPhoneNumber);
     Optional<MilyUser> findByUserName(String userName);
 
-    MilyUser findByUserLoginIdAndUserEmail(String userLoginId, String userEmail);
+    Optional<MilyUser> findByUserLoginIdAndUserEmail(String userLoginId, String userEmail);
 
     @Query(value = "SELECT * FROM mily_user WHERE user_email = :userEmail", nativeQuery = true)
     MilyUser findUserLoginIdByEmail(@Param("userEmail") String userEmail); // 이 메소드만 사용
     Optional<MilyUser> findByUserLoginIdAndRole(String userLoginId, String role);
     List<MilyUser> findByRole(String role);
+
 }

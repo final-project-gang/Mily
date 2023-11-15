@@ -1,5 +1,6 @@
 package com.mily.user;
 
+import com.mily.Email.EmailService;
 import com.mily.base.rsData.RsData;
 import com.mily.estimate.Estimate;
 import com.mily.estimate.EstimateRepository;
@@ -7,7 +8,6 @@ import com.mily.standard.util.Ut;
 import jakarta.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,10 +20,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class MilyUserService {
+    private final EmailService emailService;
     private final MilyUserRepository milyUserRepository;
     private final LawyerUserRepository lawyerUserRepository;
     private final EstimateRepository estimateRepository;
     private final PasswordEncoder passwordEncoder;
+
     @Transactional
     public RsData<MilyUser> userSignup(String userLoginId, String userPassword, String userName, String userEmail, String userPhoneNumber, String userDateOfBirth) {
         if (findByUserLoginId(userLoginId).isPresent()) {
@@ -202,18 +204,33 @@ public class MilyUserService {
         return findByUserEmail(userEmail);
     }
 
-
     public MilyUser findUserLoginIdByEmail(String userEmail) {
         return milyUserRepository.findUserLoginIdByEmail(userEmail);
     }
 
-    public MilyUser findByuserLoginIdAndEmail(String userLoginId, String email) {
+    public Optional<MilyUser> findByuserLoginIdAndEmail(String userLoginId, String email) {
         return milyUserRepository.findByUserLoginIdAndUserEmail(userLoginId, email);
     }
 
-    public static void sendTempPasswordToEmail(MilyUser member) {
+    public void sendTempPasswordToEmail(MilyUser member) {
+        emailService.send(member.getEmail(), "임시 비밀번호 입니다.", "임시 비밀 번호 : " + getTempPassword());
+        //DB에서 비밀번호 업데이트 해서 바꿔주는 걸로 로직 진행
+        // 그값을 여기에다가 설정해서 넣는다
     }
 
+    public String getTempPassword(){
+        char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
+                'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+
+        String str = "";
+
+        int idx = 0;
+        for (int i = 0; i < 10; i++) {
+            idx = (int) (charSet.length * Math.random());
+            str += charSet[idx];
+        }
+        return str;
+    }
 
     public MilyUser getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -239,34 +256,6 @@ public class MilyUserService {
         return RsData.of("S-1", "포인트 지급", null);
     }
 
-
-    /*public void sendTempPasswordToEmail(MilyUser member) {
-    }
-*/
-    public MilyUser findByUserLoginIdAndEmail(String userLoginId, String userEmail) {
-        return milyUserRepository.findByUserLoginIdAndUserEmail(userLoginId, userEmail);
-    }
-
-    public boolean sendTempPasswordToEmail(String email, String tempPassword) {
-        // 이메일 전송 로직 구현
-        boolean emailSent = false;
-        // 이메일 전송 성공 여부에 따라 emailSent 값을 설정
-        // 예: emailSent = emailService.sendEmail(email, tempPassword);
-        return emailSent;
-    }
-
-
-    public String generateTempPassword() {
-        return RandomStringUtils.randomAlphanumeric(10);
-    }
-
-    public boolean updateUserPassword(long id, String tempPassword) {
-        // 비밀번호 업데이트 로직 구현
-        boolean updateSuccess = false;
-        // 비밀번호 업데이트 성공 여부에 따라 updateSuccess 값을 설정
-        // 예: updateSuccess = userRepository.updatePassword(id, tempPassword);
-        return updateSuccess;
-    }
     public MilyUser getLawyer(String UserLoginId, String role) {
         Optional<MilyUser> lawyerUser = milyUserRepository.findByUserLoginIdAndRole(UserLoginId, role);
         if (lawyerUser.isPresent()) {

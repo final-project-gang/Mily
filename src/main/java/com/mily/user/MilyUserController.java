@@ -206,6 +206,26 @@ public class MilyUserController {
         return "mily/milyuser/find_password_form";
     }
 
+    @PreAuthorize("isAnonymous()")
+    @PostMapping("/findPassword")
+    public String findPassword(@RequestParam String userLoginId, @RequestParam String userEmail, RedirectAttributes redirectAttributes) {
+        // findByUsernameAndEmail을 호출하여 사용자를 찾습니다.
+        return milyUserService.findByuserLoginIdAndEmail(userLoginId, userEmail)
+                .map(member -> {
+                    // 임시 비밀번호 발송 로직을 실행합니다.
+
+                    milyUserService.sendTempPasswordToEmail(member);
+                    // 성공 메시지와 함께 로그인 페이지로 리다이렉트합니다.
+                    redirectAttributes.addFlashAttribute("message", "해당 회원의 이메일로 임시 비밀번호를 발송하였습니다.");
+                    return "redirect:/user/login?lastUsername=" + member.getUserLoginId();
+                })
+                .orElseGet(() -> {
+                    // 사용자를 찾을 수 없을 경우 에러 메시지를 설정하고 이전 페이지로 이동합니다.
+                    redirectAttributes.addFlashAttribute("errorMessage", "일치하는 회원이 존재하지 않습니다.");
+                    return "redirect:/mily/milyuser/find_password_form";
+                });
+    }
+
     @PostMapping("/retrieveId")
     public String retrieveId(@RequestParam String userEmail, Model model, RedirectAttributes redirectAttributes) {
         MilyUser milyUser = milyUserService.findUserLoginIdByEmail(userEmail);
@@ -214,38 +234,11 @@ public class MilyUserController {
     }
 
     @PostMapping("/retrievePassword")
-    public String retrievePassword(@RequestParam String userEmail, @RequestParam String userLoginId, RedirectAttributes redirectAttributes) {
-        System.out.println("ID : " + userLoginId + ", Email : " + userEmail);
-
-        MilyUser confirmUser = milyUserService.findByUserLoginIdAndEmail(userLoginId, userEmail);
-        // confirmUser가 null인지 확인
-        if (confirmUser != null) {
-            System.out.println("ID : " + confirmUser.getUserLoginId() + ", Email : " + confirmUser.getUserEmail());
-
-            if (confirmUser.getUserLoginId().equals(userLoginId) && confirmUser.getUserEmail().equals(userEmail)) {
-                // 임시 비밀번호 생성 및 저장 로직
-                String tempPassword = milyUserService.generateTempPassword();
-
-                milyUserService.updateUserPassword(confirmUser.getId(), tempPassword);
-                // 임시 비밀번호 이메일 발송 로직
-                milyUserService.sendTempPasswordToEmail(confirmUser.getEmail(), tempPassword);
-
-                // 성공 메시지를 리다이렉트 애트리뷰트에 추가
-                redirectAttributes.addFlashAttribute("message", "임시 비밀번호를 이메일로 발송하였습니다.");
-                return "mily/milyuser/retrieve_password_result";
-            } else {
-                // 에러 메시지를 리다이렉트 애트리뷰트에 추가
-                redirectAttributes.addFlashAttribute("errorMessage", "일치하는 사용자 정보가 없습니다.");
-                return "redirect:/user/findPassword";
-            }
-        } else {
-            // confirmUser가 null일 경우 실행되는 로직
-            System.out.println("일치하는 사용자 정보가 없습니다.");
-            redirectAttributes.addFlashAttribute("errorMessage", "일치하는 사용자 정보가 없습니다.");
-            return "redirect:/user/findPassword";
-        }
+    public String retrievePassword(@RequestParam String userEmail, String userloginId, Model model, RedirectAttributes redirectAttributes) {
+        MilyUser milyUser = milyUserService.findUserLoginIdByEmail(userEmail);
+        model.addAttribute("foundPassword", milyUser.getUserPassword());
+        return "mily/milyuser/retrieve_password_result";
     }
-
 
     @PostMapping("/findLoginIdPage")
     public ResponseEntity<String> retrieveId(@RequestParam("userEmail") String userEmail) {
@@ -272,4 +265,3 @@ public class MilyUserController {
         return "estimate_list";
     }
 }
-
