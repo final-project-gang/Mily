@@ -213,11 +213,12 @@ public class MilyUserController {
 
     @PreAuthorize("isAnonymous()")
     @PostMapping("/findPassword")
-    public String findPassword(@RequestParam String userLoginId, @RequestParam String email, RedirectAttributes redirectAttributes) {
+    public String findPassword(@RequestParam String userLoginId, @RequestParam String userEmail, RedirectAttributes redirectAttributes) {
         // findByUsernameAndEmail을 호출하여 사용자를 찾습니다.
-        return milyUserService.findByuserLoginIdAndEmail(userLoginId, email)
+        return milyUserService.findByuserLoginIdAndEmail(userLoginId, userEmail)
                 .map(member -> {
                     // 임시 비밀번호 발송 로직을 실행합니다.
+
                     milyUserService.sendTempPasswordToEmail(member);
                     // 성공 메시지와 함께 로그인 페이지로 리다이렉트합니다.
                     redirectAttributes.addFlashAttribute("message", "해당 회원의 이메일로 임시 비밀번호를 발송하였습니다.");

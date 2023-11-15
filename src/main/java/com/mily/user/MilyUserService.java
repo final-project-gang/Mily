@@ -1,5 +1,6 @@
 package com.mily.user;
 
+import com.mily.Email.EmailService;
 import com.mily.base.rsData.RsData;
 import com.mily.estimate.Estimate;
 import com.mily.estimate.EstimateRepository;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class MilyUserService {
+    private final EmailService emailService;
     private final MilyUserRepository milyUserRepository;
     private final LawyerUserRepository lawyerUserRepository;
     private final EstimateRepository estimateRepository;
@@ -215,7 +217,24 @@ public class MilyUserService {
         return milyUserRepository.findByUserLoginIdAndUserEmail(userLoginId, email);
     }
 
-    public static void sendTempPasswordToEmail(MilyUser member) {
+    public void sendTempPasswordToEmail(MilyUser member) {
+        emailService.send(member.getEmail(), "임시 비밀번호 입니다.", "임시 비밀 번호 : " + getTempPassword());
+        //DB에서 비밀번호 업데이트 해서 바꿔주는 걸로 로직 진행
+        // 그값을 여기에다가 설정해서 넣는다
+    }
+
+    public String getTempPassword(){
+        char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
+                'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+
+        String str = "";
+
+        int idx = 0;
+        for (int i = 0; i < 10; i++) {
+            idx = (int) (charSet.length * Math.random());
+            str += charSet[idx];
+        }
+        return str;
     }
 
     public MilyUser getCurrentUser() {
