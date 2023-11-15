@@ -272,6 +272,6 @@ public class MilyUserService {
     }
 
     public Reservation reserve() {
-
+        return null;
     }
 }

@@ -32,7 +32,7 @@ public class Reservation {
 
     private LocalDateTime dateTime;
 
-    @OneToOne
+    @ManyToOne
     private MilyUser milyUser;
 
     @ManyToOne
