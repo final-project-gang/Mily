@@ -14,11 +14,13 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -77,7 +79,7 @@ public class MilyUserController {
 
     @PreAuthorize("isAnonymous()")
     @PostMapping("/lawyerSignup")
-    public String doLawyerSignup(@Valid LawyerUser lawyerUser, @Valid SignupForm signupForm) {
+    public String doLawyerSignup(@Valid LawyerSignupForm lawyerSignupForm, @Valid SignupForm signupForm) {
         RsData<MilyUser> signupRs1 = milyUserService.userSignup(
                 signupForm.getUserLoginId(),
                 signupForm.getUserPassword(),
@@ -90,12 +92,13 @@ public class MilyUserController {
         MilyUser milyUser = signupRs1.getData();
 
         RsData<LawyerUser> signupRs2 = milyUserService.lawyerSignup(
-                lawyerUser.getMajor(),
-                lawyerUser.getIntroduce(),
-                lawyerUser.getOfficeAddress(),
-                lawyerUser.getLicenseNumber(),
-                lawyerUser.getArea(),
-                milyUser
+                lawyerSignupForm.getMajor(),
+                lawyerSignupForm.getIntroduce(),
+                lawyerSignupForm.getOfficeAddress(),
+                lawyerSignupForm.getLicenseNumber(),
+                lawyerSignupForm.getArea(),
+                milyUser,
+                lawyerSignupForm.getProfileImg()
         );
 
         if (signupRs2.isFail()) {
@@ -129,6 +132,30 @@ public class MilyUserController {
         private String userDateOfBirth;
     }
 
+    @Getter
+    @AllArgsConstructor
+    @ToString
+    public static class LawyerSignupForm {
+        public MilyUser milyUser;
+
+        @NotBlank
+        private String major;
+
+        @NotBlank
+        private String introduce;
+
+        @NotBlank
+        private String officeAddress;
+
+        @NotBlank
+        private String licenseNumber;
+
+        @NotBlank
+        private String area;
+
+        private MultipartFile profileImg;
+    }
+
     @GetMapping("checkUserLoginIdDup")
     @ResponseBody
     public RsData checkUserLoginIdDup(String userLoginId) {
@@ -157,7 +184,7 @@ public class MilyUserController {
         String userName = principal.getName();
         MilyUser milyUser = milyUserService.getUser(userName);
 
-        if(!milyUser.getRole().equals("member")) {
+        if (!milyUser.getRole().equals("member")) {
             return rq.redirect("/", "접근 권한이 없습니다.");
         }
 
@@ -259,7 +286,7 @@ public class MilyUserController {
     public String getEstimate(Model model) {
         MilyUser user = milyUserService.getCurrentUser();
 
-        if(user.getRole().equals("member")) {
+        if (user.getRole().equals("member")) {
             return rq.redirect("/", "접근 권한이 없습니다.");
         }
 

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -39,5 +40,8 @@ public class LawyerUser {
     @NotBlank
     private String licenseNumber;
 
+    @NotBlank
     private String area;
+
+    private String profileImg;
 }

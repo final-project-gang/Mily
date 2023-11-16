@@ -21,8 +21,7 @@ import static lombok.AccessLevel.PROTECTED;
 @DynamicInsert
 @DynamicUpdate
 @SuperBuilder
-public class Image {
-    private long id;
+public class Image extends BaseEntity {
     private String relTypeCode;
     private long relId;
     private String typeCode;
@@ -34,4 +33,20 @@ public class Image {
     private String fileExt;
     private String fileDir;
     private String originFileName;
+
+    public String getFileName() {
+        return getId() + "." + getFileExt();
+    }
+
+    public String getUrl() {
+        return "/gen/" + getFileDir() + "/" + getFileName();
+    }
+
+    public String getDownloadUrl() {
+        return "/usr/genFile/download/" + getId();
+    }
+
+    public String getFilePath() {
+        return AppConfig.getGenFileDirPath() + "/" + getFileDir() + "/" + getFileName();
+    }
 }
