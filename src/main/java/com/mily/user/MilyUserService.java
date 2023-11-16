@@ -332,11 +332,11 @@ public class MilyUserService {
     }
 
     public void editPassword(MilyUser isLoginedUser, String passwordConfirm) {
-        System.out.println("SERVICE : " + isLoginedUser.getUserName());
-        System.out.println("p : " + passwordConfirm);
         isLoginedUser.setUserPassword(passwordEncoder.encode(passwordConfirm));
         milyUserRepository.save(isLoginedUser);
-        boolean a = checkPassword(isLoginedUser, passwordConfirm);
-        System.out.println("CHECK : " + a);
+    }
+
+    public void withdraw(MilyUser isLoginedUser) {
+        milyUserRepository.delete(isLoginedUser);
     }
 }
