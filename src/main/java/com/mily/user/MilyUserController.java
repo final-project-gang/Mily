@@ -347,12 +347,42 @@ public class MilyUserController {
         return "redirect:" + referer;
     }
 
-    @PostMapping("/mypage/member/edit")
-    public String postEditInformation(HttpServletRequest hsr, @PathVariable long id) {
+    @GetMapping("/mypage/edit/password")
+    public String getEdiitPassword(HttpServletRequest hsr, Model model) {
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+
         // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
         String referer = hsr.getHeader("Referer");
 
+        if (isLoginedUser != null) {
+            return "mily/milyuser/information/member/password";
+        }
+
         return "redirect:" + referer;
+    }
+
+    @PostMapping("/mypage/edit/password")
+    public String postEditPassword(@RequestParam String userPassword, @RequestParam String userPassword2) {
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+        System.out.println("CONTROLLER : " + isLoginedUser.getUserName());
+        System.out.println("p1 : " + userPassword + ", p2 : " +userPassword2);
+
+        if (isLoginedUser != null && userPassword.equals(userPassword2)) {
+            milyUserService.editPassword(isLoginedUser, userPassword);
+            return "redirect:/user/mypage/edit";
+        }
+        return "redirect:/user/mypage/edit";
+    }
+
+    @GetMapping("/mypage/edit/other")
+    public String myPayments(HttpServletRequest hsr, Model model) {
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+
+        // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
+        String referer = hsr.getHeader("Referer");
+
+        return "mily/milyuser/information/member/payments";
+//        return "redirect:" + referer;
     }
 
     /* 비밀번호 체크 */
@@ -366,37 +396,6 @@ public class MilyUserController {
         return ResponseEntity.ok(milyUserService.checkPassword(isLoginedUser, rawPassword));
     }
 
-    /* 포인트 충전 내역 */
-    @GetMapping("/mypage/member/payments")
-    public String myPayments(HttpServletRequest hsr, Model model) {
-        MilyUser isLoginedUser = milyUserService.getCurrentUser();
-
-        // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
-        String referer = hsr.getHeader("Referer");
-
-        return "mily/milyuser/information/member/payments";
-//        return "redirect:" + referer;
-    }
-
-    /* 내가 쓴 글 */
-    @GetMapping("/mypage/member/posts")
-    public String getMyPosts(HttpServletRequest hsr, Model model) {
-        MilyUser isLoginedUser = milyUserService.getCurrentUser();
-
-        // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
-        String referer = hsr.getHeader("Referer");
-
-        if (isLoginedUser != null) {
-            List<MilyX> userPosts = milyXService.findByAuthor(isLoginedUser);
-            model.addAttribute("posts", userPosts);
-
-            return "mily/milyuser/information/member/posts";
-        }
-
-        return "redirect:" + referer;
-    }
-
-    /* 회원 탈퇴 */
     @GetMapping("/mypage/member/withdraw")
     public String doWithdraw(HttpServletRequest hsr, Model model) {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
