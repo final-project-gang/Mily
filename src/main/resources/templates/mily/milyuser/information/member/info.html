@@ -7,8 +7,8 @@
 <section layout:fragment="content" style="min-h-screen: 100vh !important;">
     <div th:include="mily/milyuser/information/layout/mypage_navbar :: navbar"
          style="display: block; align-items: center; margin-bottom: 30px;"></div>
-    <span style="margin: 0 13%; font-size: 20px; font-weight: bold;" th:text="'기본 정보'"></span>
-    <div style="display: block; border: 1px solid #c8c8c8; border-radius: 10px; margin: 5px 12.5% 15px 12.5%; padding: 50px 15px; align-items: center; font-size: 16px;">
+    <span style="margin: 0 20%; font-size: 20px; font-weight: bold;" th:text="'기본 정보'"></span>
+    <div style="display: block; border: 1px solid #c8c8c8; border-radius: 10px; margin: 5px 19.5% 15px 19.5%; padding: 15px; align-items: center; font-size: 16px;">
         <ul>
             <li style="margin-bottom: 5px;"><span th:text="${user.userName}"></span></li>
             <li style="margin: 5px 0;"><i class="fa-solid fa-mobile-button"
@@ -20,14 +20,14 @@
             <li style="margin-top: 5px;"><i class="fa-solid fa-check" style="width: 18px; text-align: center;"></i><span
                     th:text="' ' + ${#temporals.format(user.userCreateDate, 'yyyy년 MM월 dd일')} + ' 가입'"></span></li>
         </ul>
-        <div style="margin: 15px 0 -15px 0;">
+        <div style="margin: 15px 0 0 0;">
             <a th:href="@{/user/mypage/edit}" style="color: #93C5FD; font-weight: bold;">회원정보 수정 바로가기</a>
         </div>
     </div>
 
-    <span style="margin: 0 13%; font-size: 20px; font-weight: bold; display: block;"
+    <span style="margin: 0 20%; font-size: 20px; font-weight: bold; display: block;"
           th:text="'나의 질문 ' + ${posts} + '개'"></span>
-    <div style="display: block; border: 1px solid #c8c8c8; border-radius: 10px; margin: 5px 12.5% 15px 12.5%; padding: 50px 15px; align-items: center; font-size: 16px;">
+    <div style="display: block; border: 1px solid #c8c8c8; border-radius: 10px; margin: 5px 19.5% 15px 19.5%; padding: 15px; align-items: center; font-size: 16px;">
         <ul>
             <a th:if="${userPosts.isEmpty()}" th:href="@{/milyx}" target="_blank" style="color: #93C5FD; font-weight: bold;">질문 바로가기</a>
             <li th:each="userPosts: ${userPosts}" style="display: flex;">
@@ -37,9 +37,9 @@
         </ul>
     </div>
 
-    <span style="margin: 0 13%; font-size: 20px; font-weight: bold; display: block;" th:if="${payments}"
+    <span style="margin: 0 20%; font-size: 20px; font-weight: bold; display: block;" th:if="${payments}"
           th:text="'포인트 충전 내역'"></span>
-    <div style="display: block; border: 1px solid #c8c8c8; border-radius: 10px; margin: 5px 12.5% 15px 12.5%; padding: 50px 15px; align-items: center; font-size: 16px;">
+    <div style="display: block; border: 1px solid #c8c8c8; border-radius: 10px; margin: 5px 19.5% 15px 19.5%; padding: 15px; align-items: center; font-size: 16px;">
         <div th:each="payment, stat : ${payments}">
             <div th:if="${stat.index == 0 || !#temporals.format(payments[stat.index-1].orderDate, 'MM월 dd일').equals(#temporals.format(payment.orderDate, 'MM월 dd일'))}">
                 <p th:text="${#temporals.format(payment.orderDate, 'MM월 dd일')}"></p>
@@ -58,7 +58,7 @@
         </ul>
     </div>
 
-    <a target="_blank" th:href="@{/user/mypage/member/withdraw}" style="margin: 0 13%;">
+    <a target="_blank" th:href="@{/user/mypage/member/withdraw}" style="margin: 0 20%;">
         <i class="fa-solid fa-delete-left" style="width: 18px; text-align: center;"></i>
         회원 탈퇴</a>
     <footer th:replace="mily/common/footer :: footer" style="position: pixed; bottom: 0; width: 100%;"></footer>
