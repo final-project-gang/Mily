@@ -217,18 +217,32 @@ public class MilyUserService {
         return milyUserRepository.findByUserLoginIdAndUserEmail(userLoginId, email);
     }
 
+    @Transactional
     public void sendTempPasswordToEmail(MilyUser member) {
+        // 임시 비밀번호 생성
+        String tempPassword = getTempPassword();
+        // 사용자 이메일로 임시 비밀번호 전송
         emailService.send(member.getEmail(), "임시 비밀번호 입니다.", "임시 비밀 번호 : " + getTempPassword());
-        //DB에서 비밀번호 업데이트 해서 바꿔주는 걸로 로직 진행
-        // 그값을 여기에다가 설정해서 넣는다
+
+        // 데이터베이스에서 사용자의 비밀번호를 임시 비밀번호로 업데이트
+        updateUserPassword(member.getId(), tempPassword);
     }
 
+    @Transactional
+    public void updateUserPassword(Long userId, String tempPassword) {
+        // 데이터베이스에서 특정 사용자의 비밀번호를 주어진 임시 비밀번호로 업데이트
+        milyUserRepository.updatePassword(userId, tempPassword);
+    }
+
+
     public String getTempPassword(){
+        // 임시 비밀번호를 위하 문자들 정렬
         char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
                 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
         String str = "";
 
+        // 10자리 임시 비밀번호 생성
         int idx = 0;
         for (int i = 0; i < 10; i++) {
             idx = (int) (charSet.length * Math.random());

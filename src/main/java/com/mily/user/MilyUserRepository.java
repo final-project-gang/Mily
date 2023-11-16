@@ -1,6 +1,7 @@
 package com.mily.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -8,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MilyUserRepository extends JpaRepository<MilyUser, Long> {
+
+
     Optional<MilyUser> findByUserLoginId (String userLoginId);
     Optional<MilyUser> findByUserEmail (String userEmail);
     Optional<MilyUser> findByUserPhoneNumber (String userPhoneNumber);
@@ -20,4 +23,8 @@ public interface MilyUserRepository extends JpaRepository<MilyUser, Long> {
     Optional<MilyUser> findByUserLoginIdAndRole(String userLoginId, String role);
     List<MilyUser> findByRole(String role);
 
+    @Modifying
+    @Query("UPDATE MilyUser u SET u.password = :newPassword WHERE u.id = :userId")
+    int updatePassword(@Param("userId") Long userId, @Param("newPassword") String newPassword);
 }
+

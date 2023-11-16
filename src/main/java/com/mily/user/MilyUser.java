@@ -2,6 +2,7 @@ package com.mily.user;
 
 import com.mily.payment.Payment;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,6 +49,15 @@ public class MilyUser {
     private String userPhoneNumber;
 
     private String userDateOfBirth;
+
+    private String loginId;
+    /*private LocalDateTime userCreateDate;*/
+
+    @NotBlank
+    private String area;
+
+    @Column(name = "password")
+    private String password;
 
     private LocalDateTime userCreateDate;
 
