@@ -37,7 +37,9 @@ public class MilyUser {
 
     @Column(unique = true)
     private String userLoginId;
+
     private String userPassword;
+
     private String userName;
 
     @Column(unique = true)
@@ -45,17 +47,17 @@ public class MilyUser {
 
     @Column(unique = true)
     private String userPhoneNumber;
+
     private String userDateOfBirth;
 
     private String loginId;
     /*private LocalDateTime userCreateDate;*/
+
     @NotBlank
     private String area;
 
     @Column(name = "password")
     private String password;
-
-
 
     private LocalDateTime userCreateDate;
 
