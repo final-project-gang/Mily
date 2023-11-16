@@ -52,6 +52,9 @@ public class MilyUser {
     @NotBlank
     private String area;
 
+    @Column(name = "password")
+    private String password;
+
 
 
     private LocalDateTime userCreateDate;
