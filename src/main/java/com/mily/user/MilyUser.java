@@ -2,8 +2,15 @@ package com.mily.user;
 
 import com.mily.payment.Payment;
 import jakarta.persistence.*;
+<<<<<<< HEAD
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+=======
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+>>>>>>> 0b074bb3f7f507079baf9f3d042381ee5f8f55db
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -34,7 +41,9 @@ public class MilyUser {
 
     @Column(unique = true)
     private String userLoginId;
+
     private String userPassword;
+
     private String userName;
 
     @Column(unique = true)
@@ -42,8 +51,17 @@ public class MilyUser {
 
     @Column(unique = true)
     private String userPhoneNumber;
+
     private String userDateOfBirth;
 
+<<<<<<< HEAD
+=======
+    private String loginId;
+
+    @Column(name = "password")
+    private String password;
+
+>>>>>>> 0b074bb3f7f507079baf9f3d042381ee5f8f55db
     private LocalDateTime userCreateDate;
 
     @Column(nullable = false)
