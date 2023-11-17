@@ -1,34 +1,26 @@
 package com.mily.image;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.stereotype.Component;
 
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
-@AllArgsConstructor(access = PROTECTED)
+@Setter
+@Component
 @NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PROTECTED)
+@DynamicInsert
+@DynamicUpdate
 @SuperBuilder
-@ToString(callSuper = true)
-@Table(
-        uniqueConstraints = @UniqueConstraint(
-                columnNames = {
-                        "relId", "relTypeCode", "typeCode", "type2Code", "fileNo"
-                }
-        ),
-        indexes = {
-                // 특정 그룹의 데이터들을 불러올 때
-                @Index(name = "idx2", columnList = "relTypeCode, typeCode, type2Code")
-        }
-)
 public class Image extends BaseEntity {
     private String relTypeCode;
     private long relId;

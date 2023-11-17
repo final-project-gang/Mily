@@ -1,6 +1,5 @@
 package com.mily.user;
 
-import com.mily.image.Image;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -44,5 +43,5 @@ public class LawyerUser {
     @NotBlank
     private String area;
 
-    private MultipartFile profileImg;
+    private String profileImg;
 }

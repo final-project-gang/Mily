@@ -48,13 +48,13 @@ public class ImageService {
 
         int maxTryCount = 3;
 
-        Image Image = null;
+        Image image = null;
 
         for (int tryCount = 1; tryCount <= maxTryCount; tryCount++) {
             try {
                 if (fileNo == 0) fileNo = genNextFileNo(relTypeCode, relId, typeCode, type2Code);
 
-                Image = Image.builder()
+                image = Image.builder()
                         .relTypeCode(relTypeCode)
                         .relId(relId)
                         .typeCode(typeCode)
@@ -68,7 +68,7 @@ public class ImageService {
                         .fileDir(fileDir)
                         .build();
 
-                imageRepository.save(Image);
+                imageRepository.save(image);
 
                 break;
             } catch (Exception ignored) {
@@ -76,14 +76,14 @@ public class ImageService {
             }
         }
 
-        File file = new File(Image.getFilePath());
+        File file = new File(image.getFilePath());
 
         file.getParentFile().mkdirs();
 
         Ut.file.moveFile(sourceFile, file);
         Ut.file.remove(sourceFile);
 
-        return Image;
+        return image;
     }
 
     private long genNextFileNo(String relTypeCode, Long relId, String typeCode, String type2Code) {

@@ -36,7 +36,7 @@ public class QLawyerUser extends EntityPathBase<LawyerUser> {
 
     public final StringPath officeAddress = createString("officeAddress");
 
-    public final SimplePath<org.springframework.web.multipart.MultipartFile> profileImg = createSimple("profileImg", org.springframework.web.multipart.MultipartFile.class);
+    public final StringPath profileImg = createString("profileImg");
 
     public QLawyerUser(String variable) {
         this(LawyerUser.class, forVariable(variable), INITS);

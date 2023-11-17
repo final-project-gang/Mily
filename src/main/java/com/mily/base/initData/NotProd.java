@@ -36,9 +36,9 @@ public class NotProd {
                 MilyUser milyUser2 = milyUserService.userSignup("testaccount", "qwerasdf", "testaccount", "testaccount@email.com", "88888888888", "1988-05-10").getData();
                 MilyUser milyUser3 = milyUserService.userSignup("oizill5481", "a7586898", "이재준", "oizill5481@icloud.com", "01045702579", "1996-10-05").getData();
                 MilyUser milyUser4 = milyUserService.userSignup("test1111", "test1111", "홍길동", "test1111@email.com", "01011111111", "1996-01-01").getData();
-                milyUserService.lawyerSignup("형사", "안녕하세요 형사전문 변호사입니다.", "대전 둔산동 1111-1111", "1111-1111-1111", "대전", milyUser4, null);
+                milyUserService.lawyerSignup("형사", "안녕하세요 형사전문 변호사입니다.", "대전 둔산동 1111-1111", "1111-1111-1111", "대전", milyUser4,"");
                 MilyUser milyUser5 = milyUserService.userSignup("test2222", "test2222", "홍길동", "test2222@email.com", "01022222222", "1995-01-01").getData();
-                milyUserService.lawyerSignup("민사", "안녕하세요 민사전문 변호사입니다.", "대전 둔산동 2222-2222", "2222-2222-2222", "대전", milyUser5, null);
+                milyUserService.lawyerSignup("민사", "안녕하세요 민사전문 변호사입니다.", "대전 둔산동 2222-2222", "2222-2222-2222", "대전", milyUser5, "");
                 Estimate estimate1 = milyUserService.sevenCreateEstimate("형사", "폭행", "대전", milyUser2);
                 Estimate estimate2 = milyUserService.sevenCreateEstimate("민사", "이혼", "대전", milyUser2);
                 Estimate estimate3 = milyUserService.sixCreateEstimate("형사", "폭행", "대전", milyUser2);

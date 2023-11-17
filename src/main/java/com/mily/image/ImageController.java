@@ -30,8 +30,8 @@ public class ImageController {
 
     @GetMapping("/download/{id}")
     public ResponseEntity<Resource> download(@PathVariable long id, HttpServletRequest request) throws FileNotFoundException {
-        Image Image = ImageService.findById(id).get();
-        String filePath = Image.getFilePath();
+        Image image = ImageService.findById(id).get();
+        String filePath = image.getFilePath();
 
         Resource resource = new InputStreamResource(new FileInputStream(filePath));
 
@@ -39,7 +39,7 @@ public class ImageController {
 
         if (contentType == null) contentType = "application/octet-stream";
 
-        String fileName = Ut.url.encode(Image.getOriginFileName()).replace("%20", " ");
+        String fileName = Ut.url.encode(image.getOriginFileName()).replace("%20", " ");
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")

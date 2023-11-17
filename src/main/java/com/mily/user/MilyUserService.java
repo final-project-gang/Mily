@@ -90,6 +90,11 @@ public class MilyUserService {
         return RsData.of("S-1", "변호사 가입 신청을 완료 했습니다.", lu);
     }
 
+    public RsData<LawyerUser> lawyerSignup(String major, String introduce, String officeAddress, String licenseNumber, String area, MilyUser milyUser, MultipartFile profileImg) {
+        String profileImgFilePath = Ut.file.toFile(profileImg, AppConfig.getTempDirPath());
+        return lawyerSignup(major, introduce, officeAddress, licenseNumber, area, milyUser, profileImgFilePath);
+    }
+
     public Optional<MilyUser> findByUserLoginId(String userLoginId) {
         return milyUserRepository.findByUserLoginId(userLoginId);
     }
