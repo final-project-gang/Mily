@@ -300,17 +300,13 @@ public class MilyUserController {
             List<MilyX> userPosts = milyXService.findByAuthor(isLoginedUser);
             int posts;
             posts = userPosts.size();
-            System.out.println("up : " + userPosts + ", po : " + posts);
 
             model.addAttribute("posts", posts);
             model.addAttribute("userPosts", userPosts);
 
             // 사용자의 포인트 충전 내역
             if (isLoginedUser.getPayments() != null) {
-                System.out.println("payments : " + isLoginedUser.getPayments());
                 model.addAttribute("payments", isLoginedUser.getPayments());
-            } else {
-                System.out.println("없음");
             }
 
             /* 내 정보 페이지가 기본값으로 적용 됨 */
@@ -342,6 +338,23 @@ public class MilyUserController {
         if (isLoginedUser != null) {
             model.addAttribute("user", isLoginedUser);
             return "mily/milyuser/information/member/edit";
+        }
+
+        return "redirect:" + referer;
+    }
+
+    @PostMapping("/mypage/edit")
+    public String doEditInformation(@RequestParam String userEmail, @RequestParam String userPhoneNumber, HttpServletRequest hsr, Model model) {
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+
+        // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
+        String referer = hsr.getHeader("Referer");
+
+        if ( isLoginedUser != null) {
+            milyUserService.editInformation(isLoginedUser, userEmail, userPhoneNumber);
+            model.addAttribute("user", isLoginedUser);
+
+            return "redirect:" + referer;
         }
 
         return "redirect:" + referer;
