@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MilyUserRepository extends JpaRepository<MilyUser, Long> {
-
-
     Optional<MilyUser> findByUserLoginId (String userLoginId);
     Optional<MilyUser> findByUserEmail (String userEmail);
     Optional<MilyUser> findByUserPhoneNumber (String userPhoneNumber);
@@ -27,4 +25,3 @@ public interface MilyUserRepository extends JpaRepository<MilyUser, Long> {
     @Query("UPDATE MilyUser u SET u.password = :newPassword WHERE u.id = :userId")
     int updatePassword(@Param("userId") Long userId, @Param("newPassword") String newPassword);
 }
-
