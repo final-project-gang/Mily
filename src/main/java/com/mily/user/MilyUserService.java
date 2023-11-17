@@ -88,7 +88,6 @@ public class MilyUserService {
     }
 
     public Optional<MilyUser> findByUserEmail(String userEmail) {
-        System.out.println("user33333 : " + milyUserRepository.findByUserEmail(userEmail));
         return milyUserRepository.findByUserEmail(userEmail);
     }
 
@@ -338,5 +337,14 @@ public class MilyUserService {
 
     public void withdraw(MilyUser isLoginedUser) {
         milyUserRepository.delete(isLoginedUser);
+    }
+
+    public MilyUser editInformation(MilyUser isLoginedUser, String email, String phoneNum) {
+        isLoginedUser.setUserEmail(email);
+        isLoginedUser.setUserPhoneNumber(phoneNum);
+
+        milyUserRepository.save(isLoginedUser);
+
+        return isLoginedUser;
     }
 }
