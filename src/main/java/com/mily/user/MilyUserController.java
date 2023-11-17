@@ -135,13 +135,13 @@ public class MilyUserController {
         return milyUserService.checkUserLoginIdDup(userLoginId);
     }
 
-    @GetMapping("checkUserEmailDup")
+    @GetMapping({"checkUserEmailDup", "/mypage/checkUserEmailDup"})
     @ResponseBody
     public RsData checkUserEmail(String userEmail) {
         return milyUserService.checkUserEmailDup(userEmail);
     }
 
-    @GetMapping("checkUserPhoneNumberDup")
+    @GetMapping({"checkUserPhoneNumberDup", "/mypage/checkUserPhoneNumberDup" })
     @ResponseBody
     public RsData checkUserPhoneNumber(String userPhoneNumber) {
         return milyUserService.checkUserPhoneNumberDup(userPhoneNumber);
