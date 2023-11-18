@@ -61,4 +61,8 @@ public class MilyX {
     public void increaseiew() {
         view++;
     }
+
+    public int getCommentsCount() {
+        return this.comments.size();
+    }
 }

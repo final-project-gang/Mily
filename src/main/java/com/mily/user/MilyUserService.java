@@ -171,7 +171,7 @@ public class MilyUserService {
     public boolean isAdmin(String userLoginId) {
         return milyUserRepository.findByUserLoginId(userLoginId)
                 .map(MilyUser::getUserLoginId)
-                .filter(loginId -> loginId.equals("admin123"))
+                .filter(loginId -> loginId.equals("admin999"))
                 .isPresent();
     }
 
@@ -347,4 +347,6 @@ public class MilyUserService {
 
         return isLoginedUser;
     }
+
+    public List<MilyUser> findAll() { return milyUserRepository.findAll(); }
 }

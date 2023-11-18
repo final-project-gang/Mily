@@ -138,4 +138,8 @@ public class MilyXService {
 
         return new RsData<>("S-1", "게시물 생성 완료", mx);
     }
+
+    public List<MilyX> findAll() {
+        return mxr.findAll();
+    }
 }
