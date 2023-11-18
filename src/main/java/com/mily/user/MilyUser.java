@@ -73,7 +73,7 @@ public class MilyUser {
     public LawyerUser lawyerUser;
 
     public boolean isAdmin() {
-        return "admin123".equals(userLoginId);
+        return "admin999".equals(userLoginId);
     }
 
     public List<? extends GrantedAuthority> getGrantedAuthorities() {

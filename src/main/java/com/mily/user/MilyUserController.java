@@ -7,6 +7,8 @@ import com.mily.article.milyx.category.entity.FirstCategory;
 import com.mily.base.rq.Rq;
 import com.mily.base.rsData.RsData;
 import com.mily.estimate.Estimate;
+import com.mily.payment.Payment;
+import com.mily.payment.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -34,6 +36,7 @@ public class MilyUserController {
     private final MilyUserService milyUserService;
     private final CategoryService categoryService;
     private final MilyXService milyXService;
+    private final PaymentService paymentService;
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
@@ -178,23 +181,15 @@ public class MilyUserController {
         private String area;
     }
 
-    @GetMapping("/waitLawyerList")
-    public String getWaitingLawyerList(Principal principal, Model model) {
-        String userLoginId = principal.getName();
-        if (milyUserService.isAdmin(userLoginId)) {
-            List<MilyUser> waitingLawyers = milyUserService.getWaitingLawyerList();
-            model.addAttribute("waitingLawyers", waitingLawyers);
-            return "/mily/waiting_lawyer_list";
-        } else {
-            return "mily_main";
-        }
-    }
-
     @PostMapping("/approveLawyer/{id}")
-    public String approveLawyer(@PathVariable int id, Principal principal) {
+    public String approveLawyer(@PathVariable int id, Principal principal, HttpServletRequest hsr) {
+        // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
+        String referer = hsr.getHeader("Referer");
+
         String adminLoginId = principal.getName();
         milyUserService.approveLawyer(id, adminLoginId);
-        return "redirect:/user/waitLawyerList";
+
+        return "redirect:" + referer;
     }
 
     // 아이디 찾기 페이지를 보여주는 핸들러
@@ -298,8 +293,7 @@ public class MilyUserController {
 
             // 사용자가 작성 한 글
             List<MilyX> userPosts = milyXService.findByAuthor(isLoginedUser);
-            int posts;
-            posts = userPosts.size();
+            int posts = userPosts.size();
 
             model.addAttribute("posts", posts);
             model.addAttribute("userPosts", userPosts);
@@ -320,7 +314,34 @@ public class MilyUserController {
 
         // 현재 로그인 된 사용자의 권한이 "admin"일 때
         if (isLoginedUser.getRole().equals("admin")) {
-            model.addAttribute("user", isLoginedUser);
+            List<MilyUser> allUsers = milyUserService.findAll();
+            int users = allUsers.size();
+
+            model.addAttribute("users", users);
+            model.addAttribute("userList", allUsers);
+
+            List<MilyUser> waitingLawyers = milyUserService.getWaitingLawyerList();
+            int waiting = waitingLawyers.size();
+
+            model.addAttribute("waiting", waiting);
+            model.addAttribute("waitingLawyers", waitingLawyers);
+
+            List<Payment> allPayments = paymentService.findAll();
+            int payments = allPayments.size();
+
+            if (!allPayments.isEmpty()) {
+                model.addAttribute("payments", payments);
+                model.addAttribute("paymentsList", allPayments);
+            }
+
+            List<MilyX> allMilyX = milyXService.findAll();
+            int milyXs = allMilyX.size();
+
+            if (!allMilyX.isEmpty()) {
+                model.addAttribute("milyXs", milyXs);
+                model.addAttribute("milyXList", allMilyX);
+            }
+
             return "/mily/milyuser/information/admin/admin_dashboard";
         }
 
@@ -385,24 +406,11 @@ public class MilyUserController {
         return "redirect:/user/mypage/edit";
     }
 
-    @GetMapping("/mypage/edit/other")
-    public String myPayments(HttpServletRequest hsr, Model model) {
-        MilyUser isLoginedUser = milyUserService.getCurrentUser();
-
-        // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
-        String referer = hsr.getHeader("Referer");
-
-        return "mily/milyuser/information/member/payments";
-//        return "redirect:" + referer;
-    }
-
     /* 비밀번호 체크 */
     @PostMapping("/checkpassword")
     public ResponseEntity<Boolean> checkPassword(@RequestBody Map<String, String> payload) {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
         String rawPassword = payload.get("password");
-
-        boolean passwordMatches = milyUserService.checkPassword(isLoginedUser, rawPassword);
 
         return ResponseEntity.ok(milyUserService.checkPassword(isLoginedUser, rawPassword));
     }

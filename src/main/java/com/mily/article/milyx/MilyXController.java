@@ -8,6 +8,7 @@ import com.mily.base.rq.Rq;
 import com.mily.base.rsData.RsData;
 import com.mily.user.MilyUser;
 import com.mily.user.MilyUserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Collections;
 import java.util.List;
@@ -172,12 +171,14 @@ public class MilyXController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/delete/{id}")
-    public RedirectView doDelete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String doDelete(@PathVariable Long id, HttpServletRequest hsr) {
         MilyX mx = milyXService.findById(id).orElse(null);
 
+        // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
+        String referer = hsr.getHeader("Referer");
+
         if (mx == null) {
-            redirectAttributes.addFlashAttribute("message", "게시물을 찾을 수 없습니다.");
-            return new RedirectView("/milyx", true);
+            return "redirect:/milyx/detail" + id;
         }
 
         // 현재 로그인 한 유저의 정보
@@ -186,21 +187,21 @@ public class MilyXController {
         // 삭제하려는 게시물의 정보 찾아오기
         MilyX milyX = milyXService.findById(id).get();
 
-        // 삭제하려는 게시물의 작성자가 맞는 지 체크
-        if (milyX.getAuthor().getId() != isLoginedUser.getId()) {
-            redirectAttributes.addFlashAttribute("message", "게시물 수정 권한이 없습니다.");
-            return new RedirectView("/milyx/detail/" + id, true);
-        }
+        // 관리자인 지 아닌 지 체크
+        if (!isLoginedUser.getUserLoginId().equals("admin999")) {
+            // 삭제하려는 게시물의 작성자가 맞는 지 체크
+            if (milyX.getAuthor().getId() != isLoginedUser.getId()) {
+                return "redirect:/milyx/detail" + id;
+            }
 
-        // 삭제하려는 게시물의 댓글 유무 확인
-        if (!milyX.getComments().isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "게시물에 댓글이 있어서 삭제할 수 없습니다.");
-            return new RedirectView("/milyx/detail/" + id, true);
+            // 삭제하려는 게시물의 댓글 유무 확인
+            if (!milyX.getComments().isEmpty()) {
+                return "redirect:/milyx/detail" + id;
+            }
         }
 
         milyXService.delete(id);
 
-        redirectAttributes.addFlashAttribute("message", "게시물 삭제 완료");
-        return new RedirectView("/milyx", true);
+        return "redirect:" + referer;
     }
 }
