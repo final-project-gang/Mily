@@ -1,6 +1,10 @@
 server:
   port: 8090
 spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: ${spring.servlet.multipart.max-file-size}
   profiles:
     include: secret
   devtools:
@@ -32,4 +36,10 @@ spring:
           auth: true
           starttls:
             enable: true
-
+custom:
+  tempDirPath: c:/test/temp/mily/temp
+  site:
+    name: 밀리
+    baseUrl: "http://localhost:8090"
+  image:
+    dirPath: c:/test/temp/mily

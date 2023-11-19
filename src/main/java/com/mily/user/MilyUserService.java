@@ -1,9 +1,13 @@
 package com.mily.user;
 
+import com.mily.image.Image;
 import com.mily.Email.EmailService;
 import com.mily.base.rsData.RsData;
 import com.mily.estimate.Estimate;
 import com.mily.estimate.EstimateRepository;
+import com.mily.image.AppConfig;
+import com.mily.image.ImageService;
+import com.mily.reservation.Reservation;
 import com.mily.standard.util.Ut;
 import jakarta.transaction.Transactional;
 
@@ -12,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,6 +30,7 @@ public class MilyUserService {
     private final LawyerUserRepository lawyerUserRepository;
     private final EstimateRepository estimateRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ImageService imageService;
 
     @Transactional
     public RsData<MilyUser> userSignup(String userLoginId, String userPassword, String userName, String userEmail, String userPhoneNumber, String userDateOfBirth) {
@@ -62,7 +68,7 @@ public class MilyUserService {
     }
 
     @Transactional
-    public RsData<LawyerUser> lawyerSignup(String major, String introduce, String officeAddress, String licenseNumber, String area, MilyUser milyUser) {
+    public RsData<LawyerUser> lawyerSignup(String major, String introduce, String officeAddress, String licenseNumber, String area, MilyUser milyUser, String profileImgFilePath) {
         milyUser.setRole("waiting");
         milyUser = milyUserRepository.save(milyUser);
 
@@ -80,7 +86,16 @@ public class MilyUserService {
 
         milyUser = milyUserRepository.save(milyUser);
 
+        if (profileImgFilePath != null) saveProfileImg(milyUser, profileImgFilePath);
+
+        System.out.println(profileImgFilePath);
+
         return RsData.of("S-1", "변호사 가입 신청을 완료 했습니다.", lu);
+    }
+
+    public RsData<LawyerUser> lawyerSignup(String major, String introduce, String officeAddress, String licenseNumber, String area, MilyUser milyUser, MultipartFile profileImg) {
+        String profileImgFilePath = Ut.file.toFile(profileImg, AppConfig.getTempDirPath());
+        return lawyerSignup(major, introduce, officeAddress, licenseNumber, area, milyUser, profileImgFilePath);
     }
 
     public Optional<MilyUser> findByUserLoginId(String userLoginId) {
@@ -218,10 +233,13 @@ public class MilyUserService {
 
     @Transactional
     public void sendTempPasswordToEmail(MilyUser member) {
+        emailService.send(member.getUserEmail(), "임시 비밀번호 입니다.", "임시 비밀 번호 : " + getTempPassword());
+        //DB에서 비밀번호 업데이트 해서 바꿔주는 걸로 로직 진행
+        // 그값을 여기에다가 설정해서 넣는다
         // 임시 비밀번호 생성
         String tempPassword = getTempPassword();
         // 사용자 이메일로 임시 비밀번호 전송
-        emailService.send(member.getEmail(), "임시 비밀번호 입니다.", "임시 비밀 번호 : " + getTempPassword());
+        emailService.send(member.getUserEmail(), "임시 비밀번호 입니다.", "임시 비밀 번호 : " + getTempPassword());
 
         // 데이터베이스에서 사용자의 비밀번호를 임시 비밀번호로 업데이트
         updateUserPassword(member.getId(), tempPassword);
@@ -230,7 +248,7 @@ public class MilyUserService {
     @Transactional
     public void updateUserPassword(Long userId, String tempPassword) {
         // 데이터베이스에서 특정 사용자의 비밀번호를 주어진 임시 비밀번호로 업데이트
-        milyUserRepository.updatePassword(userId, tempPassword);
+        milyUserRepository.updateUserPassword(userId, tempPassword);
     }
 
 
@@ -307,6 +325,10 @@ public class MilyUserService {
         return estimateRepository.findByCreateDateGreaterThanEqualAndArea(sevenDaysAgo, area);
     }
 
+    public Reservation reserve() {
+        return null;
+    }
+
     public String maskEmail (String email) {
         int atIndex = email.indexOf("@");
 
@@ -330,6 +352,20 @@ public class MilyUserService {
         return localPart + "@" + domainPart;
     }
 
+    private void saveProfileImg(MilyUser milyUser, MultipartFile profileImg) {
+        if (profileImg == null) return;
+        if (profileImg.isEmpty()) return;
+
+        String profileImgFilePath = Ut.file.toFile(profileImg, AppConfig.getTempDirPath());
+
+        saveProfileImg(milyUser, profileImgFilePath);
+    }
+
+    private void saveProfileImg(MilyUser milyUser, String profileImgFilePath) {
+        if (Ut.str.isBlank(profileImgFilePath)) return;
+        imageService.save(milyUser.getUserLoginId(), milyUser.getId(), "common", "profileImg", 1, profileImgFilePath);
+    }
+
     public void editPassword(MilyUser isLoginedUser, String passwordConfirm) {
         isLoginedUser.setUserPassword(passwordEncoder.encode(passwordConfirm));
         milyUserRepository.save(isLoginedUser);
@@ -346,6 +382,19 @@ public class MilyUserService {
         milyUserRepository.save(isLoginedUser);
 
         return isLoginedUser;
+    }
+
+    public String getProfileImgUrl(MilyUser milyUser) {
+        return Optional.ofNullable(milyUser)
+                .flatMap(this::findProfileImgUrl)
+                .orElse("https://placehold.co/30x30?text=UU");
+    }
+
+    public Optional<String> findProfileImgUrl(MilyUser milyUser) {
+        return imageService.findBy(
+                        milyUser.getUserLoginId(), milyUser.getId(), "common", "profileImg", 1
+                )
+                .map(Image::getUrl);
     }
 
     public List<MilyUser> findAll() { return milyUserRepository.findAll(); }
