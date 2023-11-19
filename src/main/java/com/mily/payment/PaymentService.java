@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -29,5 +30,25 @@ public class PaymentService {
 
         payment = paymentRepository.save(payment);
         return RsData.of("S-1", "결제 성공", payment);
+    }
+
+    public RsData<Payment> dummyPayment (String orderId, MilyUser milyUser, int point, String orderName, Long amount) {
+        LocalDateTime now = LocalDateTime.now();
+
+        Payment payment = Payment.builder()
+                .orderId(orderId)
+                .orderDate(now)
+                .orderName(orderName)
+                .customerName(milyUser)
+                .amount(amount)
+                .milyPoint(point)
+                .build();
+
+        payment = paymentRepository.save(payment);
+        return RsData.of("S-1", "결제 성공", payment);
+    }
+
+    public List<Payment> findAll() {
+        return paymentRepository.findAll();
     }
 }

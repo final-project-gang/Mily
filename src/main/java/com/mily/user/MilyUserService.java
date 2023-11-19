@@ -86,8 +86,6 @@ public class MilyUserService {
 
         milyUser = milyUserRepository.save(milyUser);
 
-        System.out.println("2222222222222222222222222222222222");
-
         if (profileImgFilePath != null) saveProfileImg(milyUser, profileImgFilePath);
 
         System.out.println(profileImgFilePath);
@@ -97,7 +95,6 @@ public class MilyUserService {
 
     public RsData<LawyerUser> lawyerSignup(String major, String introduce, String officeAddress, String licenseNumber, String area, MilyUser milyUser, MultipartFile profileImg) {
         String profileImgFilePath = Ut.file.toFile(profileImg, AppConfig.getTempDirPath());
-        System.out.println("111111111111111111111111111111 : " + profileImgFilePath);
         return lawyerSignup(major, introduce, officeAddress, licenseNumber, area, milyUser, profileImgFilePath);
     }
 
@@ -189,7 +186,7 @@ public class MilyUserService {
     public boolean isAdmin(String userLoginId) {
         return milyUserRepository.findByUserLoginId(userLoginId)
                 .map(MilyUser::getUserLoginId)
-                .filter(loginId -> loginId.equals("admin123"))
+                .filter(loginId -> loginId.equals("admin999"))
                 .isPresent();
     }
 
@@ -365,9 +362,7 @@ public class MilyUserService {
     }
 
     private void saveProfileImg(MilyUser milyUser, String profileImgFilePath) {
-        System.out.println("333333333333333333333333333333333 : " + profileImgFilePath);
         if (Ut.str.isBlank(profileImgFilePath)) return;
-        System.out.println("444444444444444444444444444444444");
         imageService.save(milyUser.getUserLoginId(), milyUser.getId(), "common", "profileImg", 1, profileImgFilePath);
     }
 
@@ -401,4 +396,6 @@ public class MilyUserService {
                 )
                 .map(Image::getUrl);
     }
+
+    public List<MilyUser> findAll() { return milyUserRepository.findAll(); }
 }

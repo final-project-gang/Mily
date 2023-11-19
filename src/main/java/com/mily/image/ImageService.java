@@ -72,7 +72,7 @@ public class ImageService {
 
                 break;
             } catch (Exception ignore) {
-                System.out.println("ignore exception method save in ImageService");
+
             }
         }
 
