@@ -22,13 +22,13 @@ public class QReservation extends EntityPathBase<Reservation> {
 
     public static final QReservation reservation = new QReservation("reservation");
 
-    public final com.mily.user.QLawyerUser acceptor;
-
-    public final DateTimePath<java.time.LocalDateTime> dateTime = createDateTime("dateTime", java.time.LocalDateTime.class);
-
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final com.mily.user.QLawyerUser lawyerUser;
+
     public final com.mily.user.QMilyUser milyUser;
+
+    public final DateTimePath<java.time.LocalDateTime> reservationTime = createDateTime("reservationTime", java.time.LocalDateTime.class);
 
     public QReservation(String variable) {
         this(Reservation.class, forVariable(variable), INITS);
@@ -48,7 +48,7 @@ public class QReservation extends EntityPathBase<Reservation> {
 
     public QReservation(Class<? extends Reservation> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.acceptor = inits.isInitialized("acceptor") ? new com.mily.user.QLawyerUser(forProperty("acceptor"), inits.get("acceptor")) : null;
+        this.lawyerUser = inits.isInitialized("lawyerUser") ? new com.mily.user.QLawyerUser(forProperty("lawyerUser"), inits.get("lawyerUser")) : null;
         this.milyUser = inits.isInitialized("milyUser") ? new com.mily.user.QMilyUser(forProperty("milyUser"), inits.get("milyUser")) : null;
     }
 

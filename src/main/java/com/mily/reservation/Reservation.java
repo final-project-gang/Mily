@@ -1,40 +1,30 @@
 package com.mily.reservation;
 
+import java.time.LocalDateTime;
 import com.mily.user.LawyerUser;
 import com.mily.user.MilyUser;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-
-import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
 @Setter
 @Component
-@NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PROTECTED)
 @DynamicInsert
 @DynamicUpdate
-@SuperBuilder
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private LocalDateTime dateTime;
+    private LocalDateTime reservationTime;
 
     @ManyToOne
     private MilyUser milyUser;
 
     @ManyToOne
-    private LawyerUser acceptor;
+    private LawyerUser lawyerUser;
 }

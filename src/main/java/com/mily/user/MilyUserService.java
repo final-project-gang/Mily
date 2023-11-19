@@ -301,6 +301,24 @@ public class MilyUserService {
         }
     }
 
+    public MilyUser getLawyer(Long id) {
+        Optional<MilyUser> lawyerUser = milyUserRepository.findById(id);
+        if(lawyerUser.isPresent()) {
+            return lawyerUser.get();
+        }
+        else {
+            throw new Ut.DataNotFoundException("변호사 정보가 없습니다.");
+        }
+    }
+
+    public LawyerUser isLawyer(MilyUser milyUser) {
+        if(milyUser.getRole().equals("approve")) {
+            return milyUser.lawyerUser;
+        } else {
+            throw new Ut.DataNotFoundException("변호사 정보가 없습니다.");
+        }
+    }
+
     public List<Estimate> getEstimate(LocalDateTime localDateTime, String category, String area) {
         List<Estimate> estimate = findDataWithin7DaysByLocationAndCategory(area, category);
         if (!estimate.isEmpty()) {
@@ -323,10 +341,6 @@ public class MilyUserService {
     public List<Estimate> findDataWithin7DaysByLocation(String area) {
         LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
         return estimateRepository.findByCreateDateGreaterThanEqualAndArea(sevenDaysAgo, area);
-    }
-
-    public Reservation reserve() {
-        return null;
     }
 
     public String maskEmail (String email) {
