@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.rmi.NotBoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,6 @@ public class ImageService {
     @Transactional
     public Image save(String relTypeCode, Long relId, String typeCode, String type2Code, long fileNo, String sourceFile) {
         if (!Ut.file.exists(sourceFile)) return null;
-
         // fileNo 가 0 이면, 이 파일은 로직상 무조건 새 파일이다.
         if (fileNo > 0) remove(relTypeCode, relId, typeCode, type2Code, fileNo);
 
@@ -71,8 +71,8 @@ public class ImageService {
                 imageRepository.save(image);
 
                 break;
-            } catch (Exception ignored) {
-
+            } catch (Exception ignore) {
+                System.out.println("ignore exception method save in ImageService");
             }
         }
 

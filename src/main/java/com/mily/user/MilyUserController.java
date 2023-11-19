@@ -91,6 +91,9 @@ public class MilyUserController {
 
         MilyUser milyUser = signupRs1.getData();
 
+        System.out.println(lawyerSignupForm);
+        System.out.println(lawyerSignupForm.getProfileImg());
+
         RsData<LawyerUser> signupRs2 = milyUserService.lawyerSignup(
                 lawyerSignupForm.getMajor(),
                 lawyerSignupForm.getIntroduce(),
@@ -462,5 +465,11 @@ public class MilyUserController {
         }
 
         return "redirect:" + referer;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/me")
+    public String showMe() {
+        return "/mily/milyuser/show_lawyer_info";
     }
 }

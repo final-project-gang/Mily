@@ -36,8 +36,6 @@ public class QLawyerUser extends EntityPathBase<LawyerUser> {
 
     public final StringPath officeAddress = createString("officeAddress");
 
-    public final StringPath profileImg = createString("profileImg");
-
     public QLawyerUser(String variable) {
         this(LawyerUser.class, forVariable(variable), INITS);
     }

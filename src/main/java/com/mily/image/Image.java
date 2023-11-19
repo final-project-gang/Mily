@@ -42,10 +42,6 @@ public class Image extends BaseEntity {
         return "/gen/" + getFileDir() + "/" + getFileName();
     }
 
-    public String getDownloadUrl() {
-        return "/usr/genFile/download/" + getId();
-    }
-
     public String getFilePath() {
         return AppConfig.getGenFileDirPath() + "/" + getFileDir() + "/" + getFileName();
     }

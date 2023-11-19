@@ -145,10 +145,6 @@ public class Ut {
             return new File(file).exists();
         }
 
-        public static boolean exists(MultipartFile file) {
-            return file != null && !file.isEmpty();
-        }
-
         public static String tempCopy(String file) {
             String tempPath = AppConfig.getTempDirPath() + "/" + getFileName(file);
             copy(file, tempPath);

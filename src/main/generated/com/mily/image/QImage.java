@@ -24,8 +24,6 @@ public class QImage extends EntityPathBase<Image> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createDate = _super.createDate;
 
-    public final StringPath downloadUrl = createString("downloadUrl");
-
     public final StringPath fileDir = createString("fileDir");
 
     public final StringPath fileExt = createString("fileExt");

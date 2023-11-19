@@ -42,6 +42,4 @@ public class LawyerUser {
 
     @NotBlank
     private String area;
-
-    private String profileImg;
 }
