@@ -49,11 +49,6 @@ public class MilyUser {
 
     private String userDateOfBirth;
 
-    private String loginId;
-
-    @Column(name = "password")
-    private String password;
-
     private LocalDateTime userCreateDate;
 
     @Column(nullable = false)
@@ -73,7 +68,7 @@ public class MilyUser {
     public LawyerUser lawyerUser;
 
     public boolean isAdmin() {
-        return "admin123".equals(userLoginId);
+        return "admin999".equals(userLoginId);
     }
 
     public List<? extends GrantedAuthority> getGrantedAuthorities() {
@@ -87,14 +82,6 @@ public class MilyUser {
             grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
         }
         return grantedAuthorities;
-    }
-
-    public String getUserLoginId() {
-        return userLoginId;
-    }
-
-    public String getEmail() {
-        return userEmail;
     }
 }
 

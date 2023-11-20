@@ -26,11 +26,7 @@ public class QMilyUser extends EntityPathBase<MilyUser> {
 
     public final QLawyerUser lawyerUser;
 
-    public final StringPath loginId = createString("loginId");
-
     public final NumberPath<Integer> milyPoint = createNumber("milyPoint", Integer.class);
-
-    public final StringPath password = createString("password");
 
     public final ListPath<com.mily.payment.Payment, com.mily.payment.QPayment> payments = this.<com.mily.payment.Payment, com.mily.payment.QPayment>createList("payments", com.mily.payment.Payment.class, com.mily.payment.QPayment.class, PathInits.DIRECT2);
 

@@ -5,6 +5,7 @@ import com.mily.article.milyx.category.CategoryService;
 import com.mily.article.milyx.category.entity.FirstCategory;
 import com.mily.article.milyx.category.entity.SecondCategory;
 import com.mily.estimate.Estimate;
+import com.mily.payment.PaymentService;
 import com.mily.user.MilyUser;
 import com.mily.user.MilyUserRepository;
 import com.mily.user.MilyUserService;
@@ -24,25 +25,33 @@ public class NotProd {
     private final MilyUserRepository milyUserRepository;
     private final CategoryService categoryService;
     private final MilyXService milyXService;
+    private final PaymentService paymentService;
     private FirstCategory fc;
     @Bean
     public ApplicationRunner init() {
         return args -> {
-            Optional<MilyUser> mu = milyUserService.findByUserLoginId("admin123");
+            Optional<MilyUser> mu = milyUserService.findByUserLoginId("admin999");
             if (mu.isEmpty()) {
-                MilyUser milyUser1 = milyUserService.userSignup("admin123", "9a9a9a9a", "administrator", "admin123@email.com", "99999999999", "1975-01-21").getData();
+                MilyUser milyUser1 = milyUserService.userSignup("admin999", "qweasdzxc", "administrator", "admin999@admin.com", "01099999999", "1975-01-21").getData();
                 milyUser1.setRole("admin");
                 milyUserRepository.save(milyUser1);
-                MilyUser milyUser2 = milyUserService.userSignup("testaccount", "qwerasdf", "testaccount", "testaccount@email.com", "88888888888", "1988-05-10").getData();
+                MilyUser milyUser2 = milyUserService.userSignup("leewowns1005", "a7586898", "이재준", "leewowns1005@naver.com", "01020105481", "1996-10-05").getData();
                 MilyUser milyUser3 = milyUserService.userSignup("oizill5481", "a7586898", "이재준", "oizill5481@icloud.com", "01045702579", "1996-10-05").getData();
                 MilyUser milyUser4 = milyUserService.userSignup("test1111", "test1111", "홍길동", "test1111@email.com", "01011111111", "1996-01-01").getData();
-                milyUserService.lawyerSignup("형사", "안녕하세요 형사전문 변호사입니다.", "대전 둔산동 1111-1111", "1111-1111-1111", "대전", milyUser4);
+                milyUserService.lawyerSignup("형사", "안녕하세요 형사전문 변호사입니다.", "대전 둔산동 1111-1111", "1111-1111-1111", "대전", milyUser4,"");
+                milyUser4.setRole("approve");
+                milyUserRepository.save(milyUser4);
                 MilyUser milyUser5 = milyUserService.userSignup("test2222", "test2222", "홍길동", "test2222@email.com", "01022222222", "1995-01-01").getData();
-                milyUserService.lawyerSignup("민사", "안녕하세요 민사전문 변호사입니다.", "대전 둔산동 2222-2222", "2222-2222-2222", "대전", milyUser5);
+                milyUserService.lawyerSignup("민사", "안녕하세요 민사전문 변호사입니다.", "대전 둔산동 2222-2222", "2222-2222-2222", "대전", milyUser5, "");
+
                 Estimate estimate1 = milyUserService.sevenCreateEstimate("형사", "폭행", "대전", milyUser2);
                 Estimate estimate2 = milyUserService.sevenCreateEstimate("민사", "이혼", "대전", milyUser2);
                 Estimate estimate3 = milyUserService.sixCreateEstimate("형사", "폭행", "대전", milyUser2);
                 Estimate estimate4 = milyUserService.sixCreateEstimate("민사", "이혼", "대전", milyUser2);
+
+                paymentService.dummyPayment("161251211", milyUser2, 300, "밀리 포인트 300", (long) 4800);
+                paymentService.dummyPayment("161251212", milyUser3, 50, "밀리 포인트 50", (long) 900);
+                paymentService.dummyPayment("161251213", milyUser3, 100, "밀리 포인트 100", (long) 1700);
 
                 categoryService.addFC("성 범죄");
                 categoryService.addFC("재산 범죄");

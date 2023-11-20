@@ -178,4 +178,8 @@ public class Rq {
     public String redirect(String url, String msg) {
         return "redirect:" + Ut.url.modifyQueryParam(url, "msg", Ut.url.encode(msg));
     }
+
+    public String getProfileImgUrl() {
+        return milyUserService.getProfileImgUrl(getMilyUser());
+    }
 }

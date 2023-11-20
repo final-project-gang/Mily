@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ko" data-theme="winter">
 
 <!-- themes list -->
@@ -54,8 +54,18 @@
                         <i class="fa-solid fa-user-plus"></i>회원가입</a>
                 </li>
             </div>
-            <button class="btn btn-primary btn-jelly" style="--tw-bg-opacity: 1; background-color: rgba(147, 197, 253, var(--tw-bg-opacity)); border : none;"><a href="/user/lawyerSignup"> 변호사 가입 </a>
-            </button>
+            <div class="mx-5">
+                <li th:if="${@rq.logout}">
+                    <a href="/user/lawyerSignup">
+                        <i class="fa-solid fa-user-plus"></i>변호사 회원가입</a>
+                </li>
+            </div>
+            <div class="mx-5">
+                <li th:if="${@rq.login}">
+                    <a href="/user/logout">
+                        <i class="fa-solid fa-user-plus"></i>로그아웃</a>
+                </li>
+            </div>
         </div>
     </header>
 

@@ -22,6 +22,6 @@ public interface MilyUserRepository extends JpaRepository<MilyUser, Long> {
     List<MilyUser> findByRole(String role);
 
     @Modifying
-    @Query("UPDATE MilyUser u SET u.password = :newPassword WHERE u.id = :userId")
-    int updatePassword(@Param("userId") Long userId, @Param("newPassword") String newPassword);
+    @Query("UPDATE MilyUser u SET u.userPassword = :newUserPassword WHERE u.id = :userId")
+    int updateUserPassword(@Param("userId") Long userId, @Param("newUserPassword") String newUserPassword);
 }
