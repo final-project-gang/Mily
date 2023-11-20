@@ -5,16 +5,18 @@ import com.mily.user.LawyerUser;
 import com.mily.user.MilyUser;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
+import lombok.experimental.SuperBuilder;
 import org.springframework.stereotype.Component;
+
+import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
 @Setter
 @Component
-@DynamicInsert
-@DynamicUpdate
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PROTECTED)
+@SuperBuilder
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

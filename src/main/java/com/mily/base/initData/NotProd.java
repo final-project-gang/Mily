@@ -41,7 +41,7 @@ public class NotProd {
                 milyUserService.lawyerSignup("형사", "안녕하세요 형사전문 변호사입니다.", "대전 둔산동 1111-1111", "1111-1111-1111", "대전", milyUser4,"");
                 milyUser4.setRole("approve");
                 milyUserRepository.save(milyUser4);
-                MilyUser milyUser5 = milyUserService.userSignup("test2222", "test2222", "홍길동", "test2222@email.com", "01022222222", "1995-01-01").getData();
+                MilyUser milyUser5 = milyUserService.userSignup("test2222", "test2222", "동길홍", "test2222@email.com", "01022222222", "1995-01-01").getData();
                 milyUserService.lawyerSignup("민사", "안녕하세요 민사전문 변호사입니다.", "대전 둔산동 2222-2222", "2222-2222-2222", "대전", milyUser5, "");
 
                 Estimate estimate1 = milyUserService.sevenCreateEstimate("형사", "폭행", "대전", milyUser2);

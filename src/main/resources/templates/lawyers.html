@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>변호사 목록</title>
+</head>
+<body>
+<h1>변호사 목록</h1>
+<ul>
+  <th:block th:each="lawyer : ${lawyers}">
+    <li>
+      <a th:href="@{/reservation/select_date(lawyerUserId=${lawyer.id})}" th:text="${lawyer.milyUser.userName}"></a>
+    </li>
+  </th:block>
+</ul>
+</body>
+</html>

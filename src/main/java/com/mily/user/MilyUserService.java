@@ -219,10 +219,6 @@ public class MilyUserService {
         }
     }
 
-    public Optional<MilyUser> findUserByEmail(String userEmail) {
-        return findByUserEmail(userEmail);
-    }
-
     public MilyUser findUserLoginIdByEmail(String userEmail) {
         return milyUserRepository.findUserLoginIdByEmail(userEmail);
     }
@@ -412,4 +408,8 @@ public class MilyUserService {
     }
 
     public List<MilyUser> findAll() { return milyUserRepository.findAll(); }
+
+    public List<LawyerUser> findAllLawyer() {
+        return lawyerUserRepository.findAll();
+    }
 }
