@@ -67,4 +67,8 @@ public class MilyXCommentService {
 
         return new RsData<>("S-1", "댓글 삭제 완료", mxc);
     }
+
+    public List<MilyXComment> findAuthorId(long id) {
+        return milyXCommentRepository.findByAuthorId(id);
+    }
 }

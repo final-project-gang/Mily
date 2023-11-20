@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface MilyXCommentRepository extends JpaRepository<MilyXComment, Long> {
     List<MilyXComment> findByMilyX (MilyX milyX);
+
+    List<MilyXComment> findByAuthorId(long id);
 }
