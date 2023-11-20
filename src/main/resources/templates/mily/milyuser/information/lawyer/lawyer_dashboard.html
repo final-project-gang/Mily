@@ -1,15 +1,13 @@
+<html layout:decorate="@{mily/common/layout}" lang="ko">
 <head>
     <title>내 정보</title>
 </head>
 
 <body>
 
-<div class="flex-1 flex items-center justify-center" layout:fragment="content">
-    <div class="max-w-2xl w-full px-4">
-        <h1 class="mb-4">
-            <i class="fa-solid fa-user"></i>
-            내 정보
-        </h1>
+<section layout:fragment="content">
+    <div class="flex justify-center">
+        <i class="fa-solid fa-user">내 정보</i>
 
         <div class="card bg-base-100 shadow-xl">
 
@@ -26,8 +24,34 @@
             </div>
         </div>
     </div>
-</div>
+
+    <div style="display:flex; margin: 20px 0 10px 0;">
+        <span th:if="${commentsCount < 0}" th:text="'작성한 답변이 없습니다.'"></span>
+        <span th:if="${commentsCount > 0}" th:text="'내가 쓴 답변 ' + ${commentsCount} + '개'"></span>
+    </div>
+
+    <div class="flex" style="flex-direction: column">
+        <table style="border: 1px solid #c8c8c8;">
+            <thead>
+            <tr>
+                <th style="border-right: 1px solid #c8c8c8;">번호</th>
+                <th style="border-right: 1px solid #c8c8c8;">작성일시</th>
+                <th style="border-right: 1px solid #c8c8c8;">내용</th>
+                <th>채택 여부</th>
+            </tr>
+            </thead>
+
+            <tbody style="border: 1px solid #c8c8c8; text-align: center;">
+            <tr th:each="comments: ${comments}">
+                <td th:text="${comments.id}" style="border-right: 1px solid #c8c8c8;"></td>
+                <td th:text="${#temporals.format(comments.createDate, 'yyyy-MM-dd, HH:SS')}" style="border-right: 1px solid #c8c8c8;"></td>
+                <td th:text="${comments.body}" style="border-right: 1px solid #c8c8c8;"></td>
+                <td th:text="${comments.id}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
 
 </body>
-
 </html>
