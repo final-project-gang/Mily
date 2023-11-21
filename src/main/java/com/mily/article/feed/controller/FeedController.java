@@ -29,9 +29,15 @@ public class FeedController {
 
         model.addAttribute("feed", feeds);
 
-        MilyUser isLoginedUser = milyUserService.getCurrentUser();
-
-        return "mily/feed/feed_index";
+        try {
+            MilyUser isLoginedUser = milyUserService.getCurrentUser();
+            if (isLoginedUser != null) {
+                model.addAttribute("user", isLoginedUser);
+            }
+            return "mily/feed/feed_index";
+        } catch (NullPointerException e) {
+            return "mily/feed/feed_index";
+        }
     }
 
     @PreAuthorize("isAuthenticated()")

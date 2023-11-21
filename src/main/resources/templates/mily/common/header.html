@@ -28,6 +28,17 @@
             <div th:if="${@rq.logout}" class="hover:text-blue-400">
                 <a href="/user/signup">회원가입</a>
             </div>
+            <div th:if="${@rq.login}" class="mr-6 hover:text-blue-400">
+                <a th:href="@{/payment}">
+                    <span th:text="${user.milyPoint}"></span>
+                </a>
+            </div>
+            <div th:if="${@rq.login}" class="mr-6 hover:text-blue-400">
+                <a href="/user/logout">로그아웃</a>
+            </div>
+            <div th:if="${@rq.login}" class="hover:text-blue-400">
+                <a href="/user/mypage/info">마이 페이지</a>
+            </div>
         </div>
     </div>
 
