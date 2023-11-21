@@ -8,5 +8,6 @@ import java.util.List;
 public interface EstimateRepository extends JpaRepository<Estimate, Long> {
     List<Estimate> findByCreateDateGreaterThanEqualAndArea(LocalDateTime createDate, String area);
     List<Estimate> findByCreateDateGreaterThanEqualAndAreaAndCategory(LocalDateTime createDate, String area, String category);
+    List<Estimate> findAll();
     void deleteByCreateDateLessThan(LocalDateTime createDate);
 }
