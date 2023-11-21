@@ -508,7 +508,7 @@ public class MilyUserController {
 
     @GetMapping("lawyers")
     public String lawyerLists(Model model) {
-        List<LawyerUser> lawyers = milyUserService.findAllLawyer();
+        List<MilyUser> lawyers = milyUserService.findAllApproveLawyer("approve");
         model.addAttribute("lawyers", lawyers);
         return "lawyers";
     }
