@@ -159,7 +159,7 @@ public class MilyXController {
 
         model.addAttribute("milyx", milyX);
 
-        return "mily/milyx/milyx_modify";   // modify 폼 만들어야 함
+        return "mily/milyx/milyx_modify";
     }
 
     @PreAuthorize("isAuthenticated()")
