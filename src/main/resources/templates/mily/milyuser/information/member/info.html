@@ -4,7 +4,7 @@
     <title>마이 페이지 : MILY</title>
 </head>
 <body>
-<section layout:fragment="content" style="min-h-screen: 100vh !important;">
+<section layout:fragment="content" style="width: 1280px;">
     <div th:include="mily/milyuser/information/layout/mypage_navbar :: navbar"
          style="display: block; align-items: center; margin-bottom: 30px;"></div>
     <span style="margin: 0 20%; font-size: 20px; font-weight: bold;" th:text="'기본 정보'"></span>
@@ -29,7 +29,8 @@
           th:text="'나의 질문 ' + ${posts} + '개'"></span>
     <div style="display: block; border: 1px solid #93E6FB; border-radius: 10px; margin: 5px 19.5% 15px 19.5%; padding: 15px; align-items: center; font-size: 16px;">
         <ul>
-            <a th:if="${userPosts.isEmpty()}" th:href="@{/milyx}" target="_blank" style="color: #000; font-weight: bold;">질문 바로가기</a>
+            <a th:if="${userPosts.isEmpty()}" th:href="@{/milyx}" target="_blank"
+               style="color: #000; font-weight: bold;">질문 바로가기</a>
             <li th:each="userPosts: ${userPosts}" style="display: flex;">
                 <a target="_blank" th:href="@{/milyx/detail/{id}(id=${userPosts.id})}"
                    th:text="${#strings.abbreviate(userPosts.subject, 14)}"></a>
@@ -40,28 +41,16 @@
     <span style="margin: 0 20%; font-size: 20px; font-weight: bold; display: block;" th:if="${payments}"
           th:text="'포인트 충전 내역'"></span>
     <div style="display: block; border: 1px solid #93E6FB; border-radius: 10px; margin: 5px 19.5% 15px 19.5%; padding: 15px; align-items: center; font-size: 16px;">
-        <div th:each="payment, stat : ${payments}">
-            <div th:if="${stat.index == 0 || !#temporals.format(payments[stat.index-1].orderDate, 'MM월 dd일').equals(#temporals.format(payment.orderDate, 'MM월 dd일'))}">
-                <p th:text="${#temporals.format(payment.orderDate, 'MM월 dd일')}"></p>
-            </div>
-            <div th:if="${stat.index != 0 && #temporals.format(payments[stat.index-1].orderDate, 'MM월 dd일').equals(#temporals.format(payment.orderDate, 'MM월 dd일'))}">
-                <p th:text="${stat.count}"></p>
+        <div th:each="payments: ${payments}">
+            <div th:if="${#temporals.format(payments.orderDate, 'MM월 dd일')}">
+                <p th:text="${#temporals.format(payments.orderDate, 'MM월 dd일')} + ', ' + ${payments.orderName}"></p>
             </div>
         </div>
-
-        <ul>
-            <a th:if="${payments.isEmpty()}" th:href="@{/payment}" target="_blank" style="color: #000; font-weight: bold;">충전 바로가기</a>
-            <li th:each="payments: ${payments}" style="display: flex;">
-                <a target="_blank" href="#"
-                   th:text="${#temporals.format(payments.orderDate, 'MM월 dd일')} + ', ' + ${payments.orderName}"></a>
-            </li>
-        </ul>
     </div>
 
     <a target="_blank" th:href="@{/user/mypage/withdraw}" style="margin: 0 20%;">
         <i class="fa-solid fa-delete-left" style="width: 18px; text-align: center;"></i>
         회원 탈퇴</a>
-    <footer th:replace="mily/common/footer :: footer" style="position: pixed; bottom: 0; width: 100%;"></footer>
 </section>
 </body>
 </html>

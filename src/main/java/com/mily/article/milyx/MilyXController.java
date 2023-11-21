@@ -39,7 +39,16 @@ public class MilyXController {
         List<MilyX> milyx = milyXService.getAllPosts();
         Collections.reverse(milyx);
         model.addAttribute("milyx", milyx);
-        return "mily/milyx/milyx_index";
+
+        try {
+            MilyUser isLoginedUser = milyUserService.getCurrentUser();
+            if (isLoginedUser != null) {
+                model.addAttribute("user", isLoginedUser);
+            }
+            return "mily/milyx/milyx_index";
+        } catch (NullPointerException e) {
+            return "mily/milyx/milyx_index";
+        }
     }
 
     @PreAuthorize("isAuthenticated()")
