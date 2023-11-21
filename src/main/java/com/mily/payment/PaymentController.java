@@ -46,17 +46,20 @@ public class PaymentController {
         });
     }
 
-    private final String SECRET_KEY = "SECRET_KEY";
+    private final String SECRET_KEY = "test_sk_nRQoOaPz8LLWOwWPNP1P8y47BMw6";
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("")
-    public String doPayment() {
-        MilyUser isLoginedUser = milyUserService.getCurrentUser();
-
-        if (isLoginedUser == null) {
+    public String doPayment(Model model) {
+        try {
+            MilyUser isLoginedUser = milyUserService.getCurrentUser();
+            if (isLoginedUser != null) {
+                model.addAttribute("user", isLoginedUser);
+            }
+            return "mily/payment/payment";
+        } catch (NullPointerException e) {
             return "redirect:/user/login";
         }
-        return "mily/payment/payment";
     }
 
     @PostMapping("/getordername")
@@ -71,6 +74,7 @@ public class PaymentController {
             @RequestParam Long amount, Model model) throws Exception {
 
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
+        model.addAttribute("user", isLoginedUser);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Basic " + Base64.getEncoder().encodeToString((SECRET_KEY + ":").getBytes()));
@@ -87,7 +91,12 @@ public class PaymentController {
 
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             JsonNode successNode = responseEntity.getBody();
+            String formattedAmount = paymentService.letFormattedAmount(amount);
+
             model.addAttribute("orderId", successNode.get("orderId").asText());
+            model.addAttribute("orderName", lastOrderName);
+            model.addAttribute("amount", formattedAmount);
+
             String secret = successNode.get("secret").asText();
 
             paymentService.doPayment(orderId, isLoginedUser, lastOrderName, amount);
