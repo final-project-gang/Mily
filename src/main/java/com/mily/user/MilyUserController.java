@@ -9,6 +9,7 @@ import com.mily.article.milyx.comment.MilyXCommentService;
 import com.mily.base.rq.Rq;
 import com.mily.base.rsData.RsData;
 import com.mily.estimate.Estimate;
+import com.mily.estimate.EstimateRepository;
 import com.mily.payment.Payment;
 import com.mily.payment.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,6 +43,7 @@ public class MilyUserController {
     private final MilyXService milyXService;
     private final MilyXCommentService milyXCommentService;
     private final PaymentService paymentService;
+    private final EstimateRepository estimateRepository;
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
@@ -360,6 +362,13 @@ public class MilyUserController {
             model.addAttribute("user", isLoginedUser);
             model.addAttribute("commentsCount", count);
             model.addAttribute("comments", userComments);
+
+            // 모든 견적서 보이게
+            List<Estimate> estimateList = estimateRepository.findAll();
+            int estimates = estimateList.size();
+
+            model.addAttribute("estimatesCount", estimates);
+            model.addAttribute("estimate", estimateList);
 
             return "/mily/milyuser/information/lawyer/lawyer_dashboard";
         }
