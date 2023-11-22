@@ -4,9 +4,12 @@ import com.mily.article.milyx.MilyX;
 import com.mily.article.milyx.MilyXService;
 import com.mily.article.milyx.category.CategoryService;
 import com.mily.article.milyx.category.entity.FirstCategory;
+import com.mily.article.milyx.comment.MilyXComment;
+import com.mily.article.milyx.comment.MilyXCommentService;
 import com.mily.base.rq.Rq;
 import com.mily.base.rsData.RsData;
 import com.mily.estimate.Estimate;
+import com.mily.estimate.EstimateRepository;
 import com.mily.payment.Payment;
 import com.mily.payment.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,7 +41,9 @@ public class MilyUserController {
     private final MilyUserService milyUserService;
     private final CategoryService categoryService;
     private final MilyXService milyXService;
+    private final MilyXCommentService milyXCommentService;
     private final PaymentService paymentService;
+    private final EstimateRepository estimateRepository;
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
@@ -348,22 +353,22 @@ public class MilyUserController {
 
         // 현재 로그인 된 사용자의 권한이 "lawyer"일 때
         if (isLoginedUser.getRole().equals("approve")) {
-            // 사용자의 전화 번호를 가리는 작업
-            String phoneNumber = isLoginedUser.getUserPhoneNumber();
-            phoneNumber = phoneNumber.substring(0, 3) + "-***" + phoneNumber.substring(6, 7) + "-**" + phoneNumber.substring(9);
+            long id = isLoginedUser.getId();
 
-            // 사용자의 이메일을 가리는 작업
-            String email = milyUserService.maskEmail(isLoginedUser.getUserEmail());
+            // 사용자가 작성 한 답변
+            List<MilyXComment> userComments = milyXCommentService.findAuthorId(id);
+            int count = userComments.size();
 
             model.addAttribute("user", isLoginedUser);
-            model.addAttribute("userPhone", phoneNumber);
-            model.addAttribute("userEmail", email);
+            model.addAttribute("commentsCount", count);
+            model.addAttribute("comments", userComments);
 
-            if (isLoginedUser.getPayments() != null) {
-                model.addAttribute("payments", isLoginedUser.getPayments());
-            }
+            // 모든 견적서 보이게
+            List<Estimate> estimateList = estimateRepository.findAll();
+            int estimates = estimateList.size();
 
-
+            model.addAttribute("estimatesCount", estimates);
+            model.addAttribute("estimate", estimateList);
 
             return "/mily/milyuser/information/lawyer/lawyer_dashboard";
         }
@@ -503,7 +508,7 @@ public class MilyUserController {
 
     @GetMapping("lawyers")
     public String lawyerLists(Model model) {
-        List<LawyerUser> lawyers = milyUserService.findAllLawyer();
+        List<MilyUser> lawyers = milyUserService.findAllApproveLawyer("approve");
         model.addAttribute("lawyers", lawyers);
         return "lawyers";
     }

@@ -1,7 +1,6 @@
 package com.mily.reservation;
 
 import com.mily.user.LawyerUser;
-import com.mily.user.LawyerUserRepository;
 import com.mily.user.MilyUser;
 import com.mily.user.MilyUserService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,11 +20,10 @@ public class ReservationController {
     private final ReservationService reservationService;
     private final MilyUserService milyUserService;
 
-    @RequestMapping(value = "", method = {RequestMethod.GET, RequestMethod.POST})
-    public String saveReservation(@ModelAttribute Reservation reservation, RedirectAttributes redirectAttributes, @RequestParam("lawyerUserId") Long lawyerUserId, Model model) {
+    @PostMapping("")
+    public String saveReservation(@ModelAttribute Reservation reservation, RedirectAttributes redirectAttributes, Long lawyerUserId) {
         MilyUser milyUser = milyUserService.getCurrentUser();
         LawyerUser lawyerUser = milyUserService.getLawyer(lawyerUserId).getLawyerUser();
-        model.addAttribute("lawyerUserId", lawyerUserId);
         try {
             reservationService.saveReservation(milyUser, lawyerUser, reservation.getReservationTime());
             redirectAttributes.addFlashAttribute("message", "예약이 성공적으로 저장되었습니다.");
@@ -48,12 +45,14 @@ public class ReservationController {
         return "redirect:/";
     }
 
+    // 변호사 ID와 날짜에 따른 시간 선택 페이지
     @GetMapping("/available_times")
     public String getAvailableTimes(@RequestParam Long lawyerUserId, @RequestParam LocalDate date, Model model) {
         try {
             LawyerUser lawyerUser = milyUserService.getLawyer(lawyerUserId).getLawyerUser();
             List<LocalDateTime> availableTimes = reservationService.getAvailableTimes(lawyerUser, date);
             model.addAttribute("availableTimes", availableTimes);
+            model.addAttribute("lawyerUserId", lawyerUserId);
         } catch (Exception ex) {
             model.addAttribute("errorMessage", "예약 가능한 시간 조회 중 오류가 발생했습니다: " + ex.getMessage());
         }

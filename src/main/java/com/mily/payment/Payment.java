@@ -38,7 +38,7 @@ public class Payment {
     private int milyPoint;
 
     @Column(nullable = false)
-    private long amount;
+    private Long amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mily_user_user_login_id")

@@ -1,43 +1,113 @@
-<footer class="footer-wrap mt-24 border border-t-2 border-gray-300" th:fragment="footer">
-    <!--  회사소개...  -->
-    <div class="footer-top flex justify-center items-center mt-24">
-        <a href="#" class="footer-link mr-32" style="--tw-text-opacity: 1;
-color: rgba(96, 165, 250, var(--tw-text-opacity));">회사소개</a>
-        <a href="#" class="footer-link mr-32">이용약관</a>
-        <a href="#" class="footer-link mr-32">개인정보처리방침</a>
-        <a href="#" class="footer-link mr-32">법적책임</a>
-        <a href="#" class="footer-link mr-32">운영정책</a>
-    </div>
-
-    <!-- footer중간 -->
-    <div class="footer-middle mt-10 flex justify-center items-center">
-        <div class="company-info -ml-80">
-            <p class="location mb-3">(주)밀리캠퍼니 대전광역시 서구 대덕대로 179, 밀리스빌딩 9층</p>
-            <ul class="mily-desktop flex justify-center items-center mb-3">
-                <li>대표자명 : 이재준 대표</li>
-                <li>사업자 번호 : 123-45-67890</li>
-                <li>대표번호 : 042-123-4567</li>
-                <li>이메일 : mily@lawcompany.co.kr</li>
-            </ul>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<footer th:fragment="footerFragment" class="footer_wrap mt-24 pb-7 border-t">
+    <div class="ft_content_top flex justify-between mt-8 max-w-7xl m-auto">
+        <!--  회사소개...  -->
+        <div class="ft_content_1 flex flex-col">
+            <a href="#">회사소개</a>
+            <a href="#" class="mt-2">이용약관</a>
+            <a href="#" class="mt-2">법적책임</a>
+            <a href="#" class="mt-2">운영정책</a>
+            <a href="#" class="mt-2">개인정보처리방침</a>
         </div>
+
+        <!-- footer중간 -->
+        <ul class="ft_content_2 flex flex-col text-right">
+            <li class="mt-2">대표자명 : 이재준 대표</li>
+            <li class="mt-2">대표번호 : 042-123-4567</li>
+            <li class="mt-2">사업자 번호 : 123-45-67890</li>
+            <li class="mt-2">이메일 : mily@lawcompany.co.kr</li>
+            <li class="mt-2">
+                (주)밀리캠퍼니 대전광역시 서구 대덕대로 179, 밀리스빌딩 9층
+            </li>
+        </ul>
     </div>
 
     <!-- footer마지막 -->
-    <div class="footer-bottom flex justify-between items-center">
+    <div class="foot_last mt-6 max-w-7xl m-auto flex justify-between">
         <!-- milylogo -->
-        <div class="footer-logo-wrap flex justify-center ml-72">
+        <div class="flex justify-center">
             <a th:href="@{/}">
-                <img src="https://i.postimg.cc/DZ9cZsT1/mily-logo.png" alt="mily로고">
+                <img
+                        class="foot_img w-28 mt-2 -ml-2"
+                        src="https://i.postimg.cc/DZ9cZsT1/mily-logo.png"
+                        alt="mily로고"
+                />
             </a>
-            <div class="copyright flex items-end mb-6">(C)Law&Company Co.Ltd.All RIGHTS RESERVED.</div>
+            <div class="copyright flex items-end ml-4 mb-2">
+                (C)Law&Company Co.Ltd.All RIGHTS RESERVED.
+            </div>
         </div>
 
         <!-- sns -->
-        <div class="sns-wrap flex justify-center items-center mr-60">
-            <a href="https://www.facebook.com/"><img src="https://i.postimg.cc/fWthhwJ6/image.png" alt="페이스북"></a>
-            <a href="https://twitter.com/"><img src="https://i.postimg.cc/zGddBgQp/image.png" alt="트위터"></a>
-            <a href="https://www.instagram.com/"><img src=https://i.postimg.cc/0jbkTmh3/image.png"" alt="인스타그램"></a>
-            <a href="https://www.youtube.com/"><img src="https://i.postimg.cc/zDsvs2XF/image.png" alt="유튜브"></a>
+        <div
+                class="foot_sns flex justify-center items-center text-2xl text-gray-300"
+        >
+            <a href="https://www.facebook.com/" class="mr-3"
+            ><i class="fa-brands fa-facebook"></i
+            ></a>
+            <a href="https://twitter.com/" class="mr-3"
+            ><i class="fa-brands fa-twitter"></i
+            ></a>
+            <a href="https://www.instagram.com/" class="mr-3"
+            ><i class="fa-brands fa-square-instagram"></i
+            ></a>
+            <a href="https://www.youtube.com/"
+            ><i class="fa-brands fa-youtube"></i
+            ></a>
         </div>
     </div>
+
+    <style>
+        footer {
+          font-size: 12px;
+          color: #555;
+        }
+
+        .foot_img {
+          -webkit-filter: grayscale(100%) brightness(0);
+          filter: grayscale(100%) brightness(0);
+        }
+
+        @media (max-width: 360px) {
+          .ft_content_top {
+            display: flex;
+            flex-direction: column;
+          }
+
+          .ft_content_1 {
+            margin: 0 auto;
+            text-align: center;
+          }
+
+          .ft_content_2 {
+            margin: 40px auto 0 auto;
+            text-align: center;
+          }
+
+          .foot_last {
+            width: 300px;
+            flex-direction: column;
+            margin-top: 40px;
+          }
+
+          .foot_img {
+            display: none;
+          }
+
+          .foot_last .copyright {
+            font-size: 11px;
+            white-space: nowrap;
+            margin: 0;
+          }
+
+          .foot_sns {
+            margin-top: 15px;
+          }
+        }
+    </style>
 </footer>
+
+</body>
+</html>

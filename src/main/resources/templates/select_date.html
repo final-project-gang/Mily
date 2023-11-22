@@ -5,7 +5,7 @@
 </head>
 <body>
 <h1>날짜 선택하기</h1>
-<form action="/reservation/available_times" method="get">
+<form th:action="@{/reservation/available_times}" method="get">
     <input type="hidden" id="lawyerUserId" name="lawyerUserId" th:value="${lawyerUserId}">
     <label for="date">날짜:</label><br>
     <input type="date" id="date" name="date"><br>
