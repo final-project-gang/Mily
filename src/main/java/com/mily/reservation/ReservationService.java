@@ -2,6 +2,7 @@ package com.mily.reservation;
 
 import com.mily.user.LawyerUser;
 import com.mily.user.MilyUser;
+import com.mily.user.MilyUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ReservationService {
     private final ReservationRepository reservationRepository;
+    private final MilyUserService milyUserService;
 
     // 예약 저장
     public void saveReservation(MilyUser milyUser, LawyerUser lawyerUser, LocalDateTime time) {
@@ -37,7 +39,7 @@ public class ReservationService {
         for (int hour = 9; hour < 18; hour++) {
             LocalDateTime dateTime = reservationTime.atTime(hour, 0);
             List<Reservation> overlappingReservations = reservationRepository.findByLawyerUserAndReservationTimeBetween(
-                    lawyerUser, dateTime, dateTime.plusHours(1));
+                    lawyerUser, dateTime.minusHours(1), dateTime);
             if (overlappingReservations.isEmpty()) {
                 availableTimes.add(dateTime);
             }

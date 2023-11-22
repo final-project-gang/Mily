@@ -180,6 +180,6 @@ public class Rq {
     }
 
     public String getProfileImgUrl() {
-        return milyUserService.getProfileImgUrl(getMilyUser());
+        return milyUserService.getProfileImgUrl(getMilyUser().lawyerUser);
     }
 }

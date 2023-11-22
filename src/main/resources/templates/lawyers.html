@@ -9,6 +9,10 @@
   <th:block th:each="lawyer : ${lawyers}">
     <li>
       <a th:href="@{/reservation/select_date(lawyerUserId=${lawyer.id})}" th:text="${lawyer.userName}"></a>
+      <a th:text="${lawyer.lawyerUser.area}"></a>
+      <a th:text="${lawyer.lawyerUser.major}"></a>
+      <a th:text="${lawyer.lawyerUser.officeAddress}"></a>
+      <a th:text="${lawyer.lawyerUser.introduce}"></a>
     </li>
   </th:block>
 </ul>

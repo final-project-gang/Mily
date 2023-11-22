@@ -1,5 +1,6 @@
 package com.mily.reservation;
 
+import com.mily.standard.util.Ut;
 import com.mily.user.LawyerUser;
 import com.mily.user.MilyUser;
 import com.mily.user.MilyUserService;
@@ -23,12 +24,18 @@ public class ReservationController {
     @PostMapping("")
     public String saveReservation(@ModelAttribute Reservation reservation, RedirectAttributes redirectAttributes, Long lawyerUserId) {
         MilyUser milyUser = milyUserService.getCurrentUser();
+
+        if(!milyUser.getRole().equals("member")) {
+            throw new Ut.DataNotFoundException("권한이 없습니다.");
+        }
+
         LawyerUser lawyerUser = milyUserService.getLawyer(lawyerUserId).getLawyerUser();
+
         try {
             reservationService.saveReservation(milyUser, lawyerUser, reservation.getReservationTime());
             redirectAttributes.addFlashAttribute("message", "예약이 성공적으로 저장되었습니다.");
         } catch (Exception ex) {
-            redirectAttributes.addFlashAttribute("errorMessage", "예약 저장 중 오류가 발생했습니다: " + ex.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "예약 저장 중 오류가 발생했습니다 : " + ex.getMessage());
         }
         return "redirect:/";
     }
