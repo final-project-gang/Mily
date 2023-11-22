@@ -1,12 +1,11 @@
- <!DOCTYPE html>
-<html lang="ko" data-theme="winter">
-
+<html layout:decorate="@{mily/common/layout}" lang="ko" data-theme="winter">
 <!-- themes list -->
 <!-- https://daisyui.com/docs/themes/ -->
 <!-- light, dark, cupcake, bumblebee, emerald, corporate, synthwave,
      retro, cyberpunk, valentine, halloween, garden, forest, aqua, lofi,
      pastel, fantasy, wireframe, black, luxury, dracula, cmyk, autumn,
      business, acid, lemonade, night, coffee, winter -->
+
 <head>
     <meta charset="UTF-8">
 
@@ -32,200 +31,166 @@
 <!-- min-h-screen : min-height:100vh; -->
 <!-- ====첫번째===== -->
 <main class="max-w-screen-2xl bg-gray-50 min-h-screen flex flex-col mx-auto">
-    <!--  탑바  -->
-    <header class="top-0 mb-4 flex justify-between items-center">
-        <div layout:fragment="content" class="mx-10">
-            <h2 class="flex justify-center items-center">
-                <a th:href="@{/}">
-                    <img src="https://i.postimg.cc/DZ9cZsT1/mily-logo.png" alt="mily로고">
-                </a>
-            </h2>
-        </div>
-
-        <div class="flex justify-center items-center mx-10">
-            <div class="mx-5">
-                <li th:if="${@rq.logout}">
-                    <a href="/user/login"><i class="fa-solid fa-arrow-right-to-bracket"></i>로그인</a>
-                </li>
-            </div>
-            <div class="mx-5">
-                <li th:if="${@rq.logout}">
-                    <a href="/user/signup">
-                        <i class="fa-solid fa-user-plus"></i>회원가입</a>
-                </li>
-            </div>
-            <div class="mx-5">
-                <li th:if="${@rq.logout}">
-                    <a href="/user/lawyerSignup">
-                        <i class="fa-solid fa-user-plus"></i>변호사 회원가입</a>
-                </li>
-            </div>
-            <div class="mx-5">
-                <li th:if="${@rq.login}">
-                    <a href="/user/logout">
-                        <i class="fa-solid fa-user-plus"></i>로그아웃</a>
-                </li>
-            </div>
-        </div>
-    </header>
-
-    <!--  메뉴바  -->
-    <div class="flex justify-between items-center text-lg mb-3">
-        <div class="TabNavMenu-module_menuList__deUxM">
-            <button class="TabNavMenu-module_menuItemButton__IZao9 TabNavMenu-module_active__qZkXu">
-                <p class="mx-5 Typography-module_lt-text--size-20__Coy4u Typography-module_lt-text--weight-700__MTX72 Typography-module_lt-text--height-100__U8Og5 Typography-module_lt-text--inherit__uNmPK"
-                   style="color: rgb(43, 45, 47);">홈</p>
-            </button>
-            <button class="TabNavMenu-module_menuItemButton__IZao9">
-                <p class="mx-5 Typography-module_lt-text--size-20__Coy4u Typography-module_lt-text--weight-700__MTX72 Typography-module_lt-text--height-100__U8Og5 Typography-module_lt-text--inherit__uNmPK"
-                   style="color: rgb(195, 201, 208);">변호사</p>
-            </button>
-            <button class="TabNavMenu-module_menuItemButton__IZao9">
-                <a th:href="@{/milyx}">
+    <div layout:fragment="content">
+        <!--  메뉴바  -->
+        <div class="flex justify-between items-center text-lg mb-3">
+            <div class="TabNavMenu-module_menuList__deUxM">
+                <button class="TabNavMenu-module_menuItemButton__IZao9 TabNavMenu-module_active__qZkXu">
                     <p class="mx-5 Typography-module_lt-text--size-20__Coy4u Typography-module_lt-text--weight-700__MTX72 Typography-module_lt-text--height-100__U8Og5 Typography-module_lt-text--inherit__uNmPK"
-                       style="color: rgb(195, 201, 208);">상담사례</p>
-                </a>
-            </button>
-        </div>
+                       style="color: rgb(43, 45, 47);">홈</p>
+                </button>
+                <button class="TabNavMenu-module_menuItemButton__IZao9">
+                    <p class="mx-5 Typography-module_lt-text--size-20__Coy4u Typography-module_lt-text--weight-700__MTX72 Typography-module_lt-text--height-100__U8Og5 Typography-module_lt-text--inherit__uNmPK"
+                       style="color: rgb(195, 201, 208);">변호사</p>
+                </button>
+                <button class="TabNavMenu-module_menuItemButton__IZao9">
+                    <a th:href="@{/milyx}">
+                        <p class="mx-5 Typography-module_lt-text--size-20__Coy4u Typography-module_lt-text--weight-700__MTX72 Typography-module_lt-text--height-100__U8Og5 Typography-module_lt-text--inherit__uNmPK"
+                           style="color: rgb(195, 201, 208);">상담사례</p>
+                    </a>
+                </button>
+            </div>
 
-        <div class="mx-10 text-lg">
-            <button class="mx-5 btn btn-primary btn-jelly" style="--tw-bg-opacity: 1;
+            <div class="mx-10 text-lg">
+                <button class="mx-5 btn btn-primary btn-jelly" style="--tw-bg-opacity: 1;
 background-color: rgba(147, 197, 253, var(--tw-bg-opacity)); border : none;">상담 예약
+                </button>
+                <button class="btn btn-primary btn-jelly" style="--tw-bg-opacity: 1;
+background-color: rgba(147, 197, 253, var(--tw-bg-opacity)); border : none;"><a href="/milyx">상담글 작성</a></button>
+
+            </div>
+            <tr></tr>
+        </div>
+
+        <!--  메인banner  -->
+        <div class=main-banner-gird style="transform: translateX(0%);">
+            <div class="bg-blue-300 max-w-screen-2xl mx-auto rounded-3xl flex justify-end items-end">
+                <div class="main-banner mx-auto">
+                    <!-- 이미지 -->
+                    <div class="banner-img-box mySlides fade">
+                        <img src="https://d2mk4o02xy6mtq.cloudfront.net/7f0c8d02-8b62-48ba-82a6-51568cc02637"
+                             class="object-cover; vertical-align: bottom;" alt="main-img-1">
+                    </div>
+                    <div class="banner-img-box mySlides fade">
+                        <img src="https://d2mk4o02xy6mtq.cloudfront.net/d6079629-345e-48e1-97b7-460e3cb0eb06"
+                             class="object-cover; vertical-align: bottom;" alt="main-img-2">
+                    </div>
+                    <div class="banner-img-box mySlides fade">
+                        <img src="https://d2mk4o02xy6mtq.cloudfront.net/7f0c8d02-8b62-48ba-82a6-51568cc02637"
+                             class="object-cover; vertical-align: bottom;" alt="main-img-3">
+                    </div>
+                </div>
+
+                <!--  슬라이드  -->
+                <div class="btn-box absolute flex justify-end items-end mb-5 mr-5 ">
+                    <div class="main-btn flex items-center">
+                        <span class="btn-text text-white ml-8" id="slideCounter">1 / 3</span>
+                        <button id="previous">
+                            <svg class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13.3252 17.3L8.72519 12.7C8.62519 12.6 8.55453 12.4917 8.5132 12.375C8.4712 12.2584 8.4502 12.1334 8.4502 12C8.4502 11.8667 8.4712 11.7417 8.5132 11.625C8.55453 11.5084 8.62519 11.4 8.72519 11.3L13.3252 6.70005C13.5085 6.51672 13.7419 6.42505 14.0252 6.42505C14.3085 6.42505 14.5419 6.51672 14.7252 6.70005C14.9085 6.88338 15.0002 7.11672 15.0002 7.40005C15.0002 7.68338 14.9085 7.91672 14.7252 8.10005L10.8252 12L14.7252 15.9C14.9085 16.0834 15.0002 16.3167 15.0002 16.6C15.0002 16.8834 14.9085 17.1167 14.7252 17.3C14.5419 17.4834 14.3085 17.575 14.0252 17.575C13.7419 17.575 13.5085 17.4834 13.3252 17.3Z"
+                                      fill="white"></path>
+                            </svg>
+                        </button>
+                        <button id="pause">
+                            <svg class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 16C9 16.5523 9.44772 17 10 17V17C10.5523 17 11 16.5534 11 16.0011C11 14.94 11 13.2468 11 12C11 10.7532 11 9.06003 11 7.99888C11 7.4466 10.5523 7 10 7V7C9.44772 7 9 7.44772 9 8V16ZM14 7C13.4477 7 13 7.44772 13 8V12V16C13 16.5523 13.4477 17 14 17V17C14.5523 17 15 16.5523 15 16V8C15 7.44772 14.5523 7 14 7V7Z"
+                                      fill="white"></path>
+                            </svg>
+                        </button>
+                        <button id="next">
+                            <svg class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.275 17.3C9.09167 17.1167 9 16.8834 9 16.6C9 16.3167 9.09167 16.0834 9.275 15.9L13.175 12L9.275 8.10005C9.09167 7.91672 9 7.68338 9 7.40005C9 7.11672 9.09167 6.88338 9.275 6.70005C9.45833 6.51672 9.69167 6.42505 9.975 6.42505C10.2583 6.42505 10.4917 6.51672 10.675 6.70005L15.275 11.3C15.375 11.4 15.446 11.5084 15.488 11.625C15.5293 11.7417 15.55 11.8667 15.55 12C15.55 12.1334 15.5293 12.2584 15.488 12.375C15.446 12.4917 15.375 12.6 15.275 12.7L10.675 17.3C10.4917 17.4834 10.2583 17.575 9.975 17.575C9.69167 17.575 9.45833 17.4834 9.275 17.3Z"
+                                      fill="white"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--  lawtalk-main-icon  -->
+        <div class="lawtalk-main-icon mt-10 flex justify-between items-center">
+            <!-- 버튼1 -->
+            <button class="ml-5 flex justify-center items-center">
+                <!-- 아이콘 이미지-->
+                <div class="lawtalk-img-box">
+                    <img width="40" src="https://d2mk4o02xy6mtq.cloudfront.net/07925860-7aaf-4185-bbd9-d9e071e818c7"
+                         height="41">
+                </div>
+                <!-- 아이콘 텍스트-->
+                <div class="lawtalk-text-box">
+                    <p style="color: rgb(43, 45, 47);">명예훼손/모욕 일반</p>
+                </div>
             </button>
-            <button class="btn btn-primary btn-jelly" style="--tw-bg-opacity: 1;
-background-color: rgba(147, 197, 253, var(--tw-bg-opacity)); border : none;"><a href="/milyx/create">상담글 작성</a></button>
+
+            <!-- 버튼2 -->
+            <button class="flex justify-center items-center">
+                <!-- 아이콘 이미지-->
+                <div class="lawtalk-img-box">
+                    <img width="40" src="https://d2mk4o02xy6mtq.cloudfront.net/da702da0-3261-4bde-b007-8c1552a3c3dd"
+                         height="41">
+                </div>
+                <!-- 아이콘 텍스트-->
+                <div class="lawtalk-text-box">
+                    <p style="color: rgb(43, 45, 47);">이혼</p>
+                </div>
+            </button>
+
+            <!-- 버튼3 -->
+            <button class="flex justify-center items-center">
+                <!-- 아이콘 이미지-->
+                <div class="lawtalk-img-box">
+                    <img width="40" src="https://d2mk4o02xy6mtq.cloudfront.net/7af9feb9-8f19-4cc6-8430-2609169285e7"
+                         height="41">
+                </div>
+                <!-- 아이콘 텍스트-->
+                <div class="lawtalk-text-box">
+                    <p style="color: rgb(43, 45, 47);">사기/공갈</p>
+                </div>
+            </button>
+
+            <!-- 버튼4 -->
+            <button class="flex justify-center items-center">
+                <!-- 아이콘 이미지-->
+                <div class="lawtalk-img-box">
+                    <img width="40" src="https://d2mk4o02xy6mtq.cloudfront.net/5bc93ecc-b745-403f-9263-909501f3b4af"
+                         height="41">
+                </div>
+                <!-- 아이콘 텍스트-->
+                <div class="lawtalk-text-box">
+                    <p style="color: rgb(43, 45, 47);">폭행/협박/상해</p>
+                </div>
+            </button>
+
+            <!-- 버튼5 -->
+            <button class="flex justify-center items-center">
+                <!-- 아이콘 이미지-->
+                <div class="lawtalk-img-box">
+                    <img width="40" src="https://d2mk4o02xy6mtq.cloudfront.net/63d58ed0-1a68-46ba-a0e4-0eb0d7850dde"
+                         height="41">
+                </div>
+                <!-- 아이콘 텍스트-->
+                <div class="lawtalk-text-box">
+                    <p style="color: rgb(43, 45, 47);">성매매</p>
+                </div>
+            </button>
+
+            <!-- 버튼6 -->
+            <button class="flex justify-center items-center">
+                <!-- 아이콘 이미지-->
+                <div class="lawtalk-img-box">
+                    <img width="40" src="https://d2mk4o02xy6mtq.cloudfront.net/879b1c68-dcd5-49cd-96dc-f5fd1fb4df21"
+                         height="41">
+                </div>
+                <!-- 아이콘 텍스트-->
+                <div class="lawtalk-text-box">
+                    <p style="color: rgb(43, 45, 47);">성폭행/강제추행</p>
+                </div>
+            </button>
         </div>
-        <tr></tr>
-    </div>
-
-    <!--  메인banner  -->
-    <div class=main-banner-gird style="transform: translateX(0%);">
-        <div class="bg-blue-300 max-w-screen-2xl mx-auto rounded-3xl flex justify-end items-end">
-            <div class="main-banner mx-auto">
-                <!-- 이미지 -->
-                <div class="banner-img-box mySlides fade">
-                    <img src="https://d2mk4o02xy6mtq.cloudfront.net/7f0c8d02-8b62-48ba-82a6-51568cc02637"
-                         class="object-cover; vertical-align: bottom;" alt="main-img-1">
-                </div>
-                <div class="banner-img-box mySlides fade">
-                    <img src="https://d2mk4o02xy6mtq.cloudfront.net/d6079629-345e-48e1-97b7-460e3cb0eb06"
-                         class="object-cover; vertical-align: bottom;" alt="main-img-2">
-                </div>
-                <div class="banner-img-box mySlides fade">
-                    <img src="https://d2mk4o02xy6mtq.cloudfront.net/7f0c8d02-8b62-48ba-82a6-51568cc02637"
-                         class="object-cover; vertical-align: bottom;" alt="main-img-3">
-                </div>
-            </div>
-
-            <!--  슬라이드  -->
-            <div class="btn-box absolute flex justify-end items-end mb-5 mr-5 ">
-                <div class="main-btn flex items-center">
-                    <span class="btn-text text-white ml-8" id="slideCounter">1 / 3</span>
-                    <button id="previous">
-                        <svg class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M13.3252 17.3L8.72519 12.7C8.62519 12.6 8.55453 12.4917 8.5132 12.375C8.4712 12.2584 8.4502 12.1334 8.4502 12C8.4502 11.8667 8.4712 11.7417 8.5132 11.625C8.55453 11.5084 8.62519 11.4 8.72519 11.3L13.3252 6.70005C13.5085 6.51672 13.7419 6.42505 14.0252 6.42505C14.3085 6.42505 14.5419 6.51672 14.7252 6.70005C14.9085 6.88338 15.0002 7.11672 15.0002 7.40005C15.0002 7.68338 14.9085 7.91672 14.7252 8.10005L10.8252 12L14.7252 15.9C14.9085 16.0834 15.0002 16.3167 15.0002 16.6C15.0002 16.8834 14.9085 17.1167 14.7252 17.3C14.5419 17.4834 14.3085 17.575 14.0252 17.575C13.7419 17.575 13.5085 17.4834 13.3252 17.3Z"
-                                  fill="white"></path>
-                        </svg>
-                    </button>
-                    <button id="pause">
-                        <svg class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9 16C9 16.5523 9.44772 17 10 17V17C10.5523 17 11 16.5534 11 16.0011C11 14.94 11 13.2468 11 12C11 10.7532 11 9.06003 11 7.99888C11 7.4466 10.5523 7 10 7V7C9.44772 7 9 7.44772 9 8V16ZM14 7C13.4477 7 13 7.44772 13 8V12V16C13 16.5523 13.4477 17 14 17V17C14.5523 17 15 16.5523 15 16V8C15 7.44772 14.5523 7 14 7V7Z"
-                                  fill="white"></path>
-                        </svg>
-                    </button>
-                    <button id="next">
-                        <svg class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.275 17.3C9.09167 17.1167 9 16.8834 9 16.6C9 16.3167 9.09167 16.0834 9.275 15.9L13.175 12L9.275 8.10005C9.09167 7.91672 9 7.68338 9 7.40005C9 7.11672 9.09167 6.88338 9.275 6.70005C9.45833 6.51672 9.69167 6.42505 9.975 6.42505C10.2583 6.42505 10.4917 6.51672 10.675 6.70005L15.275 11.3C15.375 11.4 15.446 11.5084 15.488 11.625C15.5293 11.7417 15.55 11.8667 15.55 12C15.55 12.1334 15.5293 12.2584 15.488 12.375C15.446 12.4917 15.375 12.6 15.275 12.7L10.675 17.3C10.4917 17.4834 10.2583 17.575 9.975 17.575C9.69167 17.575 9.45833 17.4834 9.275 17.3Z"
-                                  fill="white"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--  lawtalk-main-icon  -->
-    <div class="lawtalk-main-icon mt-10 flex justify-between items-center">
-        <!-- 버튼1 -->
-        <button class="ml-5 flex justify-center items-center">
-            <!-- 아이콘 이미지-->
-            <div class="lawtalk-img-box">
-                <img width="40" src="https://d2mk4o02xy6mtq.cloudfront.net/07925860-7aaf-4185-bbd9-d9e071e818c7"
-                     height="41">
-            </div>
-            <!-- 아이콘 텍스트-->
-            <div class="lawtalk-text-box">
-                <p style="color: rgb(43, 45, 47);">명예훼손/모욕 일반</p>
-            </div>
-        </button>
-
-        <!-- 버튼2 -->
-        <button class="flex justify-center items-center">
-            <!-- 아이콘 이미지-->
-            <div class="lawtalk-img-box">
-                <img width="40" src="https://d2mk4o02xy6mtq.cloudfront.net/da702da0-3261-4bde-b007-8c1552a3c3dd"
-                     height="41">
-            </div>
-            <!-- 아이콘 텍스트-->
-            <div class="lawtalk-text-box">
-                <p style="color: rgb(43, 45, 47);">이혼</p>
-            </div>
-        </button>
-
-        <!-- 버튼3 -->
-        <button class="flex justify-center items-center">
-            <!-- 아이콘 이미지-->
-            <div class="lawtalk-img-box">
-                <img width="40" src="https://d2mk4o02xy6mtq.cloudfront.net/7af9feb9-8f19-4cc6-8430-2609169285e7"
-                     height="41">
-            </div>
-            <!-- 아이콘 텍스트-->
-            <div class="lawtalk-text-box">
-                <p style="color: rgb(43, 45, 47);">사기/공갈</p>
-            </div>
-        </button>
-
-        <!-- 버튼4 -->
-        <button class="flex justify-center items-center">
-            <!-- 아이콘 이미지-->
-            <div class="lawtalk-img-box">
-                <img width="40" src="https://d2mk4o02xy6mtq.cloudfront.net/5bc93ecc-b745-403f-9263-909501f3b4af"
-                     height="41">
-            </div>
-            <!-- 아이콘 텍스트-->
-            <div class="lawtalk-text-box">
-                <p style="color: rgb(43, 45, 47);">폭행/협박/상해</p>
-            </div>
-        </button>
-
-        <!-- 버튼5 -->
-        <button class="flex justify-center items-center">
-            <!-- 아이콘 이미지-->
-            <div class="lawtalk-img-box">
-                <img width="40" src="https://d2mk4o02xy6mtq.cloudfront.net/63d58ed0-1a68-46ba-a0e4-0eb0d7850dde"
-                     height="41">
-            </div>
-            <!-- 아이콘 텍스트-->
-            <div class="lawtalk-text-box">
-                <p style="color: rgb(43, 45, 47);">성매매</p>
-            </div>
-        </button>
-
-        <!-- 버튼6 -->
-        <button class="flex justify-center items-center">
-            <!-- 아이콘 이미지-->
-            <div class="lawtalk-img-box">
-                <img width="40" src="https://d2mk4o02xy6mtq.cloudfront.net/879b1c68-dcd5-49cd-96dc-f5fd1fb4df21"
-                     height="41">
-            </div>
-            <!-- 아이콘 텍스트-->
-            <div class="lawtalk-text-box">
-                <p style="color: rgb(43, 45, 47);">성폭행/강제추행</p>
-            </div>
-        </button>
     </div>
 </main>
 

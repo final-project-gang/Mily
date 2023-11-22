@@ -39,7 +39,16 @@ public class MilyXController {
         List<MilyX> milyx = milyXService.getAllPosts();
         Collections.reverse(milyx);
         model.addAttribute("milyx", milyx);
-        return "mily/milyx/milyx_index";
+
+        try {
+            MilyUser isLoginedUser = milyUserService.getCurrentUser();
+            if (isLoginedUser != null) {
+                model.addAttribute("user", isLoginedUser);
+            }
+            return "mily/milyx/milyx_index";
+        } catch (NullPointerException e) {
+            return "mily/milyx/milyx_index";
+        }
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -204,7 +213,7 @@ public class MilyXController {
 
         model.addAttribute("milyx", milyX);
 
-        return "mily/milyx/milyx_modify";   // modify 폼 만들어야 함
+        return "mily/milyx/milyx_modify";
     }
 
 

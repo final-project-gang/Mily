@@ -7,6 +7,7 @@ import com.mily.user.MilyUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -50,5 +51,13 @@ public class PaymentService {
 
     public List<Payment> findAll() {
         return paymentRepository.findAll();
+    }
+
+    public String letFormattedAmount (Long amount) {
+        if (amount == null) {
+            return "0";
+        }
+        NumberFormat numberFormat = NumberFormat.getNumberInstance();
+        return numberFormat.format(amount);
     }
 }
