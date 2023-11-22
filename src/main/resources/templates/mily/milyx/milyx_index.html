@@ -2,6 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Mily > Mily X</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 <div layout:fragment="content" class="items-center justify-center" style="display: flex-row;">
@@ -25,11 +26,12 @@
                         <div class="form-control col-span-full" style="display: block;">
                             <a th:href="@{/milyx/detail/{id}(id=${milyx.id})}" th:text="${milyx.subject}"
                             style="font-weight:bold;"></a>
-                        </div>
+                        </div> <!--게시물 내용이 보여주게 하는 기능 -->
 
                         <div class="detail grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-3">
                             <div class="form-control" style="display: -webkit-inline-box;">
                                 <div th:id="'createDate_' + ${milyx.id}" th:text="${milyx.createDate}" style="display: inline-block;"></div>
+                                <!--게시물 날짜 표시 없어지면 조회수랑 댓글 표시기능 정렬이 안됨 -->
 
                                 <div>ㅤㅤ</div>
                                 <i class="fa-regular fa-comment" style="font-size: 16px;"></i>
@@ -38,7 +40,7 @@
                                 <div>ㅤㅤ</div>
                                 <i class="fa-regular fa-eye" style="font-size: 16px;"></i>
                                 <div th:text="'ㅤ' + ${milyx.view}"></div>
-                            </div>
+                            </div> <!--댓글과 조회수 표시 기능 -->
                         </div>
                     </div>
                 </div>

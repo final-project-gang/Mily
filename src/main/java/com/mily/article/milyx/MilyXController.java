@@ -55,6 +55,7 @@ public class MilyXController {
     @GetMapping("/create")
     public String create(Model model) {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
+        model.addAttribute("user", isLoginedUser);
 
         if (isLoginedUser == null) {
             return "redirect:/milyx";
@@ -114,34 +115,79 @@ public class MilyXController {
         private String body;
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/detail/{id}")
-    public String showDetail(Model model, @PathVariable long id) {
-        try {
-            MilyUser isLoginedUser = milyUserService.getCurrentUser();
-            if (isLoginedUser != null) {
-                String confirmRole = isLoginedUser.getRole();
-                model.addAttribute("role", confirmRole);
-                model.addAttribute("user", isLoginedUser);
-            }
-            MilyX milyX = milyXService.findById(id).get();
-            int view = milyX.getView() + 1;
+    @Controller
+    @RequestMapping("/milyx")
+    public class MilyxController {
+        // 기타 필요한 서비스와 리포지토리를 주입
+        // 인증된 사용자만 접근할 수 있도록 설정
 
-            MilyX mx = MilyX.builder()
-                    .view(view)
-                    .build();
-
-            milyX.updateView(view);
-            milyXService.updateView(milyX.getId(), mx);
-
-            model.addAttribute("milyx", milyX);
-            model.addAttribute("isAuthor", milyX.getAuthor().getId() == (isLoginedUser.getId()));
-
-            return "mily/milyx/milyx_detail";
-        } catch (NullPointerException e) {
+        @GetMapping("/milyx/detail")
+        public String getDetailPage() {
+            // 여기에 상세 페이지 로직을 구현합니다.
             return "mily/milyx/milyx_detail";
         }
+
+        @PreAuthorize("isAuthenticated()")
+        @GetMapping("/detail/{id}")
+        public String showDetail(Model model, @PathVariable long id) {
+            try {
+                // 현재 로그인한 사용자 정보를 가져옴
+                MilyUser isLoginedUser = milyUserService.getCurrentUser();
+                // 로그인한 사용자가 있으면 모델에 추가
+                if (isLoginedUser != null) {
+                    String confirmRole = isLoginedUser.getRole();
+                    model.addAttribute("role", confirmRole);
+                    model.addAttribute("user", isLoginedUser);
+                }
+                // 게시물 조회
+                MilyX milyX = milyXService.findById(id).get();
+                // 조회수 증가
+                int view = milyX.getView() + 1;
+                // 게시물 업데이트
+                milyX.updateView(view);
+                milyXService.updateView(milyX.getId(), MilyX.builder().view(view).build());
+                // 모델에 게시물 정보 추가
+                model.addAttribute("milyx", milyX);
+                // 모델에 작성자 여부 추가
+                model.addAttribute("isAuthor", milyX.getAuthor().getId() == (isLoginedUser.getId()));
+
+                // 뷰 반환
+                return "mily/milyx/milyx_detail";
+            } catch (NullPointerException e) {
+                // 예외 처리: NullPointerException 발생 시 뷰 반환
+                return "mily/milyx/milyx_detail";
+            }
+        }
     }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/delete/{id}")
+    public String doDelete(@PathVariable Long id, HttpServletRequest hsr) {
+        MilyX mx = milyXService.findById(id).orElse(null);
+        // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
+        String referer = hsr.getHeader("Referer");
+        if (mx == null) {
+            return "redirect:/milyx/detail" + id;
+        }
+        // 현재 로그인 한 유저의 정보
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+        // 삭제하려는 게시물의 정보 찾아오기
+        MilyX milyX = milyXService.findById(id).get();
+        // 관리자인 지 아닌 지 체크
+        if (!isLoginedUser.getUserLoginId().equals("admin999")) {
+            // 삭제하려는 게시물의 작성자가 맞는 지 체크
+            if (milyX.getAuthor().getId() != isLoginedUser.getId()) {
+                return "redirect:/milyx/detail" + id;
+            }
+            // 삭제하려는 게시물의 댓글 유무 확인
+            if (!milyX.getComments().isEmpty()) {
+                return "redirect:/milyx/detail" + id;
+            }
+        }
+
+        milyXService.delete(id);
+        return "redirect:" + referer;
+    }
+
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
@@ -171,46 +217,17 @@ public class MilyXController {
         return "mily/milyx/milyx_modify";
     }
 
+
+    // 인증된 사용자만 접근할 수 있도록 설정
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     public String doModify(@PathVariable Long id, @RequestParam String subject, @RequestParam String body) {
+        // 게시물 ID, 수정된 제목과 내용을 매개변수로 하여 게시물 수정 서비스 호출
         milyXService.modify(id, subject, body);
+
+        // 수정 완료 후, 해당 게시물의 상세 페이지로 리다이렉션
         return "redirect:/milyx/detail/" + id;
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/delete/{id}")
-    public String doDelete(@PathVariable Long id, HttpServletRequest hsr) {
-        MilyX mx = milyXService.findById(id).orElse(null);
 
-        // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
-        String referer = hsr.getHeader("Referer");
-
-        if (mx == null) {
-            return "redirect:/milyx/detail" + id;
-        }
-
-        // 현재 로그인 한 유저의 정보
-        MilyUser isLoginedUser = milyUserService.getCurrentUser();
-
-        // 삭제하려는 게시물의 정보 찾아오기
-        MilyX milyX = milyXService.findById(id).get();
-
-        // 관리자인 지 아닌 지 체크
-        if (!isLoginedUser.getUserLoginId().equals("admin999")) {
-            // 삭제하려는 게시물의 작성자가 맞는 지 체크
-            if (milyX.getAuthor().getId() != isLoginedUser.getId()) {
-                return "redirect:/milyx/detail" + id;
-            }
-
-            // 삭제하려는 게시물의 댓글 유무 확인
-            if (!milyX.getComments().isEmpty()) {
-                return "redirect:/milyx/detail" + id;
-            }
-        }
-
-        milyXService.delete(id);
-
-        return "redirect:" + referer;
-    }
 }
