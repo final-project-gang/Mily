@@ -1,16 +1,14 @@
 package com.mily.user;
 
-import com.mily.image.Image;
 import com.mily.Email.EmailService;
 import com.mily.base.rsData.RsData;
 import com.mily.estimate.Estimate;
 import com.mily.estimate.EstimateRepository;
 import com.mily.image.AppConfig;
+import com.mily.image.Image;
 import com.mily.image.ImageService;
-import com.mily.reservation.Reservation;
 import com.mily.standard.util.Ut;
 import jakarta.transaction.Transactional;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -70,7 +68,7 @@ public class MilyUserService {
     @Transactional
     public RsData<LawyerUser> lawyerSignup(String major, String introduce, String officeAddress, String licenseNumber, String area, MilyUser milyUser, String profileImgFilePath) {
         milyUser.setRole("waiting");
-        milyUser = milyUserRepository.save(milyUser);
+        milyUserRepository.save(milyUser);
 
         LawyerUser lu = LawyerUser
                 .builder()
@@ -84,11 +82,7 @@ public class MilyUserService {
 
         lu = lawyerUserRepository.save(lu);
 
-        milyUser = milyUserRepository.save(milyUser);
-
         if (profileImgFilePath != null) saveProfileImg(milyUser, profileImgFilePath);
-
-        System.out.println(profileImgFilePath);
 
         return RsData.of("S-1", "변호사 가입 신청을 완료 했습니다.", lu);
     }
@@ -296,6 +290,24 @@ public class MilyUserService {
         }
     }
 
+    public MilyUser getLawyer(Long id) {
+        Optional<MilyUser> lawyerUser = milyUserRepository.findById(id);
+        if(lawyerUser.isPresent()) {
+            return lawyerUser.get();
+        }
+        else {
+            throw new Ut.DataNotFoundException("변호사 정보가 없습니다.");
+        }
+    }
+
+    public LawyerUser isLawyer(MilyUser milyUser) {
+        if(milyUser.getRole().equals("approve")) {
+            return milyUser.lawyerUser;
+        } else {
+            throw new Ut.DataNotFoundException("변호사 정보가 없습니다.");
+        }
+    }
+
     public List<Estimate> getEstimate(LocalDateTime localDateTime, String category, String area) {
         List<Estimate> estimate = findDataWithin7DaysByLocationAndCategory(area, category);
         if (!estimate.isEmpty()) {
@@ -318,10 +330,6 @@ public class MilyUserService {
     public List<Estimate> findDataWithin7DaysByLocation(String area) {
         LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
         return estimateRepository.findByCreateDateGreaterThanEqualAndArea(sevenDaysAgo, area);
-    }
-
-    public Reservation reserve() {
-        return null;
     }
 
     public String maskEmail (String email) {
@@ -379,18 +387,27 @@ public class MilyUserService {
         return isLoginedUser;
     }
 
-    public String getProfileImgUrl(MilyUser milyUser) {
-        return Optional.ofNullable(milyUser)
+    public String getProfileImgUrl(LawyerUser lawyerUser) {
+        return Optional.ofNullable(lawyerUser)
                 .flatMap(this::findProfileImgUrl)
                 .orElse("https://placehold.co/30x30?text=UU");
     }
 
-    public Optional<String> findProfileImgUrl(MilyUser milyUser) {
+    public Optional<String> findProfileImgUrl(LawyerUser lawyerUser) {
         return imageService.findBy(
-                        milyUser.getUserLoginId(), milyUser.getId(), "common", "profileImg", 1
+                        lawyerUser.milyUser.getUserLoginId(), lawyerUser.milyUser.getId(), "common", "profileImg", 1
                 )
                 .map(Image::getUrl);
     }
 
     public List<MilyUser> findAll() { return milyUserRepository.findAll(); }
+
+    public List<MilyUser> findAllApproveLawyer(String role) {
+        return milyUserRepository.findByRole(role);
+    }
+
+    // area랑 role 참조해서 List 반환
+    public List<LawyerUser> findByAreaAndRole(String role, String area) {
+        return lawyerUserRepository.findByAreaAndMilyUserRole(area, role);
+    }
 }

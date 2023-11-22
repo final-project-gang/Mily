@@ -506,4 +506,11 @@ public class MilyUserController {
 
         return "redirect:" + referer;
     }
+
+    @GetMapping("lawyers")
+    public String lawyerLists(Model model) {
+        List<MilyUser> lawyers = milyUserService.findAllApproveLawyer("approve");
+        model.addAttribute("lawyers", lawyers);
+        return "lawyers";
+    }
 }

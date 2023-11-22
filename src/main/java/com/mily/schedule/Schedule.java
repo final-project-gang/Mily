@@ -1,12 +1,15 @@
-package com.mily.reservation;
+package com.mily.schedule;
 
-import java.time.LocalDateTime;
 import com.mily.user.LawyerUser;
-import com.mily.user.MilyUser;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -17,15 +20,14 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
 @SuperBuilder
-public class Reservation {
+public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    private LocalDateTime reservationTime;
+    private LocalDateTime scheduleStartTime;
 
-    @ManyToOne
-    private MilyUser milyUser;
+    private LocalDateTime scheduleEndTime;
 
     @ManyToOne
     private LawyerUser lawyerUser;
