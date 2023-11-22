@@ -1,15 +1,82 @@
-<!DOCTYPE html>
-<html>
+<html layout:decorate="@{mily/common/layout}" lang="ko" data-theme="winter">
 <head>
     <title>날짜 선택</title>
 </head>
 <body>
 <h1>날짜 선택하기</h1>
-<form th:action="@{/reservation/available_times}" method="get">
-    <input type="hidden" id="lawyerUserId" name="lawyerUserId" th:value="${lawyerUserId}">
-    <label for="date">날짜:</label><br>
-    <input type="date" id="date" name="date"><br>
-    <input type="submit" value="확인">
-</form>
+<div>
+    <div layout:fragment="content">
+
+        <!--        <form th:action="@{/reservation/available_times}" method="get" style="margin-top: 80px;">-->
+        <!--            <input type="hidden" id="lawyerUserId" name="lawyerUserId" th:value="${lawyerUserId}">-->
+        <!--            <span th:text="${user.userName}"></span>-->
+        <!--            <label for="date">날짜:</label><br>-->
+        <!--            <input type="date" id="date" name="date"><br>-->
+        <!--            <input type="submit" value="확인">-->
+        <!--        </form>-->
+
+        <div style="margin: 80px 0 40px 0; display: flex; justify-content: center;">
+            <span style="font-size: 28px; font-weight: 600;">상담 예약</span>
+        </div>
+
+        <!-- 전체 -->
+        <div style="width: 865px;">
+            <div>
+                <div style="border: 1px solid #35373A; border-radius: 15px 15px 0 0; background-color: #35373A; color: #fff;">
+                    <div th:text="${user.userName} + ' 변호사'" style="margin: 15px 0 0 30px; font-size: 20px;"></div>
+                    <div th:text="${user.lawyerUser.officeAddress}"
+                         style="margin: 0 0 15px 30px; font-size: 14px;"></div>
+                </div>
+                <div style="border: 1px solid #35373A; border-radius: 0 0 15px 15px; width: 865px; height: 519px;">
+                    <!-- 여기에 5:3 비율의 변호사 사진 넣어야 해요 -->
+                </div>
+            </div>
+
+            <!-- accordion div -->
+            <div style="border: 1px solid #1C1B1F; border-radius: 15px; margin-top: 40px;">
+                <div class="collapse collapse-arrow" style="border-bottom: 1px solid #DCDCDC; border-radius: 0; width: 90%; margin: 10px 5%;">
+                    <input type="radio" name="my-accordion-2"/>
+                    <div class="collapse-title">
+                        상담 예약
+                    </div>
+                    <div class="collapse-content">
+                        <button>30분</button>
+                        <button>60분</button>
+                    </div>
+                </div>
+                <div class="collapse collapse-arrow" style="border-bottom: 1px solid #DCDCDC; border-radius: 0; width: 90%; margin: 10px 5%;">
+                    <input type="radio" name="my-accordion-2"/>
+                    <div class="collapse-title">
+                        날짜 선택
+                    </div>
+                    <div class="collapse-content">
+                        <p>hello</p>
+                    </div>
+                </div>
+                <div class="collapse collapse-arrow" style=" border-radius: 0; width: 90%; margin: 10px 5%;">
+                    <input type="radio" name="my-accordion-2"/>
+                    <div class="collapse-title">
+                        시간 선택
+                    </div>
+                    <div class="collapse-content">
+                        <div style="display: flex; justify-content: space-around; margin-bottom: 15px;">
+                            <button style="width: 100px; border: 1px solid #DCDCDC; padding: 5px 10px; border-radius: 10px;"><span th:text="'09:00'"></span></button>
+                            <button style="width: 100px; border: 1px solid #DCDCDC; padding: 5px 10px; border-radius: 10px;"><span th:text="'10:00'"></span></button>
+                            <button style="width: 100px; border: 1px solid #DCDCDC; padding: 5px 10px; border-radius: 10px;"><span th:text="'11:00'"></span></button>
+                            <button style="width: 100px; border: 1px solid #DCDCDC; padding: 5px 10px; border-radius: 10px;"><span th:text="'12:00'"></span></button>
+                        </div>
+                        <div style="display: flex; justify-content: space-around; margin-top: 15px;">
+                            <button style="width: 100px; border: 1px solid #DCDCDC; padding: 5px 10px; border-radius: 10px;"><span th:text="'14:00'"></span></button>
+                            <button style="width: 100px; border: 1px solid #DCDCDC; padding: 5px 10px; border-radius: 10px;"><span th:text="'15:00'"></span></button>
+                            <button style="width: 100px; border: 1px solid #DCDCDC; padding: 5px 10px; border-radius: 10px;"><span th:text="'16:00'"></span></button>
+                            <button style="width: 100px; border: 1px solid #DCDCDC; padding: 5px 10px; border-radius: 10px;"><span th:text="'17:00'"></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 </body>
 </html>

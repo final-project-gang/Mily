@@ -69,6 +69,8 @@ public class ReservationController {
     // 변호사 ID에 따른 날짜 선택 페이지
     @GetMapping("/select_date")
     public String selectDate(@RequestParam("lawyerUserId") Long lawyerUserId, Model model) {
+        MilyUser lawyerUser = milyUserService.findById(lawyerUserId).get();
+        model.addAttribute("user", lawyerUser);
         model.addAttribute("lawyerUserId", lawyerUserId);
         return "select_date";
     }
