@@ -55,6 +55,7 @@ public class MilyXController {
     @GetMapping("/create")
     public String create(Model model) {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
+        model.addAttribute("user", isLoginedUser);
 
         if (isLoginedUser == null) {
             return "redirect:/milyx";

@@ -2,7 +2,6 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="|${milyx.subject}|"></title>
-    <link rel="stylesheet" type="text/css" href="resources/static.resources/common/style.css">
     <script th:inline="javascript">
         const elapsedTime = (date) => {
             const start = new Date(date);
@@ -43,26 +42,40 @@
                              th:text="${milyx.firstCategory.title} + ' ・ ' + ${milyx.secondCategory.title}"></div>
                     </div>
 
+                    <!--게시글의 제목을 표시-->
                     <div class="form-control col-span-full">
-                        <div th:text="${milyx.subject}" style="font-weight: bold;"></div>
+                        <div th:text="${milyx.subject}" style="font-weight: bold; font-size: 30px;"></div>
                     </div>
 
+                    <!--게시글의 본문을 표시 / whitespace-pre-line 스타일은 공백과 줄바꿈 유지함-->
                     <div class="form-control col-span-full">
-                        <div class="whitespace-pre-line" th:text="${milyx.body}"></div>
+                        <div class="whitespace-pre-line" th:text="${milyx.body}" style="font-size: 16px;"></div>
                     </div>
 
-                    <div style="display: contents !important; justify-contents: space-between;"
-                         class="form-control col-span-full">
-                        <div class="form-control">
-                            <div th:id="'createDate_' + ${milyx.id}" th:text="${milyx.createDate}"></div>
-                        </div>
-                        <div class="form-control" style="display: -webkit-box">
-                            <i class="fa-regular fa-eye" style="font-size: 16px;"></i>
-                            <div>ㅤ</div>
-                            <div th:text="${milyx.view}"></div>
+<!--조회수와 생성날짜 표시함 / flex를 사용하여 수평 정렬하고, space=between을 사용하여 두 요소 사이에 공간을 만듬-->
+                    <!--조회수와 생성날짜를 나란히 왼쪽 정렬합니다-->
+                    <div style="display: flex; justify-content: flex-start; align-items: center; flex-direction: row;" class="form-control col-span-full">
+
+                    <!--생성 날짜를 표시-->
+                        <div class="blue-background" th:id="'createDate__' + ${milyx.id}" th:text="${milyx.createDate}" style="font-size: 13px; margin-right: 10px;">게시물 날짜</div>
+
+                        <!--조회수 아이콘과 조회수를 표시합니다-->
+                        <div style="display: flex; align-items: center; font-size: 13px;">
+                            <!--아이콘 대신하여 텍스트를 사용하기-->
+                           <!-- <i class="fa-regular fa-eye" style="font-size: 16px;"></i> -->
+                            <div class="blue-background" th:text="'조회수 ' + ${milyx.view}" style="font-size: 13px;">조회수 160</div>
                         </div>
                     </div>
                 </div>
+                <!-- 해시태그 섹션 -->
+                <div class="hashtags" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
+                    <!-- 각 해시태그 -->
+                    <span class="hashtag">#대학생</span>
+                    <span class="hashtag">#성관계</span>
+                    <span class="hashtag">#고소</span>
+                    <!-- 추가 해시태그 -->
+            </div>
+
                 <div style="display: flex !important;" class="justify-end">
                     <a th:if="${isAuthor}" th:href="@{|/milyx/modify/${milyx.id}|}" class="ml-4 mr-4" th:text="수정"></a>
                     <form th:if="${isAuthor}" th:action="@{|/milyx/delete/${milyx.id}|}" method="post"
@@ -79,7 +92,6 @@
                 <div>ㅤ</div>
                 <div th:text="${#lists.size(milyx.comments)}|"></div>
             </div>
-
             <form th:if="${@rq.login and role == 'approve' and !milyx.hasAdoptedAnswer}" method="POST"
                   onsubmit="submitCommentForm(this); return false;"
                   th:action="@{|/milyxcomment/create/${milyx.id}|}">
@@ -143,6 +155,23 @@
                 <div class="text-center">
                     <a class="btn btn-link" href="/milyx">목록</a>
                 </div>
+
+<body>
+<div>
+    <h2 th:text="'변호사 답변 총 ' + ${#lists.size(milyx.comments)} + '건'">변호사 답변 총 0건</h2>
+    <!-- 답변 리스트 -->
+</div>
+<!-- 답글 양식 -->
+<div class="reply-form" style="margin-top: 50px;">
+    <form method="POST" action="/submit-reply-url">
+        <!-- 답글 입력 필드 -->
+        <textarea name="replyContent" placeholder="여기에 답글을 입력하세요"></textarea>
+
+        <!-- 답글 제출 버튼 -->
+        <button type="submit">답글 제출</button>
+    </form>
+</div>
+</body>
             </div>
         </div>
     </div>
