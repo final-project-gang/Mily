@@ -319,7 +319,7 @@ public class MilyUserController {
 
         // 현재 로그인 상태가 아닌 유저의 요청을 받으면 돌려 보냄.
         if (isLoginedUser == null) {
-            return "redirect:" + referer;
+            return "redirect:/";
         }
 
         // 현재 로그인 된 사용자의 권한이 "member"일 때
@@ -378,6 +378,7 @@ public class MilyUserController {
             List<MilyUser> allUsers = milyUserService.findAll();
             int users = allUsers.size();
 
+            model.addAttribute("user", isLoginedUser);
             model.addAttribute("users", users);
             model.addAttribute("userList", allUsers);
 
