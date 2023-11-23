@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>변호사 목록</title>
+</head>
+<body>
+<h1>예약 대기 목록</h1>
+<ul>
+    <th:block th:each="reservation : ${reservations}">
+        <li>
+            <a th:text="${reservation.id}"></a>
+            <a th:text="${reservation.reservationTime}"></a>
+            <a th:text="${reservation.milyUser.id}"></a>
+            <a th:text="${reservation.lawyerUser.milyUser.id}"></a>
+        </li>
+    </th:block>
+</ul>
+</body>
+</html>q

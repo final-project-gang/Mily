@@ -40,8 +40,8 @@ public class ReservationController {
         return "redirect:/";
     }
 
-    @PostMapping("/{reservationId}/refuse")
-    public String refuseReservation(@PathVariable Long reservationId, RedirectAttributes redirectAttributes) {
+    @PostMapping("/refuse/{reservationId}")
+    public String refuseReservation(@PathVariable Long reservationId, RedirectAttributes redirectAttributes, Long lawyerUserId) {
         try {
             Reservation reservation = reservationService.getReservation(reservationId);
             reservationService.refuseReservation(reservation);
@@ -71,5 +71,12 @@ public class ReservationController {
     public String selectDate(@RequestParam("lawyerUserId") Long lawyerUserId, Model model) {
         model.addAttribute("lawyerUserId", lawyerUserId);
         return "select_date";
+    }
+
+    @GetMapping("reservation_list")
+    public String getReservation(Model model) {
+        List<Reservation> reservations = reservationService.getReservations(milyUserService.getCurrentUser().getId());
+        model.addAttribute("reservations", reservations);
+        return "reservation_list";
     }
 }

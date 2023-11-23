@@ -1,12 +1,16 @@
 package com.mily.reservation;
 
-import java.time.LocalDateTime;
 import com.mily.user.LawyerUser;
 import com.mily.user.MilyUser;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -29,4 +33,6 @@ public class Reservation {
 
     @ManyToOne
     private LawyerUser lawyerUser;
+
+    private String status;
 }

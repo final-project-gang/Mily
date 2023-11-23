@@ -30,6 +30,8 @@ public class QReservation extends EntityPathBase<Reservation> {
 
     public final DateTimePath<java.time.LocalDateTime> reservationTime = createDateTime("reservationTime", java.time.LocalDateTime.class);
 
+    public final StringPath status = createString("status");
+
     public QReservation(String variable) {
         this(Reservation.class, forVariable(variable), INITS);
     }

@@ -25,12 +25,19 @@ public class ReservationService {
         reservation.setMilyUser(milyUser);
         reservation.setLawyerUser(lawyerUser);
         reservation.setReservationTime(time);
+        reservation.setStatus("waiting");
         reservationRepository.save(reservation);
     }
 
     // 예약 거절
     public void refuseReservation(Reservation reservation) {
-        reservationRepository.delete(reservation);
+        reservation.setStatus("refuse");
+        reservationRepository.save(reservation);
+    }
+
+    public void approveReservation(Reservation reservation) {
+        reservation.setStatus("approve");
+        reservationRepository.save(reservation);
     }
 
     // 예약 가능한 시간 표시
@@ -50,5 +57,9 @@ public class ReservationService {
     public Reservation getReservation(Long reservationId) {
         return reservationRepository.findById(reservationId)
                 .orElseThrow();
+    }
+
+    public List<Reservation> getReservations(long lawyerUserId) {
+        return reservationRepository.findByLawyerUserId(lawyerUserId);
     }
 }

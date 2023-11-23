@@ -1,6 +1,5 @@
 package com.mily.user;
 
-import com.mily.schedule.Schedule;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -9,9 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -45,7 +41,4 @@ public class LawyerUser {
 
     @NotBlank
     private String area;
-
-    @OneToMany(mappedBy = "lawyerUser")
-    private List<Schedule> schedules;
 }
