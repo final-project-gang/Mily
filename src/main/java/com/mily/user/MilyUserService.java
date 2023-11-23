@@ -68,7 +68,9 @@ public class MilyUserService {
     @Transactional
     public RsData<LawyerUser> lawyerSignup(String major, String introduce, String officeAddress, String licenseNumber, String area, MilyUser milyUser, String profileImgFilePath) {
         milyUser.setRole("waiting");
-        milyUserRepository.save(milyUser);
+        milyUser =  milyUserRepository.saveAndFlush(milyUser);
+
+        if (profileImgFilePath != null) saveProfileImg(milyUser, profileImgFilePath);
 
         LawyerUser lu = LawyerUser
                 .builder()
@@ -81,8 +83,6 @@ public class MilyUserService {
                 .build();
 
         lu = lawyerUserRepository.save(lu);
-
-        if (profileImgFilePath != null) saveProfileImg(milyUser, profileImgFilePath);
 
         return RsData.of("S-1", "변호사 가입 신청을 완료 했습니다.", lu);
     }
