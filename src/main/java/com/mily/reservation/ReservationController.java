@@ -12,7 +12,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @RequestMapping("/reservation")
 @RequiredArgsConstructor
@@ -69,7 +73,26 @@ public class ReservationController {
     // 변호사 ID에 따른 날짜 선택 페이지
     @GetMapping("/select_date")
     public String selectDate(@RequestParam("lawyerUserId") Long lawyerUserId, Model model) {
+        MilyUser lawyerUser = milyUserService.findById(lawyerUserId).get();
+
+        List<String> dates = new ArrayList<>();
+        List<String> daysOfWeek = new ArrayList<>();
+        LocalDate start = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd");
+
+        for (int i = 0; i < 7; i++) {
+            dates.add(start.plusDays(i).format(formatter));
+            String dayOfWeek = start.plusDays(i).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+            daysOfWeek.add(dayOfWeek);
+        }
+
+//        String dayOfWeek = ld.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+
+        model.addAttribute("user", lawyerUser);
         model.addAttribute("lawyerUserId", lawyerUserId);
+        model.addAttribute("dates", dates);
+        model.addAttribute("day", daysOfWeek);
+
         return "select_date";
     }
 }

@@ -30,7 +30,7 @@
             </div>
             <div th:if="${@rq.login}" class="mr-6 hover:text-blue-400">
                 <a th:href="@{/payment}">
-                    <span th:text="${user.milyPoint}"></span>
+                    <span th:text="${@rq.milyUser.milyPoint}"></span>
                 </a>
             </div>
             <div th:if="${@rq.login}" class="mr-6 hover:text-blue-400">
