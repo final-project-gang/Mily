@@ -5,15 +5,39 @@
 </head>
 <body>
 <h1>예약 대기 목록</h1>
-<ul>
-    <th:block th:each="reservation : ${reservations}">
-        <li>
-            <a th:text="${reservation.id}"></a>
-            <a th:text="${reservation.reservationTime}"></a>
-            <a th:text="${reservation.milyUser.id}"></a>
-            <a th:text="${reservation.lawyerUser.milyUser.id}"></a>
-        </li>
-    </th:block>
-</ul>
+<table>
+    <thead style="border: 1px solid #c8c8c8;">
+    <tr>
+        <th style="border-right: 1px solid #c8c8c8;">예약 시간</th>
+        <th style="border-right: 1px solid #c8c8c8;">예약자</th>
+        <th style="border-right: 1px solid #c8c8c8;">상태</th>
+        <th>승인</th>
+        <th>거절</th>
+    </tr>
+    </thead>
+
+    <tbody style="border: 1px solid #c8c8c8; text-align: center;">
+    <tr th:each="reservation: ${reservations}">
+        <td th:text="${reservation.reservationTime}" style="border-right: 1px solid #c8c8c8;"></td>
+        <td th:text="${reservation.milyUser.id}" style="border-right: 1px solid #c8c8c8;"></td>
+        <td th:text="${reservation.status}" style="border-right: 1px solid #c8c8c8;"></td>
+        </td>
+        <td style="border-right: 1px solid #c8c8c8;">
+            <div class="button">
+                <form th:action="@{/reservation/approveReservation{id}(id=${reservation.id})}" method="post">
+                    <input type="submit" value="승인하기" style="font-size: 17px; color: blue;">
+                </form>
+            </div>
+        </td>
+        <td style="border-right: 1px solid #c8c8c8;">
+            <div class="button">
+                <form th:action="@{/reservation/refuseReservation/{id}(id=${reservation.id})}" method="post">
+                    <input type="submit" value="승인하기" style="font-size: 17px; color: blue;">
+                </form>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>
-</html>q
+</html>

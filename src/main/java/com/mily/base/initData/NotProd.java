@@ -6,6 +6,8 @@ import com.mily.article.milyx.category.entity.FirstCategory;
 import com.mily.article.milyx.category.entity.SecondCategory;
 import com.mily.estimate.Estimate;
 import com.mily.payment.PaymentService;
+import com.mily.reservation.ReservationRepository;
+import com.mily.reservation.ReservationService;
 import com.mily.user.MilyUser;
 import com.mily.user.MilyUserRepository;
 import com.mily.user.MilyUserService;
@@ -27,6 +29,8 @@ public class NotProd {
     private final MilyXService milyXService;
     private final PaymentService paymentService;
     private FirstCategory fc;
+    private final ReservationService reservationService;
+    private final ReservationRepository reservationRepository;
     @Bean
     public ApplicationRunner init() {
         return args -> {
@@ -39,6 +43,8 @@ public class NotProd {
                 MilyUser milyUser3 = milyUserService.userSignup("oizill5481", "a7586898", "이재준", "oizill5481@icloud.com", "01045702579", "1996-10-05").getData();
                 MilyUser milyUser4 = milyUserService.userSignup("test1111", "test1111", "홍길동", "test1111@email.com", "01011111111", "1996-01-01").getData();
                 milyUserService.lawyerSignup("형사", "안녕하세요 형사전문 변호사입니다.", "대전 둔산동 1111-1111", "1111-1111-1111", "대전", milyUser4,"");
+                milyUser4.setRole("approve");
+                milyUserRepository.save(milyUser4);
                 MilyUser milyUser5 = milyUserService.userSignup("test2222", "test2222", "동길홍", "test2222@email.com", "01022222222", "1995-01-01").getData();
                 milyUserService.lawyerSignup("민사", "안녕하세요 민사전문 변호사입니다.", "대전 둔산동 2222-2222", "2222-2222-2222", "대전", milyUser5, "");
 

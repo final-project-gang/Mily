@@ -4,6 +4,7 @@ import com.mily.standard.util.Ut;
 import com.mily.user.LawyerUser;
 import com.mily.user.MilyUser;
 import com.mily.user.MilyUserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,18 +41,6 @@ public class ReservationController {
             redirectAttributes.addFlashAttribute("message", "예약이 성공적으로 저장되었습니다.");
         } catch (Exception ex) {
             redirectAttributes.addFlashAttribute("errorMessage", "예약 저장 중 오류가 발생했습니다 : " + ex.getMessage());
-        }
-        return "redirect:/";
-    }
-
-    @PostMapping("/refuse/{reservationId}")
-    public String refuseReservation(@PathVariable Long reservationId, RedirectAttributes redirectAttributes, Long lawyerUserId) {
-        try {
-            Reservation reservation = reservationService.getReservation(reservationId);
-            reservationService.refuseReservation(reservation);
-            redirectAttributes.addFlashAttribute("message", "예약이 성공적으로 거절되었습니다.");
-        } catch (Exception ex) {
-            redirectAttributes.addFlashAttribute("errorMessage", "예약 거절 중 오류가 발생했습니다: " + ex.getMessage());
         }
         return "redirect:/";
     }
@@ -101,5 +90,19 @@ public class ReservationController {
         List<Reservation> reservations = reservationService.getReservations(milyUserService.getCurrentUser().getId());
         model.addAttribute("reservations", reservations);
         return "reservation_list";
+    }
+
+    @PostMapping("/approveReservation/{id}")
+    public String approveReservation(@PathVariable Long id, HttpServletRequest hsr) {
+        String referer = hsr.getHeader("Referer");
+        reservationService.approveReservation(reservationService.getReservation(id));
+        return "redirect:" + referer;
+    }
+
+    @PostMapping("/refuseReservation/{id}")
+    public String refuseReservation(@PathVariable Long id, HttpServletRequest hsr) {
+        String referer = hsr.getHeader("Referer");
+        reservationService.refuseReservation(reservationService.getReservation(id));
+        return "redirect:" + referer;
     }
 }

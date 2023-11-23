@@ -1,5 +1,6 @@
 package com.mily.reservation;
 
+import com.mily.standard.util.Ut;
 import com.mily.user.LawyerUser;
 import com.mily.user.MilyUser;
 import com.mily.user.MilyUserService;
@@ -20,24 +21,33 @@ public class ReservationService {
     private final MilyUserService milyUserService;
 
     // 예약 저장
-    public void saveReservation(MilyUser milyUser, LawyerUser lawyerUser, LocalDateTime time) {
+    public Reservation saveReservation(MilyUser milyUser, LawyerUser lawyerUser, LocalDateTime time) {
         Reservation reservation = new Reservation();
         reservation.setMilyUser(milyUser);
         reservation.setLawyerUser(lawyerUser);
         reservation.setReservationTime(time);
         reservation.setStatus("waiting");
-        reservationRepository.save(reservation);
+        return reservationRepository.save(reservation);
     }
 
     // 예약 거절
     public void refuseReservation(Reservation reservation) {
-        reservation.setStatus("refuse");
-        reservationRepository.save(reservation);
+        if (reservation.getLawyerUser().milyUser.getId() == milyUserService.getCurrentUser().getId()) {
+            reservation.setStatus("refuse");
+            reservationRepository.save(reservation);
+        } else {
+            throw new Ut.UnauthorizedException("권한이 없습니다.");
+        }
     }
 
+    // 예약 수락
     public void approveReservation(Reservation reservation) {
-        reservation.setStatus("approve");
-        reservationRepository.save(reservation);
+        if (reservation.getLawyerUser().milyUser.getId() == milyUserService.getCurrentUser().getId()) {
+            reservation.setStatus("approve");
+            reservationRepository.save(reservation);
+        } else {
+            throw new Ut.UnauthorizedException("권한이 없습니다.");
+        }
     }
 
     // 예약 가능한 시간 표시
