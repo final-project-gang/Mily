@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<footer th:fragment="footerFragment" class="footer_wrap mt-24 pb-7 border-t">
-    <div class="ft_content_top flex justify-between mt-8 max-w-7xl m-auto">
+<footer th:fragment="footerFragment" class="footer_wrap mt-24 pb-3 border-t">
+    <div class="ft_content_top flex justify-between mt-16 max-w-7xl m-auto">
         <!--  회사소개...  -->
         <div class="ft_content_1 flex flex-col">
             <a href="#">회사소개</a>
@@ -71,25 +71,32 @@
         }
 
         @media (max-width: 360px) {
+          .footer_wrap {
+            margin-top: 50px;
+            padding-bottom: 10px;
+          }
+
           .ft_content_top {
             display: flex;
             flex-direction: column;
           }
 
           .ft_content_1 {
-            margin: 0 auto;
+            margin: -30px auto 0 auto;
             text-align: center;
           }
 
           .ft_content_2 {
-            margin: 40px auto 0 auto;
+            margin: 20px auto 0 auto;
             text-align: center;
+            font-size: 11px;
+            width: var(--m_width);
           }
 
           .foot_last {
-            width: 300px;
+            width: var(--m_width);
             flex-direction: column;
-            margin-top: 40px;
+            margin-top: 30px;
           }
 
           .foot_img {

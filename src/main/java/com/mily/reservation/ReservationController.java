@@ -63,7 +63,7 @@ public class ReservationController {
     public String getAvailableTimes(@RequestParam Long lawyerUserId, @RequestParam LocalDate date, Model model) {
         try {
             LawyerUser lawyerUser = milyUserService.getLawyer(lawyerUserId).getLawyerUser();
-            List<LocalDateTime> availableTimes = reservationService.getAvailableTimes(lawyerUser, date);
+            List<LocalDateTime> availableTimes = reservationService.getAvailableTimes(lawyerUserId, date);
             model.addAttribute("availableTimes", availableTimes);
             model.addAttribute("lawyerUserId", lawyerUserId);
         } catch (Exception ex) {
@@ -118,7 +118,7 @@ public class ReservationController {
 
         LocalDate date = now.plusDays(index);
 
-        List<LocalDateTime> availableTimes = reservationService.getAvailableTimes(lawyerUser.getLawyerUser(), date);
+        List<LocalDateTime> availableTimes = reservationService.getAvailableTimes(lawyerUser.getLawyerUser().getId(), date);
 
         return ResponseEntity.ok().body(availableTimes);
     }

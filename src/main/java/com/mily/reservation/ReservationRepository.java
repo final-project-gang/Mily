@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     List<Reservation> findByLawyerUserAndReservationTimeBetween(LawyerUser lawyerUser, LocalDateTime startTime, LocalDateTime endTime);
+
+    List<Reservation> findByLawyerUserIdAndReservationTime(Long lawyerUserId, LocalDateTime dateTime);
 }
