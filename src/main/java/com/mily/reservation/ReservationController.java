@@ -5,6 +5,7 @@ import com.mily.user.LawyerUser;
 import com.mily.user.MilyUser;
 import com.mily.user.MilyUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
@@ -77,16 +79,23 @@ public class ReservationController {
 
         List<String> dates = new ArrayList<>();
         List<String> daysOfWeek = new ArrayList<>();
+
         LocalDate start = LocalDate.now();
+        LocalDate end = start.plusDays(7);
+
+        model.addAttribute("start", start);
+        model.addAttribute("end", end);
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd");
 
-        for (int i = 0; i < 7; i++) {
+        dates.add(start.format(formatter));
+        daysOfWeek.add("오늘");
+
+        for (int i = 1; i < 7; i++) {
             dates.add(start.plusDays(i).format(formatter));
             String dayOfWeek = start.plusDays(i).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
-            daysOfWeek.add(dayOfWeek);
+            daysOfWeek.add(dayOfWeek.substring(0, 1));
         }
-
-//        String dayOfWeek = ld.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
 
         model.addAttribute("user", lawyerUser);
         model.addAttribute("lawyerUserId", lawyerUserId);
@@ -94,5 +103,53 @@ public class ReservationController {
         model.addAttribute("day", daysOfWeek);
 
         return "select_date";
+    }
+
+    @GetMapping("/getAvailableTimes")
+    public ResponseEntity<List<LocalDateTime>> allAvailableTimes(Long lawyerUserId, String id) {
+        LocalDate now = LocalDate.now();
+        MilyUser lawyerUser = milyUserService.findById(lawyerUserId).get();
+
+        System.out.println("받아 온 데이터 : " + id);
+        System.out.println("받아 온 lawyerUserId : " + lawyerUserId);
+        char lastIndex = id.charAt(id.length() -1);
+        int index = Character.getNumericValue(lastIndex);
+        System.out.println("추출한 int : " + index);
+
+        LocalDate date = now.plusDays(index);
+
+        List<LocalDateTime> availableTimes = reservationService.getAvailableTimes(lawyerUser.getLawyerUser(), date);
+
+        return ResponseEntity.ok().body(availableTimes);
+    }
+
+    @GetMapping("/result")
+    public String getResult (@RequestParam Long lawyerUserId, @RequestParam String consultation, @RequestParam String selectedDate, @RequestParam String selectedTime) {
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+        LawyerUser lawyerUser = milyUserService.getLawyer(lawyerUserId).getLawyerUser();
+
+        List<LocalDate> localDates = new ArrayList<>();
+        List<String> dates = new ArrayList<>();
+
+        LocalDate start = LocalDate.now();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd");
+        localDates.add(start);
+        dates.add(start.format(formatter));
+
+        for (int i = 1; i < 7; i++) {
+            dates.add(start.plusDays(i).format(formatter));
+            localDates.add(start.plusDays(i));
+        }
+
+        int index = dates.indexOf(selectedDate);
+        LocalDate selectDate = localDates.get(index);
+
+        LocalTime parsedTime = LocalTime.parse(selectedTime);
+        LocalDateTime reservationTime = selectDate.atTime(parsedTime);
+
+        reservationService.saveReservation(isLoginedUser, lawyerUser, reservationTime);
+
+        return "reservation_success";
     }
 }
