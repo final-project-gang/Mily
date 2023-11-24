@@ -24,4 +24,17 @@ public class MilyHomeController {
             return "/mily/mily_main";
         }
     }
+
+    @GetMapping("/none")
+    public String showNone(Model model) {
+        try {
+            MilyUser isLoginedUser = milyUserService.getCurrentUser();
+            if (isLoginedUser != null) {
+                model.addAttribute("user", isLoginedUser);
+            }
+            return "/none";
+        } catch (NullPointerException e) {
+            return "/none";
+        }
+    }
 }

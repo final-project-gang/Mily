@@ -55,6 +55,8 @@ public class PaymentController {
             MilyUser isLoginedUser = milyUserService.getCurrentUser();
             if (isLoginedUser != null) {
                 model.addAttribute("user", isLoginedUser);
+            } else {
+                return "redirect:/user/login";
             }
             return "mily/payment/payment";
         } catch (NullPointerException e) {

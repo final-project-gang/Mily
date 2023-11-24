@@ -37,11 +37,13 @@ public class ReservationService {
     public List<LocalDateTime> getAvailableTimes(LawyerUser lawyerUser, LocalDate reservationTime) {
         List<LocalDateTime> availableTimes = new ArrayList<>();
         for (int hour = 9; hour < 18; hour++) {
-            LocalDateTime dateTime = reservationTime.atTime(hour, 0);
-            List<Reservation> overlappingReservations = reservationRepository.findByLawyerUserAndReservationTimeBetween(
-                    lawyerUser, dateTime.minusHours(1), dateTime);
-            if (overlappingReservations.isEmpty()) {
-                availableTimes.add(dateTime);
+            if (hour != 12) {
+                LocalDateTime dateTime = reservationTime.atTime(hour, 0);
+                List<Reservation> overlappingReservations = reservationRepository.findByLawyerUserAndReservationTimeBetween(
+                        lawyerUser, dateTime.minusHours(1), dateTime);
+                if (overlappingReservations.isEmpty()) {
+                    availableTimes.add(dateTime);
+                }
             }
         }
         return availableTimes;

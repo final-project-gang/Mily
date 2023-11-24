@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="ko" data-theme="winter">
 
+<body>
+    <div class="flex flex-col m-auto relative">
+        <div th:replace="~{mily/common/header :: headerFragment}"></div>
+
+        <th:block layout:fragment="content" class="mt-20 max-w-7xl m-auto"></th:block>
+<!--        <div class="h-screen"></div>-->
+
+        <div th:replace="~{mily/common/footer :: footerFragment}"></div>
+    </div>
+</body>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,18 +34,9 @@
     <!-- 테일윈드 불러오기 -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+
     <!--    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.7.7/dist/full.css" rel="stylesheet" type="text/css"/>-->
     <link rel="stylesheet" href="/resource/common/common.css">
     <script src="/resource/common/common.js"></script>
 </head>
-<body>
-    <div class="flex flex-col m-auto relative">
-        <div th:replace="~{mily/common/header :: headerFragment}"></div>
-
-        <th:block layout:fragment="content" class="mt-20 max-w-7xl m-auto"></th:block>
-<!--        <div class="h-screen"></div>-->
-
-        <div th:replace="~{mily/common/footer :: footerFragment}"></div>
-    </div>
-</body>
 </html>
