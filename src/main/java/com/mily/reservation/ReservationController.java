@@ -110,11 +110,8 @@ public class ReservationController {
         LocalDate now = LocalDate.now();
         MilyUser lawyerUser = milyUserService.findById(lawyerUserId).get();
 
-        System.out.println("받아 온 데이터 : " + id);
-        System.out.println("받아 온 lawyerUserId : " + lawyerUserId);
         char lastIndex = id.charAt(id.length() -1);
         int index = Character.getNumericValue(lastIndex);
-        System.out.println("추출한 int : " + index);
 
         LocalDate date = now.plusDays(index);
 
@@ -124,12 +121,14 @@ public class ReservationController {
     }
 
     @GetMapping("/result")
-    public String getResult (@RequestParam Long lawyerUserId, @RequestParam String consultation, @RequestParam String selectedDate, @RequestParam String selectedTime) {
+    public String getResult (@RequestParam Long lawyerUserId, @RequestParam String consultation, @RequestParam String selectedDate, @RequestParam String selectedTime, Model model) {
+
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
-        LawyerUser lawyerUser = milyUserService.getLawyer(lawyerUserId).getLawyerUser();
+        MilyUser lawyerUser = milyUserService.findById(lawyerUserId).get();
 
         List<LocalDate> localDates = new ArrayList<>();
         List<String> dates = new ArrayList<>();
+        String dayOfWeek;
 
         LocalDate start = LocalDate.now();
 
@@ -148,7 +147,19 @@ public class ReservationController {
         LocalTime parsedTime = LocalTime.parse(selectedTime);
         LocalDateTime reservationTime = selectDate.atTime(parsedTime);
 
-        reservationService.saveReservation(isLoginedUser, lawyerUser, reservationTime);
+        if (reservationService.findByReservationTime(reservationTime).isPresent()) {
+            return "redirect:/user/lawyers";
+        }
+
+        dayOfWeek = selectDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN).substring(0, 1);
+
+        reservationService.saveReservation(isLoginedUser, lawyerUser.getLawyerUser(), reservationTime);
+
+        model.addAttribute("lawyer", lawyerUser);
+        model.addAttribute("user", isLoginedUser);
+        model.addAttribute("selectedTime", reservationTime);
+        model.addAttribute("day", dayOfWeek);
+        model.addAttribute("time", selectedTime);
 
         return "reservation_success";
     }

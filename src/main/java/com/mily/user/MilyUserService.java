@@ -77,6 +77,7 @@ public class MilyUserService {
                 .major(major)
                 .introduce(introduce)
                 .officeAddress(officeAddress)
+                .profileImgFilePath(profileImgFilePath)
                 .licenseNumber(licenseNumber)
                 .area(area)
                 .milyUser(milyUser)

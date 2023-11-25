@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -53,5 +54,9 @@ public class ReservationService {
     public Reservation getReservation(Long reservationId) {
         return reservationRepository.findById(reservationId)
                 .orElseThrow();
+    }
+
+    public Optional<Reservation> findByReservationTime(LocalDateTime reservationTime) {
+        return reservationRepository.findByReservationTime(reservationTime);
     }
 }

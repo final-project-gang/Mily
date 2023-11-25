@@ -46,7 +46,6 @@ public class ImageController {
                 .contentType(MediaType.parseMediaType(contentType)).body(resource);
     }
 
-    // 위 주석문을 처리할 수 있는 액션 만들어줘
     @PostMapping("/temp")
     @ResponseBody
     public RsData<String> temp(@RequestParam("file") MultipartFile file) {

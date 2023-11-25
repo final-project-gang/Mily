@@ -36,6 +36,8 @@ public class QLawyerUser extends EntityPathBase<LawyerUser> {
 
     public final StringPath officeAddress = createString("officeAddress");
 
+    public final StringPath profileImgFilePath = createString("profileImgFilePath");
+
     public final ListPath<com.mily.schedule.Schedule, com.mily.schedule.QSchedule> schedules = this.<com.mily.schedule.Schedule, com.mily.schedule.QSchedule>createList("schedules", com.mily.schedule.Schedule.class, com.mily.schedule.QSchedule.class, PathInits.DIRECT2);
 
     public QLawyerUser(String variable) {
