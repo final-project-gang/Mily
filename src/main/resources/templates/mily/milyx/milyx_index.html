@@ -1,54 +1,194 @@
 <html layout:decorate="@{mily/common/layout}" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Mily > Mily X</title>
+    <title>Mily X : Mily</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-<div layout:fragment="content" class="items-center justify-center" style="display: flex-row;">
-    <div class="mt-9 mb-9 items-center justify-center" style="display: flex; font-size: 42px;">
-        나와 비슷한 문제에 대한 답변을 찾아보세요.
-    </div>
-    <div class="mt-6 mb-9 items-center justify-center" style="display: flex;">
-        <button>
-            <a th:if="${@rq.login}" th:href="@{milyx/create}" class="btn btn-primary">질문하기</a>
-        </button>
-    </div>
-    <div class="ml-60 mr-60 items-center justify-center">
-        <ul class="mt-3 border-l-2 border-r-2 border-[#c8c8c8]/25" style="display: block;">
-            <li th:each="milyx : ${milyx}">
-                <div class="mt-6 mb-6 card bg-base-100">
-                    <div class="card-body">
-                        <div class="form-control col-span-full">
-                            <div class="form-control" th:text="${milyx.firstCategory.title} + ' ・ ' + ${milyx.secondCategory.title}"></div>
-                        </div>
+<div layout:fragment="content">
 
-                        <div class="form-control col-span-full" style="display: block;">
-                            <a th:href="@{/milyx/detail/{id}(id=${milyx.id})}" th:text="${milyx.subject}"
-                            style="font-weight:bold;"></a>
-                        </div> <!--게시물 내용이 보여주게 하는 기능 -->
-
-                        <div class="detail grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-3">
-                            <div class="form-control" style="display: -webkit-inline-box;">
-                                <div th:id="'createDate_' + ${milyx.id}" th:text="${milyx.createDate}" style="display: inline-block;"></div>
-                                <!--게시물 날짜 표시 없어지면 조회수랑 댓글 표시기능 정렬이 안됨 -->
-
-                                <div>ㅤㅤ</div>
-                                <i class="fa-regular fa-comment" style="font-size: 16px;"></i>
-                                <div th:text="'ㅤ' + ${#lists.size(milyx.comments)}|"></div>
-
-                                <div>ㅤㅤ</div>
-                                <i class="fa-regular fa-eye" style="font-size: 16px;"></i>
-                                <div th:text="'ㅤ' + ${milyx.view}"></div>
-                            </div> <!--댓글과 조회수 표시 기능 -->
-                        </div>
+    <!--  배너  -->
+    <div class="main-banner-gird" style="transform: translateX(0%);">
+        <div class="max-w-full mx-auto flex justify-end items-end">
+            <div class="main-banner mx-auto">
+                <!-- 이미지 -->
+                <div class="banner-img-box max-w-screen-lg">
+                    <img src="https://d2nyk3ltml4doc.cloudfront.net/lawtalk/latest/images/0cb1e48e97121240a8a5.png"
+                         class="object-cover; vertical-align: bottom;" alt="main-img-1">
+                    <div class="text-grid">
+                        <p class="text">나와 비슷한 문제에 대한 답변을 찾아보세요!</p>
+                        <a class="text" th:if="${@rq.login}" th:href="@{milyx/create}" style="text-decoration: underline;">질문하기</a>
                     </div>
                 </div>
-            </li>
-        </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 상담글 4개 -->
+    <div class="question-grid-box mt-12">
+        <!-- 1 -->
+        <div class="question-box flex mb-3 border-b border-gray-300" th:each="milyx : ${milyx}">
+            <div class="question-list mt-3">
+                <div class="question-titleLine mt-3">
+                    <p class="title mt-3" style="color: rgb(122, 130, 135); font-size: 1rem;"
+                       th:text="${milyx.firstCategory.title}"></p>
+                    <a th:href="@{/milyx/detail/{id}(id=${milyx.id})}">
+                        <p class="list mt-3" style="color: rgb(43, 45, 47); font-size: 1.5rem; font-weight: 600;"
+                           th:text="${milyx.secondCategory.title}"></p>
+                    </a>
+                </div>
+
+                <div class="text-answer flex" th:each="comment : ${milyx.comments}">
+                    <div class="case-answer" style="--tw-text-opacity: 1;
+color: rgba(96, 165, 250, var(--tw-text-opacity));">답변
+                    </div>
+                    <span class="case-answer__lawyer ml-2" th:if="${count > 0}"
+                          th:text="${comment.author.userName} + ' 변호사'">
+            </span>
+                </div>
+
+                <div class="case-card__answer max-w-full mt-3" style="color: rgb(122, 130, 135); font-size: 1rem;"
+                     th:each="comment : ${milyx.comments}">
+                    <span th:if="${count > 0}" th:text="${comment.body}"></span>
+                </div>
+
+                <div class="question-img-box gap-1 flex items-center mt-2 mb-5">
+                    <p class="text-box" style="color: rgb(159, 164, 169); font-size: 0.8rem;"
+                       th:if="${#lists.size(milyx.comments) == 0}" th:text="'변호사의 답변을 기다리는 중입니다.'"></p>
+                    <p class="text-box" style="color: rgb(159, 164, 169); font-size: 0.8rem;"
+                       th:if="${#lists.size(milyx.comments) > 0}"
+                       th:text="'변호사 답변 ' + ${#lists.size(milyx.comments)} + '개'"></p>
+                </div>
+
+                <!-- 조회수 -->
+                <div ng-if="stateName != 'main'" class="case-card__info flex justify-between">
+            <span class="viewCount" style="--tw-text-opacity: 1;
+color: rgba(107, 114, 128, var(--tw-text-opacity));">조회수<i class="number" th:text="' ' + ${milyx.view}"></i>
+            </span>
+                    <div th:each="comment : ${milyx.comments}">
+                        <!-- 시간답변 -->
+                        <span class="viewCount" style="--tw-text-opacity: 1;
+color: rgba(107, 114, 128, var(--tw-text-opacity));" th:if="${#lists.size(milyx.comments) != 0}"
+                              th:id="'createDate_' + ${comment.id}"
+                              th:text="${comment.createDate}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            /* 폰트 설정 */
+    @font-face {
+      font-family: "GmarketSansMedium";
+      src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
+        format("woff");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    html > body {
+      font-family: "GmarketSansMedium";
+      text-underline-position: under;
+    }
+
+    /* 노말라이즈 */
+
+    /* 라이브러리 */
+
+    /* 커스텀 */
+    :root {
+      --site-width: 1280px;
+    }
+
+    .con {
+      max-width: var(--site-width);
+    }
+
+    .search-box {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .main-banner {
+      /*   height: 500px; */
+    }
+
+    .category-box-icon {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 35px 85px;
+    }
+
+    .category-btn-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 85px;
+      cursor: pointer;
+    }
+
+    .main-btn {
+      background: rgba(43, 45, 47, 0.6);
+      border-radius: 100px;
+      width: 200px;
+      height: 50px;
+      bottom: 12px;
+    }
+
+    .banner-img-box > .main-btn > .btn-text {
+      /*   border: 1px solid red; */
+    }
+
+    /* 어떤 지역 변호사 버튼 */
+    .locationList-btn {
+      width: 150px;
+      height: 48px;
+      border: none;
+      background: #f7f7fa;
+      cursor: pointer;
+    }
+
+    .question-box {
+      width: 747px;
+      height: 100%;
+    }
+
+    /* 상담글/변호사사진 */
+    .question-img > img {
+      width: 24px;
+      height: 24px;
+      border-radius: 30%;
+      border: solid 2px #fff;
+    }
+
+    /* 배너 텍스트 */
+    .text-grid {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      max-width: 43.75rem;
+      text-align: center;
+      padding: 0 1rem;
+      font-size:3rem;
+    }
+
+    .text {
+      color: #fff;
+      font-weight: 500;
+      font-size : 32px;
+    }
+
+    .question-grid-box{
+      width : 1024px;
+    }
+    .question-box{
+      width : 1024px;
+    }
+        </style>
     </div>
 </div>
-
 </body>
 </html>
 
@@ -58,16 +198,16 @@
     	const end = new Date();
 
     	const seconds = Math.floor((end.getTime() - start.getTime()) / 1000);
-    	if (seconds < 60) return '방금 전';
+    	if (seconds < 60) return '방금 전 답변';
 
     	const minutes = seconds / 60;
-    	if (minutes < 60) return `${Math.floor(minutes)}분 전`;
+    	if (minutes < 60) return `${Math.floor(minutes)}분 전 답변`;
 
     	const hours = minutes / 60;
-    	if (hours < 24) return `${Math.floor(hours)}시간 전`;
+    	if (hours < 24) return `${Math.floor(hours)}시간 전 답변`;
 
     	const days = hours / 24;
-    	if (days < 7) return `${Math.floor(days)}일 전`;
+    	if (days < 7) return `${Math.floor(days)}일 전 답변`;
 
     	return `${start.toLocaleDateString()}`;
     };
