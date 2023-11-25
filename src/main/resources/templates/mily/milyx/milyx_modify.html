@@ -7,28 +7,33 @@
 <body>
 <div class="flex-1 flex items-center justify-center" layout:fragment="content">
     <div class="container w-full px-4">
-        <div style="display: flex !important;" class="my-4 justify-center">
-            <i class="fa-solid fa-pen"></i>
-            <span>글 수정</span>
+        <div style="display: flex !important; font-size: 40px;" class="my-40 justify-center">
+            <span>지식인 글 수정</span>
         </div>
 
         <form class="flex flex-col gap-6" method="POST" onsubmit="submitModifyForm(this); return false;"
               th:action="@{|/milyx/modify/${milyx.id}|}">
             <div class="form-control">
+
+                <hr style="width: 100%; margin-top: 20px; margin-bottom: 20px;">
                 <span>
                     선택한 대분류 :
                     <span th:text="${milyx.firstCategory.title}"></span>
                 </span>
+                <hr style="width: 100%; margin-top: 20px; margin-bottom: 20px;">
 
                 <span>
                     선택한 소분류 :
                     <span th:text="${milyx.secondCategory.title}"></span>
                 </span>
+                <hr style="width: 100%; margin-top: 20px; margin-bottom: 20px;">
 
                 <span>
                     사용한 포인트 :
                     <span th:text="${milyx.milyPoint}"></span>
                 </span>
+
+                <hr style="width: 100%; margin-top: 20px; margin-bottom: 20px;">
 
                 <label class="label">
                     <span class="label-text">제목</span>
@@ -67,9 +72,9 @@
                     return;
                 }
 
-                if (form.subject.value.length < 10) {
+                if (form.subject.value.length < 2) {
                     form.subject.focus();
-                    toastWarning('제목을 10글자 이상 입력해주세요.');
+                    toastWarning('제목을 2글자 이상 입력해주세요.');
                     return;
                 }
 
