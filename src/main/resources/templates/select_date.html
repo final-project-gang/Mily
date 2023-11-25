@@ -19,8 +19,8 @@
                     <div th:text="${user.lawyerUser.officeAddress}"
                          style="margin: 0 0 15px 30px; font-size: 14px;"></div>
                 </div>
-                <div style="border: 1px solid #35373A; border-radius: 0 0 15px 15px; width: 768px; height: 460px;">
-                    <!-- 여기에 5:3 비율의 변호사 사진 넣어야 해요 -->
+                <div>
+                    <img th:src="${user.lawyerUser.profileImgFilePath}" style="border: 1px solid #35373A; border-radius: 0 0 15px 15px; width: 768px; height: 460px;">
                 </div>
             </div>
 

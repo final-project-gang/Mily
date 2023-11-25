@@ -38,15 +38,15 @@ public class NotProd {
                 MilyUser milyUser2 = milyUserService.userSignup("leewowns1005", "a7586898", "이재준", "leewowns1005@naver.com", "01020105481", "1996-10-05").getData();
                 MilyUser milyUser3 = milyUserService.userSignup("oizill5481", "a7586898", "이재준", "oizill5481@icloud.com", "01045702579", "1996-10-05").getData();
                 MilyUser milyUser4 = milyUserService.userSignup("test1111", "test1111", "한문철", "test1111@email.com", "01011111111", "1996-01-01").getData();
-                milyUserService.lawyerSignup("교통사고/범죄", "교통 사고, 상해 전문 승소율 90% 이상 / 처리까지 최저 수임료로", "법무법인 새긴", "5555-5555-5555", "대전", milyUser4, "");
-                MilyUser milyUser5 = milyUserService.userSignup("test2222", "test2222", "박신명", "test2222@email.com", "01022222222", "1995-01-01").getData();
-                milyUserService.lawyerSignup("민사 절차", "<1,400건 이상의 후기> 검증된 변호사 / 합리적 수임료", "법무법인 새긴", "2222-2222-2222", "대전", milyUser5, "");
-                MilyUser milyUser6 = milyUserService.userSignup("test3333", "test3333", "박지혜", "test3333@email.com", "01033333333", "1995-01-01").getData();
-                milyUserService.lawyerSignup("성 범죄", "[성매매/성범죄] 초기 대응부터 확실하게", "법률사무소 M&Y", "3333-3333-3333", "대전", milyUser6, "");
-                MilyUser milyUser7 = milyUserService.userSignup("test4444", "test4444", "김가희", "test4444@email.com", "01044444444", "1995-01-01").getData();
-                milyUserService.lawyerSignup("가족", "TV출연/대형 로펌 출신/이혼 관련 상담 2000건 이상", "법률사무소 M&Y", "4444-4444-4444", "대전", milyUser7, "");
-                MilyUser milyUser8 = milyUserService.userSignup("test5555", "test5555", "최우성", "test5555@email.com", "01055555555", "1995-01-01").getData();
-                milyUserService.lawyerSignup("교통사고/범죄", "교통 사고, 상해 전문 승소율 90% 이상 / 처리까지 최저 수임료로", "법무법인 새긴", "5555-5555-5555", "대전", milyUser8, "");
+                milyUserService.lawyerSignup("교통사고/범죄", "교통 사고, 상해 전문 승소율 97% 이상 / 처리까지 최저 수임료로", "법무법인 아로", "1111-1111-1111", "대전", milyUser4, "https://i.postimg.cc/J7sVTCpC/Vudz-Wb-LYPYgc-OBwt32ap-Na-ZBHt5b8-AXA.webp");
+                MilyUser milyUser5 = milyUserService.userSignup("test2222", "test2222", "박추어", "test2222@email.com", "01022222222", "1995-01-01").getData();
+                milyUserService.lawyerSignup("민사 절차", "<1,400건 이상의 후기> 검증된 변호사 / 합리적 수임료", "법무법인 새긴", "2222-2222-2222", "대전", milyUser5, "https://i.postimg.cc/63sjzFqt/SE-8dd832e9-2fa4-4cb4-9868-f1ebc.jpg");
+                MilyUser milyUser6 = milyUserService.userSignup("test3333", "test3333", "이정건", "test3333@email.com", "01033333333", "1995-01-01").getData();
+                milyUserService.lawyerSignup("성 범죄", "[성매매/성범죄] 초기 대응부터 확실하게", "법률사무소 M&Y", "3333-3333-3333", "대전", milyUser6, "https://i.postimg.cc/0QkzDyvS/Kakao-Talk-20231125-230349223.jpg");
+                MilyUser milyUser7 = milyUserService.userSignup("test4444", "test4444", "이재영", "test4444@email.com", "01044444444", "1995-01-01").getData();
+                milyUserService.lawyerSignup("가족", "TV출연/대형 로펌 출신/이혼 관련 상담 2000건 이상", "MILY L&C", "4444-4444-4444", "대전", milyUser7, "https://i.postimg.cc/dtYHGRCT/Kakao-Talk-20231125-222200034.jpg");
+                MilyUser milyUser8 = milyUserService.userSignup("test5555", "test5555", "최진우", "test5555@email.com", "01055555555", "1995-01-01").getData();
+                milyUserService.lawyerSignup("교통사고/범죄", "교통 사고, 상해 전문 승소율 90% 이상 / 처리까지 최저 수임료로", "MILY L&C", "5555-5555-5555", "대전", milyUser8, "https://i.postimg.cc/Kc90KKbn/IMG-1638.jpg");
 
                 milyUser4.setRole("approve");
                 milyUser5.setRole("approve");

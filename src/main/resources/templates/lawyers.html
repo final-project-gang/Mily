@@ -9,6 +9,21 @@
 <body>
 <div layout:fragment="content">
 
+    <!--  배너  -->
+    <div class="main-banner-gird" style="transform: translateX(0%);">
+        <div class="max-w-full mx-auto flex justify-end items-end">
+            <div class="main-banner mx-auto">
+                <!-- 이미지 -->
+                <div class="banner-img-box max-w-screen-lg">
+                    <img src="https://i.postimg.cc/bNmfwYCM/hunters-race-MYbh-N8-Kaa-Ec-unsplas.jpg"
+                         class="object-cover; vertical-align: bottom;" alt="main-img-1">
+                    <div class="text-grid">
+                        <p class="text">MILY 최고의 변호사들을 만나보세요!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- tab-wrapper -->
     <form action="">
         <div class="lawyers-tab-wrapper mt-20">
@@ -75,14 +90,9 @@
                                 <div ng-if="adCategoryHighlightKeywords.length > 0"
                                      class="lawyer-card-keywords flex items-center">
                                     <!---->
-                                    <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-24 h-8 flex items-center justify-center">
-                                        #성매수
+                                    <div class="lawyer-card-keyword bg-gray-200 rounded-3xl h-8 p-3 flex items-center justify-center">
+                                        <span th:text="'#' + ${lawyer.lawyerUser.major}"></span>
                                     </div>
-                                    <!---->
-                                    <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-28 h-8 flex items-center justify-center mx-3">
-                                        #조건만남사기
-                                    </div>
-                                    <!---->
                                 </div>
 
                                 <!-- 변호사상담예약하기버튼 -->
@@ -112,10 +122,9 @@
                                              ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list"
                                              ad-event="click_lawyer-thumbnail" ad-label="9403-이재준" ad-delay="1000"
                                              class="picture">
-                                            <img lazy-image=""
-                                                 data-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/5e64b6fc9566c101e43e1b23-original.jpg"
-                                                 data-desktop-size="256x256" class="lawyer-profile"
-                                                 src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/5e64b6fc9566c101e43e1b23-original.jpg?s=256x256">
+                                            <img class="lawyer-profile"
+                                                 th:src="${lawyer.lawyerUser.profileImgFilePath}">
+<!--                                                 src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/5e64b6fc9566c101e43e1b23-original.jpg?s=256x256">-->
                                         </div>
                                         <!---->
                                     </div>
@@ -180,6 +189,20 @@
         .watch-icon {
           width: 15px;
           height: 15px;
+        }
+
+        /* 배너 텍스트 */
+        .text-grid {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 100%;
+          max-width: 43.75rem;
+          text-align: center;
+          padding: 0 1rem;
+          font-size:2rem;
+          color: #fff;
         }
 
         .lawyer-text:after {
