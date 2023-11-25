@@ -3,6 +3,7 @@ package com.mily.article.milyx;
 import com.mily.article.milyx.category.CategoryService;
 import com.mily.article.milyx.category.entity.FirstCategory;
 import com.mily.article.milyx.category.entity.SecondCategory;
+import com.mily.article.milyx.comment.MilyXComment;
 import com.mily.article.milyx.comment.MilyXCommentService;
 import com.mily.base.rq.Rq;
 import com.mily.base.rsData.RsData;
@@ -39,6 +40,15 @@ public class MilyXController {
         List<MilyX> milyx = milyXService.getAllPosts();
         Collections.reverse(milyx);
         model.addAttribute("milyx", milyx);
+
+        List<MilyXComment> comments = milyXCommentService.findAll();
+        Collections.reverse(comments);
+
+        System.out.println(comments);
+        int count = comments.size();
+        model.addAttribute("count", count);
+        model.addAttribute("comments", comments);
+
 
         try {
             MilyUser isLoginedUser = milyUserService.getCurrentUser();
