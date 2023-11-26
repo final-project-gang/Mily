@@ -157,8 +157,13 @@
 </head>
 <body>
 <section layout:fragment="content">
-    <div th:include="mily/milyuser/information/layout/mypage_navbar :: navbar"
-         style="display: block; align-items: center; margin-bottom: 30px;"></div>
+    <!--  메뉴바  -->
+    <div id="header_menu" class="text-lg w-full fixed top-20 left-0 bg-white z-50 h-12 border-b pt-4">
+        <div class="flex max-w-7xl m-auto justify-evenly">
+            <a th:href="@{/user/mypage/info}" class="hover:text-blue-400 text-gray-300">내 정보</a>
+            <a th:href="@{/user/mypage/edit}" class="ml-5" style="color: rgb(43, 45, 47); border-bottom: 2px solid black; padding-bottom: 3px;">계정 설정</a>
+        </div>
+    </div>
 
     <span style="margin: 0 20%; font-size: 20px; font-weight: bold;" th:text="'비밀번호 변경'"></span>
     <div style="display: flex; border: 1px solid #93E6FB; border-radius: 10px; margin: 5px 19.5% 15px 19.5%; padding: 15px; font-size: 16px;"
