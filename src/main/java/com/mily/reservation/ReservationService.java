@@ -59,4 +59,8 @@ public class ReservationService {
     public Optional<Reservation> findByReservationTime(LocalDateTime reservationTime) {
         return reservationRepository.findByReservationTime(reservationTime);
     }
+
+    public List<Reservation> findByMilyUser(MilyUser milyUser) {
+        return reservationRepository.findByMilyUserId(milyUser.getId());
+    }
 }

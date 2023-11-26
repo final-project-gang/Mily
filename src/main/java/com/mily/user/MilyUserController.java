@@ -13,6 +13,8 @@ import com.mily.estimate.Estimate;
 import com.mily.estimate.EstimateRepository;
 import com.mily.payment.Payment;
 import com.mily.payment.PaymentService;
+import com.mily.reservation.Reservation;
+import com.mily.reservation.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -44,6 +46,7 @@ public class MilyUserController {
     private final MilyXService milyXService;
     private final MilyXCommentService milyXCommentService;
     private final PaymentService paymentService;
+    private final ReservationService reservationService;
     private final EstimateRepository estimateRepository;
 
     @PreAuthorize("isAnonymous()")
@@ -350,9 +353,14 @@ public class MilyUserController {
             model.addAttribute("posts", posts);
             model.addAttribute("userPosts", userPosts);
 
+            // 사용자의 상담 예약 내역
+            List<Reservation> userReservation = reservationService.findByMilyUser(isLoginedUser);
+            model.addAttribute("reservations", userReservation.size());
+            model.addAttribute("reservation", userReservation);
+
             // 사용자의 포인트 충전 내역
             if (isLoginedUser.getPayments() != null) {
-                model.addAttribute("payments", isLoginedUser.getPayments());
+                model.addAttribute("payments", isLoginedUser.getPayments().size());
             }
 
             /* 내 정보 페이지가 기본값으로 적용 됨 */
