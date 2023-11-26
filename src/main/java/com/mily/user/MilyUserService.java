@@ -1,6 +1,8 @@
 package com.mily.user;
 
 import com.mily.Email.EmailService;
+import com.mily.article.milyx.category.entity.FirstCategory;
+import com.mily.article.milyx.category.entity.SecondCategory;
 import com.mily.base.rsData.RsData;
 import com.mily.estimate.Estimate;
 import com.mily.estimate.EstimateRepository;
@@ -128,13 +130,11 @@ public class MilyUserService {
     }
 
     @Transactional
-    public Estimate sendEstimate(String category, String categoryItem, String area, MilyUser milyUser) {
+    public Estimate sendEstimate(FirstCategory firstCategory, SecondCategory secondCategory, String area, String body, MilyUser milyUser) {
         Estimate estimate = new Estimate();
-        estimate.setCategory(category);
-        estimate.setCategoryItem(categoryItem);
-        estimate.setName(milyUser.getUserName());
-        estimate.setBirth(milyUser.getUserDateOfBirth());
-        estimate.setPhoneNumber(milyUser.getUserPhoneNumber());
+        estimate.setFirstCategory(firstCategory);
+        estimate.setSecondCategory(secondCategory);
+        estimate.setBody(body);
         estimate.setArea(area);
         estimate.setMilyUser(milyUser);
         estimate.setCreateDate(LocalDateTime.now());
@@ -142,30 +142,14 @@ public class MilyUserService {
     }
 
     @Transactional
-    public Estimate sevenCreateEstimate(String category, String categoryItem, String area, MilyUser milyUser) {
+    public Estimate sevenCreateEstimate(FirstCategory firstCategory, SecondCategory secondCategory, String area, String body, MilyUser milyUser) {
         Estimate estimate = new Estimate();
-        estimate.setCategory(category);
-        estimate.setCategoryItem(categoryItem);
-        estimate.setName(milyUser.getUserName());
-        estimate.setBirth(milyUser.getUserDateOfBirth());
-        estimate.setPhoneNumber(milyUser.getUserPhoneNumber());
-        estimate.setArea(area);
+        estimate.setFirstCategory(firstCategory);
+        estimate.setSecondCategory(secondCategory);
+        estimate.setArea(milyUser.getUserName());
+        estimate.setBody(body);
         estimate.setMilyUser(milyUser);
         estimate.setCreateDate(LocalDateTime.now().minusDays(7));
-        return estimateRepository.save(estimate);
-    }
-
-    @Transactional
-    public Estimate sixCreateEstimate(String category, String categoryItem, String area, MilyUser milyUser) {
-        Estimate estimate = new Estimate();
-        estimate.setCategory(category);
-        estimate.setCategoryItem(categoryItem);
-        estimate.setName(milyUser.getUserName());
-        estimate.setBirth(milyUser.getUserDateOfBirth());
-        estimate.setPhoneNumber(milyUser.getUserPhoneNumber());
-        estimate.setArea(area);
-        estimate.setMilyUser(milyUser);
-        estimate.setCreateDate(LocalDateTime.now().minusDays(6));
         return estimateRepository.save(estimate);
     }
 
@@ -309,8 +293,8 @@ public class MilyUserService {
         }
     }
 
-    public List<Estimate> getEstimate(LocalDateTime localDateTime, String category, String area) {
-        List<Estimate> estimate = findDataWithin7DaysByLocationAndCategory(area, category);
+    public List<Estimate> getEstimate(LocalDateTime localDateTime, FirstCategory firstCategory, String area) {
+        List<Estimate> estimate = findDataWithin7DaysByLocationAndCategory(localDateTime, area, firstCategory);
         if (!estimate.isEmpty()) {
             return estimate;
         } else {
@@ -323,9 +307,9 @@ public class MilyUserService {
         }
     }
 
-    public List<Estimate> findDataWithin7DaysByLocationAndCategory(String area, String category) {
-        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
-        return estimateRepository.findByCreateDateGreaterThanEqualAndAreaAndCategory(sevenDaysAgo, area, category);
+    public List<Estimate> findDataWithin7DaysByLocationAndCategory(LocalDateTime localDateTime, String area, FirstCategory firstCategory) {
+        LocalDateTime sevenDaysAgo = localDateTime.minusDays(7);
+        return estimateRepository.findByCreateDateGreaterThanEqualAndAreaAndFirstCategory(sevenDaysAgo, area, firstCategory);
     }
 
     public List<Estimate> findDataWithin7DaysByLocation(String area) {
