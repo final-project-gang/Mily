@@ -24,21 +24,17 @@ public class QEstimate extends EntityPathBase<Estimate> {
 
     public final StringPath area = createString("area");
 
-    public final StringPath birth = createString("birth");
-
-    public final StringPath category = createString("category");
-
-    public final StringPath categoryItem = createString("categoryItem");
+    public final StringPath body = createString("body");
 
     public final DateTimePath<java.time.LocalDateTime> createDate = createDateTime("createDate", java.time.LocalDateTime.class);
+
+    public final com.mily.article.milyx.category.entity.QFirstCategory firstCategory;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final com.mily.user.QMilyUser milyUser;
 
-    public final StringPath name = createString("name");
-
-    public final StringPath phoneNumber = createString("phoneNumber");
+    public final com.mily.article.milyx.category.entity.QSecondCategory secondCategory;
 
     public QEstimate(String variable) {
         this(Estimate.class, forVariable(variable), INITS);
@@ -58,7 +54,9 @@ public class QEstimate extends EntityPathBase<Estimate> {
 
     public QEstimate(Class<? extends Estimate> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.firstCategory = inits.isInitialized("firstCategory") ? new com.mily.article.milyx.category.entity.QFirstCategory(forProperty("firstCategory")) : null;
         this.milyUser = inits.isInitialized("milyUser") ? new com.mily.user.QMilyUser(forProperty("milyUser"), inits.get("milyUser")) : null;
+        this.secondCategory = inits.isInitialized("secondCategory") ? new com.mily.article.milyx.category.entity.QSecondCategory(forProperty("secondCategory"), inits.get("secondCategory")) : null;
     }
 
 }
