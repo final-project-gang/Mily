@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -45,6 +44,8 @@ public class LawyerUser {
 
     @NotBlank
     private String area;
+
+    private String profileImgFilePath;
 
     @OneToMany(mappedBy = "lawyerUser")
     private List<Schedule> schedules;

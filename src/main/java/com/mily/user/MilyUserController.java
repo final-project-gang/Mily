@@ -4,6 +4,7 @@ import com.mily.article.milyx.MilyX;
 import com.mily.article.milyx.MilyXService;
 import com.mily.article.milyx.category.CategoryService;
 import com.mily.article.milyx.category.entity.FirstCategory;
+import com.mily.article.milyx.category.entity.SecondCategory;
 import com.mily.article.milyx.comment.MilyXComment;
 import com.mily.article.milyx.comment.MilyXCommentService;
 import com.mily.base.rq.Rq;
@@ -12,6 +13,8 @@ import com.mily.estimate.Estimate;
 import com.mily.estimate.EstimateRepository;
 import com.mily.payment.Payment;
 import com.mily.payment.PaymentService;
+import com.mily.reservation.Reservation;
+import com.mily.reservation.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -43,6 +46,7 @@ public class MilyUserController {
     private final MilyXService milyXService;
     private final MilyXCommentService milyXCommentService;
     private final PaymentService paymentService;
+    private final ReservationService reservationService;
     private final EstimateRepository estimateRepository;
 
     @PreAuthorize("isAnonymous()")
@@ -183,34 +187,40 @@ public class MilyUserController {
     }
 
     @GetMapping("/estimate")
-    public String showForm(EstimateCreateForm estimateCreateForm) {
+    public String showForm(EstimateCreateForm estimateCreateForm, Model model) {
+        List<FirstCategory> firstCategories = categoryService.getFirstCategories();
+        List<SecondCategory> secondCategories = categoryService.getSecondCategories();
+
+        model.addAttribute("firstCategories", firstCategories);
+        model.addAttribute("secondCategories", secondCategories);
+
         return "estimate";
     }
 
     @PostMapping("/estimate")
-    public String getEstimate(@Valid EstimateCreateForm estimateCreateForm, Principal principal) {
-        String userName = principal.getName();
-        MilyUser milyUser = milyUserService.getUser(userName);
+    public String getEstimate(@Valid EstimateCreateForm estimateCreateForm) {
+        MilyUser milyUser = milyUserService.getCurrentUser();
 
         if (!milyUser.getRole().equals("member")) {
             return rq.redirect("/", "접근 권한이 없습니다.");
         }
 
-        milyUserService.sendEstimate(estimateCreateForm.getCategory(), estimateCreateForm.getCategoryItem(), estimateCreateForm.getArea(), milyUser);
+        milyUserService.sendEstimate(estimateCreateForm.getFirstCategory(), estimateCreateForm.getSecondCategory(), estimateCreateForm.getArea(), estimateCreateForm.getBody(), milyUser);
         return rq.redirect("/", "견적서가 전달되었습니다.");
     }
 
     @Getter
     @AllArgsConstructor
     public class EstimateCreateForm {
-        @NotBlank
-        private String category;
+        private FirstCategory firstCategory;
 
-        @NotBlank
-        private String categoryItem;
+        private SecondCategory secondCategory;
 
         @NotBlank
         private String area;
+
+        @NotBlank
+        private String body;
     }
 
     @GetMapping("/waitLawyerList")
@@ -303,8 +313,9 @@ public class MilyUserController {
         }
 
         String category = milyUserService.getCurrentUser().getLawyerUser().getMajor();
+        FirstCategory firstCategory = categoryService.findByFTitle(category);
         String area = milyUserService.getCurrentUser().getLawyerUser().getArea();
-        List<Estimate> estimates = milyUserService.getEstimate(LocalDateTime.now(), category, area);
+        List<Estimate> estimates = milyUserService.getEstimate(LocalDateTime.now(), firstCategory, area);
         model.addAttribute("estimates", estimates);
         return "estimate_list";
     }
@@ -342,9 +353,14 @@ public class MilyUserController {
             model.addAttribute("posts", posts);
             model.addAttribute("userPosts", userPosts);
 
+            // 사용자의 상담 예약 내역
+            List<Reservation> userReservation = reservationService.findByMilyUser(isLoginedUser);
+            model.addAttribute("reservations", userReservation.size());
+            model.addAttribute("reservation", userReservation);
+
             // 사용자의 포인트 충전 내역
             if (isLoginedUser.getPayments() != null) {
-                model.addAttribute("payments", isLoginedUser.getPayments());
+                model.addAttribute("payments", isLoginedUser.getPayments().size());
             }
 
             /* 내 정보 페이지가 기본값으로 적용 됨 */

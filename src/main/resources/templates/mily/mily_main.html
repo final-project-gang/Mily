@@ -17,7 +17,7 @@
     <div id="header_menu" class="text-lg w-full fixed top-20 left-0 bg-white z-50 h-12 border-b pt-4">
         <div class="max-w-7xl m-auto">
             <a href="/" style="color: rgb(43, 45, 47); border-bottom: 2px solid black; padding-bottom: 5px;">홈</a>
-            <a href="/milyx" class="ml-5 hover:text-blue-400 text-gray-300">변호사</a>
+            <a href="/user/lawyers" class="ml-5 hover:text-blue-400 text-gray-300">변호사</a>
             <a href="/milyx" class="ml-5 hover:text-blue-400 text-gray-300">상담사례</a>
         </div>
     </div>
@@ -53,7 +53,7 @@
             </div>
 
             <div class="consul_wrap h-full flex flex-col">
-                <a href="/milyx" class="btn btn-primary">상담 예약</a>
+                <a href="/user/lawyers" class="btn btn-primary">상담 예약</a>
                 <a href="/milyx" class="btn btn-primary mt-5">상담글 작성</a>
             </div>
         </div>
@@ -734,7 +734,7 @@
         <!-- 최신상담글 -->
         <div class="recent-question-wrap mt-20">
             <div class="flex items-center mb-5">
-                <a href="/">
+                <a href="/milyx">
                     <p class="search-box" style="color: rgb(43, 45, 47);">
                         최신 상담글&nbsp;&nbsp;>
                     </p>
@@ -743,110 +743,31 @@
 
 
             <div class="question-box">
-                <a href="/">
-                    <div class="question-list mt-3">
+                <div class="question-list mt-3" th:each="milyx : ${milyx}">
+                    <a th:href="@{/milyx/detail/{id}(id=${milyx.id})}">
                         <div class="question-titleLine mt-3">
-                            <p class="title mt-2" style="color: rgb(117, 189, 255); font-size: 16px;">
-                                사기/공갈</p>
-                            <p class="list mt-2" style="color: rgb(43, 45, 47); font-size: 20px;">폭행 약식명령 후
-                                손해배상 청구
-                                가능성에
-                                대한 상담</p>
+                            <p class="list mt-2" style="color: rgb(43, 45, 47); font-size: 20px;"
+                               th:text="${milyx.firstCategory.title} + '/' + ${milyx.secondCategory.title}"></p>
+                            <p class="title mt-2" style="color: rgb(117, 189, 255); font-size: 16px;"
+                               th:text="${milyx.subject}"></p>
                         </div>
-                        <p class="list mt-2" style="color: rgb(122, 130, 135); font-size: 16px">
-                            제가 10대 가량 뺨을 맞았는데 검찰 단계에서 주변 목격자가 제척사유가 되는 목격자라 1~2대 정도 폭행한 것으로 인정되어서 저를 때린 상대방이 폭행
-                            약식명령
-                            벌금형(70만원)...</p>
+                        <p class="list mt-2" style="color: rgb(122, 130, 135); font-size: 16px; word-wrap: break-word;"
+                           th:text="${milyx.body}"></p>
                         <div class="question-img-box gap-1 flex items-center mt-2 mb-5">
-                            <div class="question-img flex items-center">
+                            <div class="question-img flex items-center" th:if="${#lists.size(milyx.comments) > 0}">
                                 <img src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/thumb/6073cd9daf42110031758d22-thumb.jpg"
                                      class="question-img-1" alt="변호사 썸네일">
                                 <img src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/thumb/646af0c335bda68e03637c66-thumb-1686298679633.jpg"
                                      class="question-img-2 -m-2" alt="변호사 썸네일">
                             </div>
-                            <p class="text-box ml-4 mt-1" style="color: rgb(159, 164, 169); font-size: 0.7rem;">변호사
-                                답변2개</p>
+                            <p class="text-box" style="color: rgb(159, 164, 169); font-size: 0.8rem;"
+                               th:if="${#lists.size(milyx.comments) == 0}" th:text="'변호사의 답변을 기다리는 중입니다.'"></p>
+                            <p class="text-box" style="color: rgb(159, 164, 169); font-size: 0.8rem;"
+                               th:if="${#lists.size(milyx.comments) > 0}"
+                               th:text="'변호사 답변 ' + ${#lists.size(milyx.comments)} + '개'"></p>
                         </div>
-                    </div>
-                </a>
-                <a href="/">
-                    <div class="question-list mt-3">
-                        <div class="question-titleLine mt-3">
-                            <p class="title mt-2" style="color: rgb(117, 189, 255); font-size: 16px;">
-                                고소/소송절차</p>
-                            <p class="list mt-2" style="color: rgb(43, 45, 47); font-size: 20px;">폭행 약식명령 후
-                                손해배상 청구
-                                가능성에
-                                대한 상담</p>
-                        </div>
-                        <p class="list mt-2" style="color: rgb(122, 130, 135); font-size: 16px">
-                            제가 10대 가량 뺨을 맞았는데 검찰 단계에서 주변 목격자가 제척사유가 되는 목격자라 1~2대 정도 폭행한 것으로 인정되어서 저를 때린 상대방이 폭행
-                            약식명령
-                            벌금형(70만원)...</p>
-                        <div class="question-img-box gap-1 flex items-center mt-2 mb-5">
-                            <div class="question-img flex items-center">
-                                <img src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/thumb/6073cd9daf42110031758d22-thumb.jpg"
-                                     class="question-img-1" alt="변호사 썸네일">
-                                <img src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/thumb/646af0c335bda68e03637c66-thumb-1686298679633.jpg"
-                                     class="question-img-2 -m-2" alt="변호사 썸네일">
-                            </div>
-                            <p class="text-box ml-4 mt-1" style="color: rgb(159, 164, 169); font-size: 0.7rem;">변호사
-                                답변2개</p>
-                        </div>
-                    </div>
-                </a>
-                <a href="/">
-                    <div class="question-list mt-3">
-                        <div class="question-titleLine mt-3">
-                            <p class="title mt-2" style="color: rgb(117, 189, 255); font-size: 16px;">
-                                고소/소송절차</p>
-                            <p class="list mt-2" style="color: rgb(43, 45, 47); font-size: 20px;">폭행 약식명령 후
-                                손해배상 청구
-                                가능성에
-                                대한 상담</p>
-                        </div>
-                        <p class="list mt-2" style="color: rgb(122, 130, 135); font-size: 16px">
-                            제가 10대 가량 뺨을 맞았는데 검찰 단계에서 주변 목격자가 제척사유가 되는 목격자라 1~2대 정도 폭행한 것으로 인정되어서 저를 때린 상대방이 폭행
-                            약식명령
-                            벌금형(70만원)...</p>
-                        <div class="question-img-box gap-1 flex items-center mt-2 mb-5">
-                            <div class="question-img flex items-center">
-                                <img src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/thumb/6073cd9daf42110031758d22-thumb.jpg"
-                                     class="question-img-1" alt="변호사 썸네일">
-                                <img src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/thumb/646af0c335bda68e03637c66-thumb-1686298679633.jpg"
-                                     class="question-img-2 -m-2" alt="변호사 썸네일">
-                            </div>
-                            <p class="text-box ml-4 mt-1" style="color: rgb(159, 164, 169); font-size: 0.7rem;">변호사
-                                답변2개</p>
-                        </div>
-                    </div>
-                </a>
-                <a href="/">
-                    <div class="question-list mt-3">
-                        <div class="question-titleLine mt-3">
-                            <p class="title mt-2" style="color: rgb(117, 189, 255); font-size: 16px;">
-                                고소/소송절차</p>
-                            <p class="list mt-2" style="color: rgb(43, 45, 47); font-size: 20px;">폭행 약식명령 후
-                                손해배상 청구
-                                가능성에
-                                대한 상담</p>
-                        </div>
-                        <p class="list mt-2" style="color: rgb(122, 130, 135); font-size: 16px">
-                            제가 10대 가량 뺨을 맞았는데 검찰 단계에서 주변 목격자가 제척사유가 되는 목격자라 1~2대 정도 폭행한 것으로 인정되어서 저를 때린 상대방이 폭행
-                            약식명령
-                            벌금형(70만원)...</p>
-                        <div class="question-img-box gap-1 flex items-center mt-2 mb-5">
-                            <div class="question-img flex items-center">
-                                <img src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/thumb/6073cd9daf42110031758d22-thumb.jpg"
-                                     class="question-img-1" alt="변호사 썸네일">
-                                <img src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/thumb/646af0c335bda68e03637c66-thumb-1686298679633.jpg"
-                                     class="question-img-2 -m-2" alt="변호사 썸네일">
-                            </div>
-                            <p class="text-box ml-4 mt-1" style="color: rgb(159, 164, 169); font-size: 0.7rem;">변호사
-                                답변2개</p>
-                        </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
             </div>
         </div>
 

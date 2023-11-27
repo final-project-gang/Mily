@@ -1,10 +1,11 @@
 package com.mily.estimate;
 
+import com.mily.article.milyx.category.entity.FirstCategory;
+import com.mily.article.milyx.category.entity.SecondCategory;
 import com.mily.user.MilyUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ManyToAny;
 
 import java.time.LocalDateTime;
 
@@ -16,19 +17,17 @@ public class Estimate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String category;
+    @ManyToOne
+    private FirstCategory firstCategory;
 
-    private String categoryItem;
-
-    private String name;
-
-    private String birth;
-
-    private String phoneNumber;
-
-    private LocalDateTime createDate;
+    @ManyToOne
+    private SecondCategory secondCategory;
 
     private String area;
+
+    private String body;
+
+    private LocalDateTime createDate;
 
     @ManyToOne
     private MilyUser milyUser;
