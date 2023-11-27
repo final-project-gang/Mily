@@ -22,55 +22,32 @@
         </div>
 
         <div class="flex justify-center items-center text-sm">
-            <div th:if="${@rq.logout}" class="mr-6 hover:text-blue-400">
+            <div th:if="${@rq.logout}" class="mr-6 hover:text-blue-400 mt-2">
                 <a href="/user/login">로그인</a>
             </div>
-            <div th:if="${@rq.logout}" class="hover:text-blue-400">
+            <div th:if="${@rq.logout}" class="hover:text-blue-400 mt-2">
                 <a href="/user/signup">회원가입</a>
             </div>
+
             <div th:if="${@rq.login}" class="mr-6 hover:text-blue-400">
                 <a th:href="@{/payment}">
                     <span th:text="${@rq.milyUser.milyPoint} + ' 포인트'"></span>
                 </a>
             </div>
-            <div th:if="${@rq.login}" class="mr-6 hover:text-blue-400">
+            <div th:if="${@rq.login}" class="mr-6 hover:text-blue-400 mt-2">
+
                 <a href="/user/logout">로그아웃</a>
             </div>
-            <div th:if="${@rq.login}" class="hover:text-blue-400">
-                <a href="/user/mypage/info">마이 페이지</a>
+            <div th:if="${@rq.login}" class="hover:text-blue-400 mt-2">
+                <a href="/user/mypage/info">내정보</a>
             </div>
         </div>
     </div>
 
     <style>
-        /* 폰트 설정 */
-        @font-face {
-          font-family: "GmarketSansMedium";
-          src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
-            format("woff");
-          font-weight: normal;
-          font-style: normal;
+        :root {
+            --m_width: 310px;
         }
-
-        html > body {
-          font-family: "GmarketSansMedium";
-          text-underline-position: under;
-        }
-
-        /* 노말라이즈 */
-        body,
-        ul,
-        li {
-          margin: 0;
-          padding: 0;
-          list-style: none;
-        }
-
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-
         #header.active {
           box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
         }
@@ -80,13 +57,14 @@
             height: 50px;
           }
           .header_con {
-            max-width: 300px;
+            max-width: var(--m_width);
             height: 60px;
           }
 
           .header_con .header_logo {
             width: 70px;
             margin-top: -8px;
+            margin-left: -2px;
           }
         }
     </style>

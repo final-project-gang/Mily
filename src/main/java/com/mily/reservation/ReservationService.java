@@ -34,16 +34,19 @@ public class ReservationService {
     }
 
     // 예약 가능한 시간 표시
-    public List<LocalDateTime> getAvailableTimes(LawyerUser lawyerUser, LocalDate reservationTime) {
+    public List<LocalDateTime> getAvailableTimes(Long lawyerUserId, LocalDate reservationTime) {
         List<LocalDateTime> availableTimes = new ArrayList<>();
+        LocalDateTime dateTime;
         for (int hour = 9; hour < 18; hour++) {
-            LocalDateTime dateTime = reservationTime.atTime(hour, 0);
-            List<Reservation> overlappingReservations = reservationRepository.findByLawyerUserAndReservationTimeBetween(
-                    lawyerUser, dateTime.minusHours(1), dateTime);
-            if (overlappingReservations.isEmpty()) {
-                availableTimes.add(dateTime);
+            if (hour != 12) {
+                dateTime = reservationTime.atTime(hour, 0);
+                List<Reservation> findAvailableTimes = reservationRepository.findByLawyerUserIdAndReservationTime(lawyerUserId, dateTime);
+                if (findAvailableTimes.isEmpty()) {
+                    availableTimes.add(dateTime);
+                }
             }
         }
+
         return availableTimes;
     }
 
