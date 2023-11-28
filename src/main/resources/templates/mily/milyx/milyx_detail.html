@@ -30,9 +30,19 @@
         };
     </script>
 </head>
+
+<body>
+<style>
+    :root {
+        --header-width: 30%;
+        --post-width: 30%; /* 수정: 게시글의 넓이를 조절하는 변수 추가 */
+    }
+</style>
+<body>
 <body>
 <div layout:fragment="content" class="items-center justify-center" style="display: flex;">
-    <div class="container w-full px-4 mt-20">
+    <div class="container w-full px-4 mt-20" style="width: var(--post-width); max-width: 70%;"> <!-- 수정: --post-width를 width에도 적용 -->
+        <!-- 나머지 코드는 그대로 유지 -->
 
         <div class="card bg-base-100 shadow-xl">
             <div class="card-body">
@@ -70,9 +80,9 @@
                 <!-- 해시태그 섹션 -->
                 <div class="hashtags" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
                     <!-- 각 해시태그 -->
-                    <span class="hashtag">#대학생</span>
-                    <span class="hashtag">#성관계</span>
-                    <span class="hashtag">#고소</span>
+                    <span class="hashtag">#</span>
+                    <span class="hashtag">#</span>
+                    <span class="hashtag">#</span>
                     <!-- 추가 해시태그 -->
             </div>
 
@@ -92,17 +102,66 @@
                 <div>ㅤ</div>
                 <div th:text="${#lists.size(milyx.comments)}|"></div>
             </div>
+
+            <hr style="width: 100%; margin-top: 20px; margin-bottom: 20px;">
+
+
             <form th:if="${@rq.login and role == 'approve' and !milyx.hasAdoptedAnswer}" method="POST"
                   onsubmit="submitCommentForm(this); return false;"
-                  th:action="@{|/milyxcomment/create/${milyx.id}|}">
-                <div class="mt-6 form-control">
-                <textarea class="textarea textarea-bordered h-[calc(100vh-850px)] min-h-[100px]" maxlength="20000"
-                          name="body" placeholder="한 번 등록한 답변은 수정이 불가능합니다. 답변 등록 전 확인 부탁드립니다.">
-                </textarea>
-                </div>
+                  th:action="@{|/milyxcomment/create/${milyx.id}|}"
+                  class="mt-6">
+                <style>
+                    .styled-answer-box {
+                        max-width: 1000px; /* 원하는 넓이로 조절 */
+                        margin: 0 auto; /* 가운데 정렬을 위해 */
+                        padding: 20px; /* 내용 주위에 여백 추가 */
+                        background-color: #f5f5f5; /* 배경색 적용 */
+                        border-radius: 30px; /* 모서리를 둥글게 만듦 */
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+                    }
 
+                    .styled-answer-box textarea {
+                        width: 100%; /* textarea를 부모 요소에 맞춰 확장 */
+                        box-sizing: border-box; /* 패딩과 테두리를 포함한 전체 넓이 설정 */
+                        resize: vertical; /* 수직 리사이즈만 허용 */
+                    }
+                </style>
+                <div class="form-control styled-answer-box">
+                    <textarea class="textarea textarea-bordered h-[calc(100vh-800px)] min-h-[100px]" maxlength="20000"
+                  name="body" placeholder="한 번 등록한 답변은 수정이 불가능합니다. 답변 등록 전 확인 부탁드립니다.">
+        </textarea>
+                </div>
+            </form>
+
+            <div style="margin-bottom: 50px;"></div>
+            <style>
+                .centered-button {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100%;
+                }
+
+                .styled-answer-button {
+                    width: 150px;
+                    background-color: #87CEEB; /* 스카이 블루 배경색 */
+                    color: #ffffff; /* 하얀색 글씨색 */
+                    border: none;
+                    border-radius: 5px;
+                    padding: 10px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .styled-answer-button i {
+                    margin-right: 5px; /* 아이콘과 텍스트 사이의 간격 조절 */
+                }
+            </style>
                 <div>
-                    <button class="btn btn-block btn-primary gap-1">
+                <div class="centered-button">
+                    <button class="btn btn-block btn-primary gap-1 styled-answer-button">
                         <i class="fa-solid fa-pen"></i>
                         <span>답변 등록</span>
                     </button>
@@ -110,22 +169,28 @@
             </form>
 
 
+            <div style="margin-bottom: 100px;"></div>
+
             <div class="form-control">
+                <!-- 체택된 답변 -->
                 <ul th:each="milyxcomment : ${milyx.comments.?[isAdopt == true]}"
-                    style="border: 1px solid #93c5fd; border-radius: 15px;">
+                    style="border: 1px solid #93c5fd; border-radius: 15px; padding: 10px; margin-bottom: 10px;">
                     <li>
-                        <span>작성자 체택 답변</span>
+                        <span style="font-weight: bold; color: green;">작성자 체택 답변</span>
                     </li>
                     <li>
-                        <span th:text="${milyxcomment.author.userName} + ' 변호사'"></span>
+                        <span th:text="${milyxcomment.author.userName} + ' 변호사'" style="font-weight: bold;"></span>
                     </li>
                     <li>
                         <span th:text="${milyxcomment.body}"></span>
                     </li>
                 </ul>
-                <ul th:each="milyxcomment : ${milyx.comments.?[isAdopt == false]}">
+
+                <!-- 체택되지 않은 답변들 -->
+                <ul th:each="milyxcomment : ${milyx.comments.?[isAdopt == false]}"
+                    style="border: 1px solid #ddd; border-radius: 15px; padding: 10px; margin-bottom: 10px;">
                     <li>
-                        <span th:text="${milyxcomment.author.userName} + ' 변호사'"></span>
+                        <span th:text="${milyxcomment.author.userName} + ' 변호사'" style="font-weight: bold;"></span>
                     </li>
                     <li>
                         <span th:text="${milyxcomment.body}"></span>
@@ -145,32 +210,62 @@
                                 </button>
                             </form>
                         </div>
-
                     </li>
                 </ul>
             </div>
 
+
             <div class="mt-6">
                 <div class="text-center">
-                    <a class="btn btn-link" href="/milyx">목록</a>
+                    <button class="btn btn-wide" onclick="location.href='/milyx';"> 목록</button>
+                    <style>
+                        .btn-wide {
+                            background-color: #87CEEB;
+                            color: #FFFFFF;
+                            padding: 10px 20px;
+                            border: none;
+                            border-radius: 10px;
+                            cursor: pointer;
+                        }
+                    </style>
                 </div>
+<!-- onclick는 버튼 디자인 만큼 클릭의 영역이 늘어나게 해준다. 이걸 쓰기 전에는 버튼을 누르면 이동이 안됐는데 쓰고 나니 버튼을 누르면 이동한다.-->
 
-<body>
-<div>
-    <h2 th:text="'변호사 답변 총 ' + ${#lists.size(milyx.comments)} + '건'">변호사 답변 총 0건</h2>
-    <!-- 답변 리스트 -->
-</div>
-<!-- 답글 양식 -->
-<div class="reply-form" style="margin-top: 50px;">
-    <form method="POST" action="/submit-reply-url">
-        <!-- 답글 입력 필드 -->
-        <textarea name="replyContent" placeholder="여기에 답글을 입력하세요"></textarea>
+                <style>
+            :root {
+                --m_width: 310px;
+            }
+            #header.active {
+              box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            }
 
-        <!-- 답글 제출 버튼 -->
-        <button type="submit">답글 제출</button>
+            @media (max-width: 360px) {
+              h1 {
+              font-size: 11px;
+              }
+
+              body {
+              font-size: 13px;
+              }
+
+              .header_wrap {
+                height: 50px;
+              }
+
+              .header_con {
+                max-width: var(--m_width);
+                height: 60px;
+              }
+
+              .header_con .header_logo {
+                width: 70px;
+                margin-top: -8px;
+                margin-left: -2px;
+              }
+            }
+        </style>
     </form>
 </div>
-</body>
             </div>
         </div>
     </div>
