@@ -3,6 +3,7 @@ package com.mily.user;
 import com.mily.Email.EmailService;
 import com.mily.article.milyx.category.entity.FirstCategory;
 import com.mily.article.milyx.category.entity.SecondCategory;
+import com.mily.article.milyx.repository.MilyXRepository;
 import com.mily.base.rsData.RsData;
 import com.mily.estimate.Estimate;
 import com.mily.estimate.EstimateRepository;
@@ -26,6 +27,7 @@ import java.util.Optional;
 @Service
 public class MilyUserService {
     private final EmailService emailService;
+    private final MilyXRepository milyXRepository;
     private final MilyUserRepository milyUserRepository;
     private final LawyerUserRepository lawyerUserRepository;
     private final EstimateRepository estimateRepository;
@@ -146,7 +148,7 @@ public class MilyUserService {
         Estimate estimate = new Estimate();
         estimate.setFirstCategory(firstCategory);
         estimate.setSecondCategory(secondCategory);
-        estimate.setArea(milyUser.getUserName());
+        estimate.setArea(area);
         estimate.setBody(body);
         estimate.setMilyUser(milyUser);
         estimate.setCreateDate(LocalDateTime.now().minusDays(7));

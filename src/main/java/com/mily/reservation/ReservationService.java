@@ -63,4 +63,8 @@ public class ReservationService {
     public List<Reservation> findByMilyUser(MilyUser milyUser) {
         return reservationRepository.findByMilyUserId(milyUser.getId());
     }
+
+    public List<Reservation> findByLawyerUserId(long id) {
+        return reservationRepository.findByLawyerUserId(id);
+    }
 }

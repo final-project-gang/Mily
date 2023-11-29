@@ -115,8 +115,10 @@
 
                 <div class="form-control">
                     <label class="label cursor-pointer flex items-center" style="width: fit-content;">
-                        <input type="checkbox" name="termsAgree" id="termsAgree" class="checkbox checkbox-primary" style="margin-right: 8px;"/>
-                        <span class="label-text text-left text-sm" style="font-size: 20px;">안내사항을 모두 확인했으며, 동의합니다.</span>
+                        <input type="checkbox" name="termsAgree" id="termsAgree" class="checkbox checkbox-primary"
+                               style="margin-right: 8px;"/>
+                        <span class="label-text text-left text-sm"
+                              style="font-size: 20px;">안내사항을 모두 확인했으며, 동의합니다.</span>
                     </label>
 
                     <hr style="width: 100%; margin-top: 20px; margin-bottom: 20px;">
@@ -130,69 +132,72 @@
 
 
                     <script th:inline="javascript">
-            $('#firstCategory').change(function() {
-                var firstCategoryId = $(this).val();
+                        $('#firstCategory').change(function() {
+                            var firstCategoryId = $(this).val();
 
-                $.ajax({
-                    url: "/milyx/secondCategories",
-                    method: 'GET',
-                    data: { firstCategoryId: firstCategoryId },
-                    success: function(data) {
-                        // console.log('Data:', data);
+                            $.ajax({
+                                url: "/milyx/secondCategories",
+                                method: 'GET',
+                                data: { firstCategoryId: firstCategoryId },
+                                success: function(data) {
+                                    // console.log('Data:', data);
 
-                        $("#secondCategory").empty();
+                                    $("#secondCategory").empty();
 
-                        $.each(data, function (index, category) {
-                            const option = $("<option>", { value: category.id, text: category.title });
-                            $("#secondCategory").append(option);
+                                    $.each(data, function (index, category) {
+                                        const option = $("<option>", { value: category.id, text: category.title });
+                                        $("#secondCategory").append(option);
+                                    });
+                                },
+                                error: function(request,status,error){
+                                    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                                }
+                            });
                         });
-                    },
-                    error: function(request,status,error){
-                        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-                    }
-                });
-            });
-        </script>
-        <script>
-            let submitCreateFormDone = false;
+                    </script>
+                    <script>
+                        let submitCreateFormDone = false;
 
-            function submitCreateForm(form) {
-                if (submitCreateFormDone) return;
+                        function submitCreateForm(form) {
+                            if (submitCreateFormDone) return;
 
-                form.firstCategory.value = form.firstCategoryId.value;
-                form.secondCategory.value = form.secondCategoryId.value;
-                form.subject.value = form.subject.value.trim();
+                            form.firstCategory.value = form.firstCategoryId.value;
+                            form.secondCategory.value = form.secondCategoryId.value;
+                            form.subject.value = form.subject.value.trim();
 
-                if (form.subject.value.length == 0) {
-                    form.subject.focus();
-                    toastWarning('제목을 입력해주세요.');
-                    return;
-                }
+                            if (form.subject.value.length == 0) {
+                                form.subject.focus();
+                                toastWarning('제목을 입력해주세요.');
+                                return;
+                            }
 
-                if (form.subject.value.length < 2) {
-                    form.subject.focus();
-                    toastWarning('제목을 2글자 이상 입력해주세요.');
-                    return;
-                }
+                            if (form.subject.value.length < 2) {
+                                form.subject.focus();
+                                toastWarning('제목을 2글자 이상 입력해주세요.');
+                                return;
+                            }
 
-                form.body.value = form.body.value.trim();
+                            form.body.value = form.body.value.trim();
 
-                if (form.body.value.length == 0) {
-                    form.body.focus();
-                    toastWarning('내용을 입력해주세요.');
-                    return;
-                }
+                            if (form.body.value.length == 0) {
+                                form.body.focus();
+                                toastWarning('내용을 입력해주세요.');
+                                return;
+                            }
 
-                if (form.body.value.length < 2) {
-                    form.body.focus();
-                    toastWarning('내용을 2자 이상 입력해주세요.');
-                    return;
-                }
+                            if (form.body.value.length < 2) {
+                                form.body.focus();
+                                toastWarning('내용을 2자 이상 입력해주세요.');
+                                return;
+                            }
 
-                form.submit();
-                submitCreateFormDone = true;
-            }
-        </script>
+                            form.submit();
+                            submitCreateFormDone = true;
+                        }
+                    </script>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 </body>
