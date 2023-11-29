@@ -146,7 +146,7 @@ public class MilyUserService {
         Estimate estimate = new Estimate();
         estimate.setFirstCategory(firstCategory);
         estimate.setSecondCategory(secondCategory);
-        estimate.setArea(milyUser.getUserName());
+        estimate.setArea(area);
         estimate.setBody(body);
         estimate.setMilyUser(milyUser);
         estimate.setCreateDate(LocalDateTime.now().minusDays(7));

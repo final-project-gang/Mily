@@ -32,7 +32,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -174,13 +176,13 @@ public class MilyUserController {
         return milyUserService.checkUserLoginIdDup(userLoginId);
     }
 
-    @GetMapping({"checkUserEmailDup", "/mypage/checkUserEmailDup"})
+    @GetMapping({"checkUserEmailDup", "/mypage/edit/checkUserEmailDup"})
     @ResponseBody
     public RsData checkUserEmail(String userEmail) {
         return milyUserService.checkUserEmailDup(userEmail);
     }
 
-    @GetMapping({"checkUserPhoneNumberDup", "/mypage/checkUserPhoneNumberDup" })
+    @GetMapping({"checkUserPhoneNumberDup", "/mypage/edit/checkUserPhoneNumberDup" })
     @ResponseBody
     public RsData checkUserPhoneNumber(String userPhoneNumber) {
         return milyUserService.checkUserPhoneNumberDup(userPhoneNumber);
@@ -333,24 +335,24 @@ public class MilyUserController {
             return "redirect:/";
         }
 
+        // 사용자의 전화 번호를 가리는 작업
+        String phoneNumber = isLoginedUser.getUserPhoneNumber();
+        phoneNumber = phoneNumber.substring(0, 3) + "-***" + phoneNumber.substring(6, 7) + "-**" + phoneNumber.substring(9);
+
+        // 사용자의 이메일을 가리는 작업
+        String email = milyUserService.maskEmail(isLoginedUser.getUserEmail());
+
+        model.addAttribute("userPhone", phoneNumber);
+        model.addAttribute("userEmail", email);
+
         // 현재 로그인 된 사용자의 권한이 "member"일 때
         if (isLoginedUser.getRole().equals("member")) {
-            // 사용자의 전화 번호를 가리는 작업
-            String phoneNumber = isLoginedUser.getUserPhoneNumber();
-            phoneNumber = phoneNumber.substring(0, 3) + "-***" + phoneNumber.substring(6, 7) + "-**" + phoneNumber.substring(9);
-
-            // 사용자의 이메일을 가리는 작업
-            String email = milyUserService.maskEmail(isLoginedUser.getUserEmail());
-
             model.addAttribute("user", isLoginedUser);
-            model.addAttribute("userPhone", phoneNumber);
-            model.addAttribute("userEmail", email);
 
             // 사용자가 작성 한 글
             List<MilyX> userPosts = milyXService.findByAuthor(isLoginedUser);
-            int posts = userPosts.size();
 
-            model.addAttribute("posts", posts);
+            model.addAttribute("posts", userPosts.size());
             model.addAttribute("userPosts", userPosts);
 
             // 사용자의 상담 예약 내역
@@ -369,24 +371,25 @@ public class MilyUserController {
 
         // 현재 로그인 된 사용자의 권한이 "lawyer"일 때
         if (isLoginedUser.getRole().equals("approve")) {
-            long id = isLoginedUser.getId();
-
             // 사용자가 작성 한 답변
-            List<MilyXComment> userComments = milyXCommentService.findAuthorId(id);
-            int count = userComments.size();
+            List<MilyXComment> userComments = milyXCommentService.findAuthorId(isLoginedUser.getId());
 
             model.addAttribute("user", isLoginedUser);
-            model.addAttribute("commentsCount", count);
+            model.addAttribute("commentsCount", userComments.size());
             model.addAttribute("comments", userComments);
+
+            // 상담 예약
+            List<Reservation> reservations = reservationService.findByLawyerUserId(isLoginedUser.getId());
+            model.addAttribute("reservationCount", reservations.size());
+            model.addAttribute("reservation", reservations);
 
             // 모든 견적서 보이게
             List<Estimate> estimateList = estimateRepository.findAll();
-            int estimates = estimateList.size();
 
-            model.addAttribute("estimatesCount", estimates);
+            model.addAttribute("estimatesCount", estimateList.size());
             model.addAttribute("estimate", estimateList);
 
-            return "/mily/milyuser/information/lawyer/lawyer_dashboard";
+            return "/mily/milyuser/information/lawyer/info";
         }
 
         // 현재 로그인 된 사용자의 권한이 "admin"일 때
@@ -426,6 +429,49 @@ public class MilyUserController {
         return "redirect:" + referer;
     }
 
+    @GetMapping("/mypage/dashboard")
+    public String showDashboard(HttpServletRequest hsr, Model model) {
+        String referer = hsr.getHeader("Referer");
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+
+        if (isLoginedUser != null) {
+            if (isLoginedUser.getRole().equals("approve")) {
+                List<MilyXComment> allComments = milyXCommentService.findAuthorId(isLoginedUser.getId());
+                model.addAttribute("commentsCount", allComments.size());
+                model.addAttribute("comments", allComments);
+
+                List<Reservation> allReservations = reservationService.findByLawyerUserId(isLoginedUser.getId());
+                model.addAttribute("reservationsCount", allReservations.size());
+                model.addAttribute("reservations", allReservations);
+
+                List<Estimate> allEstimates = estimateRepository.findAll();
+                model.addAttribute("allEstimatesCount", allEstimates.size());
+                model.addAttribute("allEstimates", allEstimates);
+
+                // 달력 메서드
+                List<LocalDate> monthDate = new ArrayList<>();
+                LocalDate now = LocalDate.now();
+
+                for (LocalDate date = now.withDayOfMonth(1); !date.isAfter(now.withDayOfMonth(now.lengthOfMonth())); date = date.plusDays(1)) {
+                    monthDate.add(date);
+//                    dayOfWeek = date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+//                    System.out.println(dayOfWeek.charAt(0));
+                }
+
+                model.addAttribute("calendarSize", monthDate.size());
+                model.addAttribute("calendar", monthDate);
+
+                return "mily/milyuser/information/lawyer/lawyer_dashboard";
+            } else if (isLoginedUser.getRole().equals("admin")) {
+                return "mily/milyuser/information/admin/admin_dashboard";
+            } else {
+                return "redirect:" + referer;
+            }
+        }
+
+        return "redirect:" + referer;
+    }
+
     /* 내 정보 수정 */
     @GetMapping("/mypage/edit")
     public String getEditInformation(HttpServletRequest hsr, Model model) {
@@ -442,9 +488,17 @@ public class MilyUserController {
         return "redirect:" + referer;
     }
 
-    @PostMapping("/mypage/edit")
+    @PostMapping("/mypage/edit/other")
     public String doEditInformation(@RequestParam String userEmail, @RequestParam String userPhoneNumber, HttpServletRequest hsr, Model model) {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
+
+        if (userEmail.isEmpty()) {
+            userEmail = isLoginedUser.getUserEmail();
+        }
+
+        if (userPhoneNumber.isEmpty()) {
+            userPhoneNumber = isLoginedUser.getUserPhoneNumber();
+        }
 
         // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
         String referer = hsr.getHeader("Referer");
@@ -459,7 +513,7 @@ public class MilyUserController {
         return "redirect:" + referer;
     }
 
-    @GetMapping("/mypage/edit/password")
+    @GetMapping("/mypage/edit/other")
     public String getEdiitPassword(HttpServletRequest hsr, Model model) {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
@@ -467,21 +521,26 @@ public class MilyUserController {
         String referer = hsr.getHeader("Referer");
 
         if (isLoginedUser != null) {
-            return "mily/milyuser/information/member/password";
+            model.addAttribute("user", isLoginedUser);
+            return "mily/milyuser/information/member/other";
         }
 
         return "redirect:" + referer;
     }
 
     @PostMapping("/mypage/edit/password")
-    public String postEditPassword(@RequestParam String userPassword, @RequestParam String userPassword2) {
+    public String postEditPassword(@RequestParam String userPasswordConfirm, @RequestParam String userPassword, @RequestParam String userPassword2) {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
-        if (isLoginedUser != null && userPassword.equals(userPassword2)) {
-            milyUserService.editPassword(isLoginedUser, userPassword);
-            return "redirect:/user/mypage/edit";
+        if (milyUserService.checkPassword(isLoginedUser, userPasswordConfirm)) {
+            if (userPassword.equals(userPassword2)) {
+                milyUserService.editPassword(isLoginedUser, userPassword);
+                return "redirect:/user/mypage/info";
+            }
+        } else {
+            return "redirect:/user/mypage/info";
         }
-        return "redirect:/user/mypage/edit";
+        return "redirect:/user/mypage/info";
     }
 
     /* 비밀번호 체크 */

@@ -4,7 +4,6 @@ import com.mily.article.milyx.MilyXService;
 import com.mily.article.milyx.category.CategoryService;
 import com.mily.article.milyx.category.entity.FirstCategory;
 import com.mily.article.milyx.category.entity.SecondCategory;
-import com.mily.estimate.Estimate;
 import com.mily.payment.PaymentService;
 import com.mily.user.MilyUser;
 import com.mily.user.MilyUserRepository;
@@ -159,17 +158,17 @@ public class NotProd {
                 FirstCategory firstCategory = categoryService.findByFTitle("성 범죄");
                 SecondCategory secondCategory = categoryService.findBySTitle("성폭력/강제추행 등");
                 milyXService.dummyCreate(milyUser1, firstCategory, secondCategory, "대학교 후배와 성관계 이후 상대방이 고소를 진행할 예정이랍니다.", "올해 초에 처음 관계를 맺었으며, 관계 이후에도 연락을 주고 받으면서 지냈습니다. 친하게 지냈음에도 불구하고, 5월에 상대방이 교수님과 상담하며 본인과 관계한 것에 대해 자궁에 상처가 났고, 성폭력을 당한 것처럼 주장했습니다. 처음 연락을 주고받은 시점부터 연락한 내용은 남아있습니다. 좋게 지내다가 돌연 사이가 소원해지면서 이전의 성관계에 대해 증거가 없다 생각해서 저러는 것 같은데, 어떻게 대처해야할까요? 무죄를 입증할만한 증거가 있다면 무죄 판정 받은 후에 무고죄도 성립될까요?", 50);
-                Estimate estimate1 = milyUserService.sevenCreateEstimate(firstCategory, secondCategory, "대전", "내용", milyUser2);
+                milyUserService.sevenCreateEstimate(firstCategory, secondCategory, "대전", "내용", milyUser2);
 
                 firstCategory = categoryService.findByFTitle("폭행/협박");
                 secondCategory = categoryService.findBySTitle("폭행/협박/상해 일반");
                 milyXService.dummyCreate(milyUser3, firstCategory, secondCategory, "술집에서 싸움에 휘말려 양방 폭행이 나왔습니다.", "사건 일시 : 2023년 10월 24일\n사건 경위 : 모르는 남성이 옆 테이블에 앉은 여성 일행에게 번호를 물었고, 일행이 완강하게 거부 의사를 밝혔으나 돌아가지 않고 계속 머뭇거려서 '자리로 돌아가세요 싫다잖아요'라고 한 마디 하자마자 얼굴을 한 대 맞았습니다.\n이후 저는 하지 말라는 의사를 두 차례 전달하였음에도 불구하고 밀치는 등의 행위를 계속 취해 와서 바닥에 넘어뜨렸는데 쌍방이랍니다.", 50);
-                Estimate estimate2 = milyUserService.sevenCreateEstimate(firstCategory, secondCategory, "대전", "내용", milyUser2);
+                milyUserService.sevenCreateEstimate(firstCategory, secondCategory, "대전", "내용", milyUser2);
 
                 firstCategory = categoryService.findByFTitle("명예훼손/모욕");
                 secondCategory = categoryService.findBySTitle("사이버 명예훼손/모욕");
                 milyXService.dummyCreate(milyUser2, firstCategory, secondCategory, "게임하다가 심한 욕설을 들었습니다.", "사건 발생 : 2023.09.10 11:35 a.m.\n본인 챔피언 : 카이사\n가해 챔피언 : 리 신\n내용 : 리그오브레전드 일반 (팀)게임을 하면서 '만년브론즈희생폿(본인)아, 니 엄마는 너를 낳지 말았어야 한다', '이게 피임의 중요성이다 시', '발아 ㅋㅋ'라고 하며 저를 능욕했고, 수치심과 모욕감에 한참을 진정하지 못 했습니다.\n본인 챔피언인 카이사를 특정하며 말을 해서 특정성과 팀 게임 특성상 공연성은 성립될 거 같은데, 모욕성까지 해서 모욕죄 성립 요건 3가지를 충족했으니 고소할 수 있을까요?", 50);
-                Estimate estimate3 = milyUserService.sevenCreateEstimate(firstCategory, secondCategory, "대전", "내용", milyUser2);
+                milyUserService.sevenCreateEstimate(firstCategory, secondCategory, "대전", "내용", milyUser2);
             }
         };
     }
