@@ -133,6 +133,43 @@
             }
         });
     </script>
+    <script>
+        const passwordForm = document['password-form'];
+
+        let submitPasswordFormDone = false;
+        function submitPasswordForm(form) {
+            if ( submitPasswordFormDone ) return;
+
+            form.userPassword.value = form.userPassword.value.trim();
+
+            if ( form.userPassword.value.length == 0 ) {
+                form.userPassword.focus();
+                toastWarning('변경할 비밀번호를 입력해주세요.');
+                return;
+            }
+            if ( form.userPassword.value.length < 7 ) {
+                form.userPassword.focus();
+                toastWarning('비밀번호는 8글자 이상이어야 합니다..');
+                return;
+            }
+
+            form.userPassword2.value = form.userPassword2.value.trim();
+
+            if ( form.userPassword2.value.length == 0 ) {
+                form.userPassword2.focus();
+                toastWarning('비밀번호 확인 입력 란을 확인해주세요.');
+                return;
+            }
+            if ( form.userPassword.value != form.userPassword2.value ) {
+                form.userPassword2.focus();
+                toastWarning('2개의 비밀번호가 일치하지 않습니다..');
+                return;
+            }
+
+            form.submit();
+            submitEditFormDone = true;
+        }
+    </script>
 </head>
 <body>
 <div layout:fragment="content">
@@ -171,14 +208,14 @@
     </div>
 
     <div class="main-form">
-        <form th:action="@{|/user/mypage/edit/password|}" method="POST" class="edit-form">
+        <form th:action="@{|/user/mypage/edit/password|}" method="POST" class="edit-form" name="password-form" onsubmit="submitPasswordForm(this); return false;">
             <span class="large-text">비밀번호 변경</span>
             <span class="regular-text">현재 비밀번호 확인</span>
             <input class="form-input" type="password" placeholder="현재 비밀번호를 입력해주세요." name="userPasswordConfirm">
             <span class="regular-text mt-4">변경할 비밀번호</span>
-            <input class="form-input" type="password" placeholder="변경할 비밀번호를 입력해주세요." name="userPassword">
+            <input class="form-input" type="password" placeholder="변경할 비밀번호를 입력해주세요." name="userPassword" id="userPassword">
             <span class="regular-text mt-4">변경할 비밀번호 확인</span>
-            <input class="form-input" type="password" placeholder="변경할 비밀번호를 입력해주세요." name="userPassword2">
+            <input class="form-input" type="password" placeholder="변경할 비밀번호를 입력해주세요." name="userPassword2" id="userPassword2">
 
             <div class="btn-wrap">
                 <button class="btn btn-block btn-primary">
