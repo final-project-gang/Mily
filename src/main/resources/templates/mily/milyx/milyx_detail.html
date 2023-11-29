@@ -41,7 +41,8 @@
 <body>
 <body>
 <div layout:fragment="content" class="items-center justify-center" style="display: flex;">
-    <div class="container w-full px-4 mt-20" style="width: var(--post-width); max-width: 70%;"> <!-- 수정: --post-width를 width에도 적용 -->
+    <div class="container w-full px-4 mt-20" style="width: var(--post-width); max-width: 70%;">
+        <!-- 수정: --post-width를 width에도 적용 -->
         <!-- 나머지 코드는 그대로 유지 -->
 
         <div class="card bg-base-100 shadow-xl">
@@ -62,18 +63,23 @@
                         <div class="whitespace-pre-line" th:text="${milyx.body}" style="font-size: 16px;"></div>
                     </div>
 
-<!--조회수와 생성날짜 표시함 / flex를 사용하여 수평 정렬하고, space=between을 사용하여 두 요소 사이에 공간을 만듬-->
+                    <!--조회수와 생성날짜 표시함 / flex를 사용하여 수평 정렬하고, space=between을 사용하여 두 요소 사이에 공간을 만듬-->
                     <!--조회수와 생성날짜를 나란히 왼쪽 정렬합니다-->
-                    <div style="display: flex; justify-content: flex-start; align-items: center; flex-direction: row;" class="form-control col-span-full">
+                    <div style="display: flex; justify-content: flex-start; align-items: center; flex-direction: row;"
+                         class="form-control col-span-full">
 
-                    <!--생성 날짜를 표시-->
-                        <div class="blue-background" th:id="'createDate__' + ${milyx.id}" th:text="${milyx.createDate}" style="font-size: 13px; margin-right: 10px;">게시물 날짜</div>
+                        <!--생성 날짜를 표시-->
+                        <div class="blue-background" th:id="'createDate__' + ${milyx.id}" th:text="${milyx.createDate}"
+                             style="font-size: 13px; margin-right: 10px;">게시물 날짜
+                        </div>
 
                         <!--조회수 아이콘과 조회수를 표시합니다-->
                         <div style="display: flex; align-items: center; font-size: 13px;">
                             <!--아이콘 대신하여 텍스트를 사용하기-->
-                           <!-- <i class="fa-regular fa-eye" style="font-size: 16px;"></i> -->
-                            <div class="blue-background" th:text="'조회수 ' + ${milyx.view}" style="font-size: 13px;">조회수 160</div>
+                            <!-- <i class="fa-regular fa-eye" style="font-size: 16px;"></i> -->
+                            <div class="blue-background" th:text="'조회수 ' + ${milyx.view}" style="font-size: 13px;">조회수
+                                160
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -84,7 +90,7 @@
                     <span class="hashtag">#</span>
                     <span class="hashtag">#</span>
                     <!-- 추가 해시태그 -->
-            </div>
+                </div>
 
                 <div style="display: flex !important;" class="justify-end">
                     <a th:if="${isAuthor}" th:href="@{|/milyx/modify/${milyx.id}|}" class="ml-4 mr-4" th:text="수정"></a>
@@ -108,64 +114,17 @@
 
             <form th:if="${@rq.login and role == 'approve' and !milyx.hasAdoptedAnswer}" method="POST"
                   onsubmit="submitCommentForm(this); return false;"
-                  th:action="@{|/milyxcomment/create/${milyx.id}|}"
-                  class="mt-6">
-                <style>
-                    .styled-answer-box {
-                        max-width: 1000px; /* 원하는 넓이로 조절 */
-                        margin: 0 auto; /* 가운데 정렬을 위해 */
-                        padding: 20px; /* 내용 주위에 여백 추가 */
-                        background-color: #f5f5f5; /* 배경색 적용 */
-                        border-radius: 30px; /* 모서리를 둥글게 만듦 */
-                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
-                    }
-
-                    .styled-answer-box textarea {
-                        width: 100%; /* textarea를 부모 요소에 맞춰 확장 */
-                        box-sizing: border-box; /* 패딩과 테두리를 포함한 전체 넓이 설정 */
-                        resize: vertical; /* 수직 리사이즈만 허용 */
-                    }
-                </style>
-                <div class="form-control styled-answer-box">
-                    <textarea class="textarea textarea-bordered h-[calc(100vh-800px)] min-h-[100px]" maxlength="20000"
-                  name="body" placeholder="한 번 등록한 답변은 수정이 불가능합니다. 답변 등록 전 확인 부탁드립니다.">
+                  th:action="@{|/milyxcomment/create/${milyx.id}|}">
+                <div class="mt-6 form-control" style="height: 300px; /* 원하는 높이로 조절 */">
+        <textarea class="textarea textarea-bordered h-full min-h-[100px]" maxlength="20000"
+                  name="body" placeholder="한 번 등록한 답변은 수정이 불가능합니다. 답변 등록 전 확인 부탁드립니다."
+                  style="height: 100%; /* 텍스트 영역의 높이를 100%로 설정 */">
         </textarea>
                 </div>
-            </form>
+                <div style="margin-bottom: 30px;"></div>
 
-            <div style="margin-bottom: 50px;"></div>
-            <style>
-                .centered-button {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100%;
-                }
+                <button class="btn btn-success" style="background-color: #87CEEB;">답변등록</button>
 
-                .styled-answer-button {
-                    width: 150px;
-                    background-color: #87CEEB; /* 스카이 블루 배경색 */
-                    color: #ffffff; /* 하얀색 글씨색 */
-                    border: none;
-                    border-radius: 5px;
-                    padding: 10px;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                }
-
-                .styled-answer-button i {
-                    margin-right: 5px; /* 아이콘과 텍스트 사이의 간격 조절 */
-                }
-            </style>
-                <div>
-                <div class="centered-button">
-                    <button class="btn btn-block btn-primary gap-1 styled-answer-button">
-                        <i class="fa-solid fa-pen"></i>
-                        <span>답변 등록</span>
-                    </button>
-                </div>
             </form>
 
 
@@ -188,17 +147,54 @@
 
                 <!-- 체택되지 않은 답변들 -->
                 <ul th:each="milyxcomment : ${milyx.comments.?[isAdopt == false]}"
-                    style="border: 1px solid #ddd; border-radius: 15px; padding: 10px; margin-bottom: 10px;">
-                    <li>
-                        <span th:text="${milyxcomment.author.userName} + ' 변호사'" style="font-weight: bold;"></span>
+                    style="border:1px solid #ccc; border-radius: 10px; padding: 50px; margin-bottom: 1px;">
+
+                    <!-- 변호사 정보를 담은 리스트 항목 -->
+                    <li class="lawyer-info" style="border: 1px solid gray; border-radius: 40px;">
+                        <div style="display: flex; align-items: center;">
+
+                            <!-- 변호사 프로필 이미지 -->
+                            <div style="width: 75px; height: 75px; border-radius: 20px; overflow: hidden; margin-right: 10px; margin-left: 30px;">
+                                <img th:src="${milyxcomment.author.lawyerUser.profileImgFilePath}"
+                                     alt="Lawyer Profile Image"
+                                     style="object-fit: cover; width: 100%; height: 100%;">
+                            </div>
+
+                            <div style="margin-right: 30px;"></div>
+
+                            <!-- 변호사 이름 -->
+                            <span th:text="${milyxcomment.author.userName} + ' 변호사'"
+                                  style="font-weight: bold; font-size: 25px; "></span>
+
+                            <!-- 상담예약 버튼 -->
+                            <button th:text="'상담예약'" style="margin-left: 750px; padding: 8px 12px; background-color: #87CEEB; color: #fff; border: none; border-radius: 5px; cursor: pointer;"></button>
+
+
+                            <!-- 추가 여백 -->
+                            <div style="margin-bottom: 100px;"></div>
+                        </div>
                     </li>
+
+                    <div style="margin-bottom: 100px;"></div>
+
                     <li>
                         <span th:text="${milyxcomment.body}"></span>
                         <div th:if="${user != null and user.userName == milyxcomment.author.userName and !milyx.hasAdoptedAnswer}">
+
                             <form th:action="@{|/milyxcomment/delete/${milyxcomment.id}|}" method="post"
                                   style="display: inline;">
+
+                                <!--답변글의 생성된 시간-->
+                                <div class="blue-background" th:id="'createDate__' + ${milyx.id}" th:text="${milyx.createDate}"
+                                     style="font-size: 13px; margin-right: 10px;">게시물 날짜
+                                </div>
+
+                                <div style="margin-bottom: 100px;"></div>
+
                                 <button type="submit" class="delete ml-4 mr-4"
-                                        th:data-url="@{|/milyxcomment/delete/${milyxcomment.id}|}">삭제
+                                        th:data-url="@{|/milyxcomment/delete/${milyxcomment.id}|}"
+                                        style="padding: 8px 12px; background-color: #ff5252; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
+                                    삭제
                                 </button>
                             </form>
                         </div>
@@ -218,6 +214,9 @@
             <div class="mt-6">
                 <div class="text-center">
                     <button class="btn btn-wide" onclick="location.href='/milyx';"> 목록</button>
+                    <div style="margin-bottom: 100px;"></div>
+
+
                     <style>
                         .btn-wide {
                             background-color: #87CEEB;
@@ -229,46 +228,49 @@
                         }
                     </style>
                 </div>
-<!-- onclick는 버튼 디자인 만큼 클릭의 영역이 늘어나게 해준다. 이걸 쓰기 전에는 버튼을 누르면 이동이 안됐는데 쓰고 나니 버튼을 누르면 이동한다.-->
+                <!-- onclick는 버튼 디자인 만큼 클릭의 영역이 늘어나게 해준다. 이걸 쓰기 전에는 버튼을 누르면 이동이 안됐는데 쓰고 나니 버튼을 누르면 이동한다.-->
 
                 <style>
-            :root {
-                --m_width: 310px;
-            }
-            #header.active {
-              box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-            }
+                    :root {
+                        --m_width: 310px;
+                    }
+                    #header.active {
+                      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+                    }
+                    .lawyer-info {
+                        border: 1px solid gray; /* 또는 원하는 회색 값으로 변경 */
+                    }
 
-            @media (max-width: 360px) {
-              h1 {
-              font-size: 11px;
-              }
+                    @media (max-width: 360px) {
+                      h1 {
+                      font-size: 11px;
+                      }
 
-              body {
-              font-size: 13px;
-              }
+                      body {
+                      font-size: 13px;
+                      }
 
-              .header_wrap {
-                height: 50px;
-              }
+                      .header_wrap {
+                        height: 50px;
+                      }
 
-              .header_con {
-                max-width: var(--m_width);
-                height: 60px;
-              }
+                      .header_con {
+                        max-width: var(--m_width);
+                        height: 60px;
+                      }
 
-              .header_con .header_logo {
-                width: 70px;
-                margin-top: -8px;
-                margin-left: -2px;
-              }
-            }
-        </style>
-    </form>
-</div>
+                      .header_con .header_logo {
+                        width: 70px;
+                        margin-top: -8px;
+                        margin-left: -2px;
+                      }
+                    }
+                </style>
+                </form>
             </div>
         </div>
     </div>
+</div>
 </div>
 </body>
 </html>
