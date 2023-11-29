@@ -4,13 +4,13 @@
     <title>마이 페이지 : MILY</title>
 </head>
 <body>
-<section layout:fragment="content" style="width: 1280px;">
+<section layout:fragment="content">
     <!--  메뉴바  -->
     <div id="header_menu" class="text-lg w-full fixed top-20 left-0 bg-white z-50 h-12 border-b pt-4">
         <div class="flex max-w-7xl m-auto justify-evenly">
             <a th:href="@{/user/mypage/info}"
                style="color: rgb(43, 45, 47); border-bottom: 2px solid black; padding-bottom: 3px;">내 정보</a>
-            <a th:href="@{/user/mypage/edit}" class="ml-5 hover:text-blue-400 text-gray-300">계정 설정</a>
+            <a th:href="@{/user/mypage/dashboard}" class="ml-5 hover:text-blue-400 text-gray-300">대시보드</a>
         </div>
     </div>
 
@@ -43,26 +43,14 @@
             </div>
         </div>
 
-        <div class="my-res flex mt-8">
-            <span class="regular-text ml-4 my-4">내 상담내역</span>
-            <div class="info-first flex">
-                <div class="ml-4 my-4">작성한 상담글</div>
-                <div class="mr-4 my-4" th:text="${posts}"></div>
-            </div>
-            <div class="info-middle flex">
-                <div class="ml-4 my-4">상담 예약</div>
-                <div class="mr-4 my-4" th:text="${reservations}"></div>
-            </div>
-        </div>
-
-        <div class="my-res flex mt-8">
+        <div class="my-payment flex mt-8">
             <span class="regular-text ml-4 my-4">내 포인트</span>
             <div class="info-first flex">
                 <div class="ml-4 my-4">포인트</div>
                 <div class="mr-4 my-4" th:text="${user.milyPoint}"></div>
             </div>
             <div class="info-middle flex">
-                <div class="ml-4 my-4">충전 내역</div>
+                <div class="ml-4 my-4">지급 내역</div>
                 <div class="mr-4 my-4" th:if="${payments > 0}" th:text="${payments}"></div>
             </div>
         </div>
@@ -117,7 +105,7 @@
             width: 640px;
             justify-content: center;
             flex-direction: column;
-            margin: 96px 320px 96px;
+            margin: 96px 0 96px;
         }
         .main > .sub-text {
             display: flex;
@@ -133,20 +121,20 @@
             font-weight: 600;
         }
 
-        .my-info, .my-res {
+        .my-info, .my-payment {
             width: 100%;
             flex-direction: column;
         }
-        .my-info .info-first, .my-res .info-first {
+        .my-info .info-first, .my-payment .info-first {
             width: 100%;
             justify-content: space-between;
             border-top: 2px solid black;
         }
-        .my-info .info-middle, .my-res .info-middle {
+        .my-info .info-middle, .my-payment .info-middle {
             width: 100%;
             justify-content: space-between;
         }
-        .my-info .info-last, .my-res .info-last {
+        .my-info .info-last, .my-payment .info-last {
             width: 100%;
             justify-content: space-between;
         }
