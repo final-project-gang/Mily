@@ -29,9 +29,9 @@
                 <a href="/user/signup">회원가입</a>
             </div>
 
-            <div th:if="${@rq.login}" class="mr-6 hover:text-blue-400">
+            <div th:if="${@rq.login}" class="mr-6 text-blue-400 mt-2">
                 <a th:href="@{/payment}">
-                    <span th:text="${@rq.milyUser.milyPoint} + ' 포인트'"></span>
+                    <span th:text="${@rq.milyUser.milyPoint}"></span>
                 </a>
             </div>
             <div th:if="${@rq.login}" class="mr-6 hover:text-blue-400 mt-2">
