@@ -27,116 +27,120 @@
                              class="object-cover; vertical-align: bottom;" alt="main-img-1">
                         <div class="text-grid">
                             <p class="text">나와 비슷한 문제에 대한 답변을 찾아보세요!</p>
-                            <a class="text" th:if="${@rq.login}" th:href="@{milyx/create}" style="text-decoration: underline;">질문하기</a>
+                            <a class="text" th:if="${@rq.login}" th:href="@{milyx/create}"
+                               style="text-decoration: underline;">질문하기</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="question-grid-box mt-4">
-            <div class="question-box flex mb-3 border-b pb-3" th:each="milyx : ${milyx}">
-                <div class="question-list mt-3">
-                    <div class="question-titleLine mt-3">
-                        <p class="title mt-3" style="color: rgb(122, 130, 135);"
-                           th:text="${milyx.firstCategory.title}"></p>
-                        <a th:href="@{/milyx/detail/{id}(id=${milyx.id})}">
-                            <p class="list mt-3" style="color: rgb(43, 45, 47); font-size: 20px; font-weight: 600;"
-                               th:text="${milyx.secondCategory.title}"></p>
-                        </a>
-                    </div>
+        <!-- 상담글 4개 -->
+        <div class="question-grid-box mt-12">
 
-                    <div class="text-answer flex" th:each="comment : ${milyx.comments}">
-                        <div class="case-answer" style="color: rgba(96, 165, 250, 1);">답변</div>
-                        <span class="case-answer__lawyer ml-2" th:if="${count > 0}"
-                              th:text="${comment.author.userName} + ' 변호사'">
+            <div class="question-grid-box mt-4">
+                <div class="question-box flex mb-3 border-b pb-3" th:each="milyx : ${milyx}">
+                    <div class="question-list mt-3">
+                        <div class="question-titleLine mt-3">
+                            <p class="title mt-3" style="color: rgb(122, 130, 135);"
+                               th:text="${milyx.firstCategory.title}"></p>
+                            <a th:href="@{/milyx/detail/{id}(id=${milyx.id})}">
+                                <p class="list mt-3" style="color: rgb(43, 45, 47); font-size: 20px; font-weight: 600;"
+                                   th:text="${milyx.secondCategory.title}"></p>
+                            </a>
+                        </div>
+
+                        <div class="text-answer flex" th:each="comment : ${milyx.comments}">
+                            <div class="case-answer" style="color: rgba(96, 165, 250, 1);">답변</div>
+                            <span class="case-answer__lawyer ml-2" th:if="${count > 0}"
+                                  th:text="${comment.author.userName} + ' 변호사'">
                       </span>
-                    </div>
+                        </div>
 
-                    <div class="case-card__answer mt-3" style="color: rgb(122, 130, 135);"
-                         th:each="comment : ${milyx.comments}">
-                        <span th:if="${count > 0}" th:text="${comment.body}"></span>
-                    </div>
+                        <div class="case-card__answer mt-3" style="color: rgb(122, 130, 135);"
+                             th:each="comment : ${milyx.comments}">
+                            <span th:if="${count > 0}" th:text="${comment.body}"></span>
+                        </div>
 
-                    <div class="question-img-box gap-1 flex items-center mt-2 mb-5">
-                        <p class="text-box" style="color: rgb(159, 164, 169); font-size: 0.8rem;"
-                           th:if="${#lists.size(milyx.comments) == 0}" th:text="'변호사의 답변을 기다리는 중입니다.'"></p>
-                        <p class="text-box" style="color: rgb(159, 164, 169); font-size: 0.8rem;"
-                           th:if="${#lists.size(milyx.comments) > 0}"
-                           th:text="'변호사 답변 ' + ${#lists.size(milyx.comments)} + '개'"></p>
-                    </div>
+                        <div class="question-img-box gap-1 flex items-center mt-2 mb-5">
+                            <p class="text-box" style="color: rgb(159, 164, 169); font-size: 0.8rem;"
+                               th:if="${#lists.size(milyx.comments) == 0}" th:text="'변호사의 답변을 기다리는 중입니다.'"></p>
+                            <p class="text-box" style="color: rgb(159, 164, 169); font-size: 0.8rem;"
+                               th:if="${#lists.size(milyx.comments) > 0}"
+                               th:text="'변호사 답변 ' + ${#lists.size(milyx.comments)} + '개'"></p>
+                        </div>
 
-                    <!-- 조회수 -->
-                    <div ng-if="stateName != 'main'" class="case-card__info flex justify-between">
+                        <!-- 조회수 -->
+                        <div ng-if="stateName != 'main'" class="case-card__info flex justify-between">
                       <span class="viewCount" style="--tw-text-opacity: 1;
           color: rgba(107, 114, 128, var(--tw-text-opacity));">조회수<i class="number" th:text="' ' + ${milyx.view}"></i>
                       </span>
-                        <div th:each="comment : ${milyx.comments}">
-                            <!-- 시간답변 -->
-                            <span class="viewCount" style="--tw-text-opacity: 1;
+                            <div th:each="comment : ${milyx.comments}">
+                                <!-- 시간답변 -->
+                                <span class="viewCount" style="--tw-text-opacity: 1;
   color: rgba(107, 114, 128, var(--tw-text-opacity));" th:if="${#lists.size(milyx.comments) != 0}"
-                                  th:id="'createDate_' + ${comment.id}"
-                                  th:text="${comment.createDate}"></span>
+                                      th:id="'createDate_' + ${comment.id}"
+                                      th:text="${comment.createDate}"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <style>
-                /* 배너 텍스트 */
-                .text-grid {
-                  padding-top: 128px;
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  width: 100%;
-                  height: 100%;
-                  text-align: center;
-                  color: #fff;
-                  background-color: rgba(0, 0, 0, 0.2);
-                }
-
-                .text {
-                  color: #fff;
-                  font-weight: 500;
-                  font-size : 32px;
-                }
-
-                @media (max-width: 360px) {
-                  .content_item {
-                    max-width: var(--m_width);
-                  }
-
-                  .banner-img-box {
-                    height: 100px;
-                  }
-
-                  .banner-img-box > img {
+                <style>
+                    /* 배너 텍스트 */
+                    .text-grid {
+                      padding-top: 128px;
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                      width: 100%;
                       height: 100%;
-                      object-fit: cover;
-                  }
+                      text-align: center;
+                      color: #fff;
+                      background-color: rgba(0, 0, 0, 0.2);
+                    }
 
-                  .text-grid > p {
-                    margin: 33px 0 0 0;
-                    font-size: 16px;
-                  }
+                    .text {
+                      color: #fff;
+                      font-weight: 500;
+                      font-size : 32px;
+                    }
 
-                  .text-grid span {
-                    display: block;
-                    margin-top: -13px;
-                  }
+                    @media (max-width: 360px) {
+                      .content_item {
+                        max-width: var(--m_width);
+                      }
 
-                  .case-card__answer > span {
-                    max-width: var(--m_width) !important;
-                    display: block;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                  }
-                }
-            </style>
+                      .banner-img-box {
+                        height: 100px;
+                      }
+
+                      .banner-img-box > img {
+                          height: 100%;
+                          object-fit: cover;
+                      }
+
+                      .text-grid > p {
+                        margin: 33px 0 0 0;
+                        font-size: 16px;
+                      }
+
+                      .text-grid span {
+                        display: block;
+                        margin-top: -13px;
+                      }
+
+                      .case-card__answer > span {
+                        max-width: var(--m_width) !important;
+                        display: block;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                      }
+                    }
+                </style>
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>
 
