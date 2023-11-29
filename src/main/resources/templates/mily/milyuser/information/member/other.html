@@ -93,45 +93,36 @@
                 $(editForm.userPhoneNumber).next().addClass(isSuccess ? 'text-green-400' : 'text-red-400');
                 $(editForm.userPhoneNumber).next().text(msg);
             }
-
-            let validUserEmail = '';
-            let lastCheckedUserEmail = '';
-            let validUserPhoneNumber = '';
-            let lastCheckedUserPhoneNumber = '';
-
-            let submitEditFormDone = false;
-            function submitEditForm(form) {
-                if ( submitEditFormDone ) return;
-
-                form.userEmail.value = form.userEmail.value.trim();
-
-                if ( form.userEmail.value.length == 0 ) {
-                    form.userEmail.focus();
-                    toastWarning('이메일 입력 란을 확인해주세요.');
-                    return;
-                }
-
-                form.userPhoneNumber.value = form.userPhoneNumber.value.trim();
-
-                if ( form.userPhoneNumber.value.length == 0 ) {
-                    form.userPhoneNumber.focus();
-                    toastWarning('전화번호 입력 란을 확인해주세요.');
-                    return;
-                }
-
-                if ( validUserEmail != form.userEmail.value ) {
-                    $(form.userEmail).next().focus();
-                    toastWarning('이메일 중복 체크를 해주세요.');
-                    return;
-                }
-
-                if ( validUserPhoneNumber != form.userPhoneNumber.value ) {
-                    $(form.userPhoneNumber).next().focus();
-                    toastWarning('전화번호 중복 체크를 해주세요.');
-                    return;
-                }
-            }
         });
+
+        let validUserEmail = '';
+        let lastCheckedUserEmail = '';
+        let validUserPhoneNumber = '';
+        let lastCheckedUserPhoneNumber = '';
+
+        console.log(validUserEmail);
+
+        let submitEditFormDone = false;
+
+        function submitEditForm(form) {
+            if ( submitEditFormDone ) return;
+
+            form.userEmail.value = form.userEmail.value.trim();
+            form.userPhoneNumber.value = form.userPhoneNumber.value.trim();
+
+            if ( validUserEmail != form.userEmail.value ) {
+                $(form.userEmail).next().focus();
+                toastWarning('이메일 중복 체크를 해주세요.');
+                return;
+            }
+            if ( validUserPhoneNumber != form.userPhoneNumber.value ) {
+                $(form.userPhoneNumber).next().focus();
+                toastWarning('전화번호 중복 체크를 해주세요.');
+                return;
+            }
+            form.submit();
+            submitEditFormDone = true;
+        }
     </script>
     <script>
         const passwordForm = document['password-form'];
@@ -200,7 +191,7 @@
             <div class="text-sm"></div>
 
             <div class="btn-wrap">
-                <button class="btn btn-block btn-primary">
+                <button class="btn btn-block btn-primary" type="submit">
                     <span>저장하기</span>
                 </button>
             </div>
@@ -208,14 +199,17 @@
     </div>
 
     <div class="main-form">
-        <form th:action="@{|/user/mypage/edit/password|}" method="POST" class="edit-form" name="password-form" onsubmit="submitPasswordForm(this); return false;">
+        <form th:action="@{|/user/mypage/edit/password|}" method="POST" class="edit-form" name="password-form"
+              onsubmit="submitPasswordForm(this); return false;">
             <span class="large-text">비밀번호 변경</span>
             <span class="regular-text">현재 비밀번호 확인</span>
             <input class="form-input" type="password" placeholder="현재 비밀번호를 입력해주세요." name="userPasswordConfirm">
             <span class="regular-text mt-4">변경할 비밀번호</span>
-            <input class="form-input" type="password" placeholder="변경할 비밀번호를 입력해주세요." name="userPassword" id="userPassword">
+            <input class="form-input" type="password" placeholder="변경할 비밀번호를 입력해주세요." name="userPassword"
+                   id="userPassword">
             <span class="regular-text mt-4">변경할 비밀번호 확인</span>
-            <input class="form-input" type="password" placeholder="변경할 비밀번호를 입력해주세요." name="userPassword2" id="userPassword2">
+            <input class="form-input" type="password" placeholder="변경할 비밀번호를 입력해주세요." name="userPassword2"
+                   id="userPassword2">
 
             <div class="btn-wrap">
                 <button class="btn btn-block btn-primary">
