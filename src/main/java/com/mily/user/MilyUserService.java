@@ -1,6 +1,8 @@
 package com.mily.user;
 
 import com.mily.Email.EmailService;
+import com.mily.article.milyx.MilyX;
+import com.mily.article.milyx.MilyXService;
 import com.mily.article.milyx.category.entity.FirstCategory;
 import com.mily.article.milyx.category.entity.SecondCategory;
 import com.mily.article.milyx.repository.MilyXRepository;
@@ -10,6 +12,8 @@ import com.mily.estimate.EstimateRepository;
 import com.mily.image.AppConfig;
 import com.mily.image.Image;
 import com.mily.image.ImageService;
+import com.mily.reservation.Reservation;
+import com.mily.reservation.ReservationRepository;
 import com.mily.standard.util.Ut;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +31,11 @@ import java.util.Optional;
 @Service
 public class MilyUserService {
     private final EmailService emailService;
+    private final MilyXService milyXService;
     private final MilyXRepository milyXRepository;
     private final MilyUserRepository milyUserRepository;
     private final LawyerUserRepository lawyerUserRepository;
+    private final ReservationRepository reservationRepository;
     private final EstimateRepository estimateRepository;
     private final PasswordEncoder passwordEncoder;
     private final ImageService imageService;
@@ -362,6 +368,27 @@ public class MilyUserService {
     }
 
     public void withdraw(MilyUser isLoginedUser) {
+        // 탈퇴를 요청한 유저의 모든 서비스 이용 기록을 삭제 (MilyX, 견적서, 상담 예약)
+        List<MilyX> isLoginedUserPosts = milyXService.findByAuthor(isLoginedUser);
+        List<Estimate> isLoginedUserEstimates = estimateRepository.findByMilyUser(isLoginedUser);
+        List<Reservation> isLoginedUserReservations = reservationRepository.findByMilyUser(isLoginedUser);
+
+        if (!isLoginedUserPosts.isEmpty()) {
+            for (int i = 0; i < isLoginedUserPosts.size(); i++) {
+                milyXRepository.delete(isLoginedUserPosts.get(i));
+            }
+        }
+        if (!isLoginedUserEstimates.isEmpty()) {
+            for (int i = 0; i < isLoginedUserEstimates.size(); i++) {
+                estimateRepository.delete(isLoginedUserEstimates.get(i));
+            }
+        }
+        if (!isLoginedUserReservations.isEmpty()) {
+            for (int i = 0; i < isLoginedUserEstimates.size(); i++) {
+                reservationRepository.delete(isLoginedUserReservations.get(i));
+            }
+        }
+
         milyUserRepository.delete(isLoginedUser);
     }
 
