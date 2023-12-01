@@ -35,10 +35,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -437,8 +434,7 @@ public class MilyUserController {
     }
 
     @GetMapping("/mypage/dashboard")
-    public String showDashboard(HttpServletRequest hsr, Model model) {
-        String referer = hsr.getHeader("Referer");
+    public String showDashboard(Model model) {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
         if (isLoginedUser != null) {
@@ -448,10 +444,11 @@ public class MilyUserController {
                 model.addAttribute("comments", allComments);
 
                 List<Reservation> allReservations = reservationService.findByLawyerUserId(isLoginedUser.getId());
+                List<Reservation> sortedReservations = allReservations.stream()
+                        .sorted(Comparator.comparing(Reservation::getReservationTime))
+                        .toList();
                 model.addAttribute("reservationsCount", allReservations.size());
-                model.addAttribute("reservations", allReservations);
-
-                System.out.println(allReservations);
+                model.addAttribute("reservations", sortedReservations);
 
                 List<Estimate> allEstimates = estimateRepository.findAll();
                 model.addAttribute("allEstimatesCount", allEstimates.size());
@@ -485,11 +482,11 @@ public class MilyUserController {
             } else if (isLoginedUser.getRole().equals("admin")) {
                 return "mily/milyuser/information/admin/admin_dashboard";
             } else {
-                return "redirect:" + referer;
+                return "redirect:/";
             }
         }
 
-        return "redirect:" + referer;
+        return "redirect:/";
     }
 
     /* 내 정보 수정 */

@@ -66,9 +66,11 @@
                 <div class="category flex">
                     <div class="container">
                         <div class="lawyer-tit flex">
-                            <a th:href="@{/reservation/select_date(lawyerUserId=${lawyer.id})}"
+                            <a th:if="${@rq.login}" th:href="@{/reservation/select_date(lawyerUserId=${lawyer.id})}"
                                th:text="${lawyer.userName} + ' 변호사'"
                                class="hover:text-blue-400 lawyer-name text-xl"></a>
+                            <span th:if="${@rq.logout}" th:text="${lawyer.userName} + ' 변호사'"
+                                  class="lawyer-name text-xl"></span>
                             <div class="lawyer-status ml-2 mb-1 flex items-center text-sm">
                                 <div class="watch-icon">
                                     <a href='https://postimages.org/' target='_blank'>
@@ -81,6 +83,8 @@
 
                         <div class="lawyer-company-name text-gray-500 text-sm"
                              th:text="${lawyer.lawyerUser.officeAddress}"></div>
+                        <div class="lawyer-company-name text-gray-500 text-sm"
+                             th:text="${lawyer.lawyerUser.area}"></div>
 
                         <div class="lawyer-text text-base my-6 inline-block" th:text="${lawyer.lawyerUser.introduce}">
                         </div>
@@ -110,7 +114,7 @@
                     <!-- 변호사 이미지 -->
                     <div class="lawyerimg-box flex items-center">
                         <div class="lawyer-gride-box">
-                            <a th:href="@{/reservation/select_date(lawyerUserId=${lawyer.id})}">
+                            <a th:if="${@rq.login}" th:href="@{/reservation/select_date(lawyerUserId=${lawyer.id})}">
                                 <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}"
                                      class="lawyer-profile-right">
                                     <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})"
@@ -119,17 +123,18 @@
                                          class="picture">
                                         <img class="lawyer-profile"
                                              th:src="${lawyer.lawyerUser.profileImgFilePath}">
-                                        <!--                                                 src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/5e64b6fc9566c101e43e1b23-original.jpg?s=256x256">-->
                                     </div>
-                                    <!---->
                                 </div>
                             </a>
-
-                            <!-- 더 알아보기 -->
-                            <div class="more_btn text-center mt-5">
-                                <a th:href="@{/reservation/select_date(lawyerUserId=${lawyer.id})}"
-                                   class="hover:text-blue-400 lawyer-name text-sm border-b-2 border-gray-300 hover:border-blue-400">더
-                                    알아보기</a>
+                            <div th:if="${@rq.logout}" ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}"
+                                 class="lawyer-profile-right">
+                                <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})"
+                                     ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list"
+                                     ad-event="click_lawyer-thumbnail" ad-label="9403-이재준" ad-delay="1000"
+                                     class="picture">
+                                    <img class="lawyer-profile"
+                                         th:src="${lawyer.lawyerUser.profileImgFilePath}">
+                                </div>
                             </div>
                         </div>
                     </div>
