@@ -1,22 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<header
-        th:fragment="headerFragment"
-        id="header"
-        class="header_wrap w-full h-20 fixed top-0 bg-white z-50"
->
-    <div
-            class="header_con max-w-7xl m-auto h-20 flex justify-between items-center"
-    >
-        <div>
-            <h2 class="flex justify-center items-center">
+<header th:fragment="headerFragment" id="header" class="header_wrap w-full h-20 fixed top-0 bg-white z-50">
+    <div class="header_con max-w-7xl m-auto h-20 flex justify-between items-center">
+        <div><h2 class="flex justify-center items-center">
                 <a th:href="@{/}">
-                    <img
-                            class="header_logo w-28 mt-2 -ml-2"
-                            src="https://i.postimg.cc/DZ9cZsT1/mily-logo.png"
-                            alt="mily로고"
-                    />
+                    <img class="header_logo w-28 mt-2 -ml-2" src="https://i.postimg.cc/DZ9cZsT1/mily-logo.png" alt="mily로고"/>
                 </a>
             </h2>
         </div>
@@ -35,7 +24,6 @@
                 </a>
             </div>
             <div th:if="${@rq.login}" class="mr-6 hover:text-blue-400 mt-2">
-
                 <a href="/user/logout">로그아웃</a>
             </div>
             <div th:if="${@rq.login}" class="hover:text-blue-400 mt-2">

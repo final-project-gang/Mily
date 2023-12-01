@@ -122,6 +122,37 @@ ol, ul {
      font-size: 16px; /* 폰트 크기 */
    }
 
+.parent-container {
+    width: 100%; /* 또는 다른 넓이 값 */
+    max-width: 1900px; /* 최대 넓이 설정 */
+    margin: 0 auto; /* 가운데 정렬을 위한 마진 설정 */
+}
+
+body { height: 2000px; }
+
+/* .sideBanner 클래스에 대한 스타일 설정 */
+.sideBanner {
+  /* 요소의 위치를 절대 위치로 지정 */
+  position: absolute;
+
+  /* 요소의 너비를 150px로 설정 */
+  width: 300px;
+
+  right: 100px;
+
+  /* 요소의 높이를 200px로 설정 */
+  height: 500px;
+
+  /* 요소의 위치를 위에서부터 50px 아래로 설정 */
+  top: 590px;
+
+  /* 배경 색상을 #999900으로 설정 */
+  background-color: #FFFFFF;
+
+  /* 텍스트 색상을 #fffffff(흰색)으로 설정 */
+  color: #000000;
+}
+
 
 
 
