@@ -1,6 +1,7 @@
 package com.mily.estimate;
 
 import com.mily.article.milyx.category.entity.FirstCategory;
+import com.mily.user.MilyUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
@@ -11,4 +12,6 @@ public interface EstimateRepository extends JpaRepository<Estimate, Long> {
     List<Estimate> findByCreateDateGreaterThanEqualAndAreaAndFirstCategory(LocalDateTime createDate, String area, FirstCategory firstCategory);
     List<Estimate> findAll();
     void deleteByCreateDateLessThan(LocalDateTime createDate);
+
+    List<Estimate> findByMilyUser(MilyUser milyUser);
 }

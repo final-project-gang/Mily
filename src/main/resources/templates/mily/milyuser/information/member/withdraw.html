@@ -37,7 +37,7 @@
                 <span class="regular-text" th:text="'사용 중인 아이디 ('"></span>
                 <span class="regular-text-green" th:text="${user.userLoginId}"></span>
                 <span class="regular-text" th:text="')는 탈퇴 시 복구가 불가능합니다.'"></span><br>
-                <span class="regular-text-red ml-4" th:text="'탈퇴한 아이디는 이후 재사용 및 복구가 불가능'"></span>
+                <span class="regular-text-red ml-4" th:text="'탈퇴한 아이디는 이후 복구가 불가능'"></span>
                 <span class="regular-text" th:text="'하니 신중하게 선택하시기 바랍니다.'"></span><br>
 
                 <br><br><i class="fa-solid fa-check"></i>
@@ -45,13 +45,13 @@
                 <span class="regular-text ml-4" th:text="'회원 정보는 모두 삭제되며, 삭제된 데이터는 복구되지 않습니다.'"></span><br>
 
                 <br><br><i class="fa-solid fa-check"></i>
-                <span class="regular-text" th:text="'탈퇴 후에도 MilyX 서비스에 등록된 게시물은 유지됩니다.'"></span><br>
-                <span class="regular-text ml-4" th:text="'MilyX'"></span>
-                <span class="regular-text" th:text="'서비스에 올린 질문은 탈퇴 시 자동 삭제되지 않고 유지됩니다.'"></span><br>
+                <span class="regular-text" th:text="'탈퇴 시 Mily 서비스에 등록된 게시물 등은 전부 삭제됩니다.'"></span><br>
+                <span class="regular-text-bold ml-4" th:text="'MilyX, 견적서, 상담 예약'"></span>
+                <span class="regular-text" th:text="'등의 서비스에 올린 질문은 탈퇴 시 자동으로 삭제됩니다.'"></span><br>
 
                 <br><br><i class="fa-solid fa-check"></i>
-                <span class="regular-text" th:text="'탈퇴 후에는 MILY에서 제공하는 모든 서비스 이용이 불가능합니다.'"></span><br>
-                <span class="regular-text ml-4" th:text="'MilyX에 남아있는 질문은 탈퇴 후 삭제할 수 없습니다.'"></span><br>
+                <span class="regular-text" th:text="'탈퇴 시 갖고 있는 사이버 머니 취소 및 환불이 불가능합니다.'"></span><br>
+                <span class="regular-text ml-4" th:text="'사이버 머니 관리 규약에 따라 취소 및 환불이 불가능하며, 소멸됩니다.'"></span><br>
             </div>
 
             <div>
@@ -83,8 +83,13 @@
             justify-content: center;
         }
         .regular-text {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 400;
+            color: black;
+        }
+        .regular-text-bold {
+            font-size: 14px;
+            font-weight: 600;
             color: black;
         }
         .regular-text-red {

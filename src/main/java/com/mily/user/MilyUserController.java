@@ -553,18 +553,15 @@ public class MilyUserController {
     }
 
     @GetMapping("/mypage/withdraw")
-    public String showWithdraw(HttpServletRequest hsr, Model model) {
+    public String showWithdraw(Model model) {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
-
-        // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
-        String referer = hsr.getHeader("Referer");
 
         if (isLoginedUser != null) {
             model.addAttribute("user", isLoginedUser);
             return "mily/milyuser/information/member/withdraw";
         }
 
-        return "redirect:" + referer;
+        return "mily/milyuser/information/withdraw_success";
     }
 
     @GetMapping("/mypage/withdraw/ok")

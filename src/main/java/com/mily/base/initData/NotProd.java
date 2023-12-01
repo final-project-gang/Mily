@@ -26,6 +26,7 @@ public class NotProd {
     private final MilyXService milyXService;
     private final PaymentService paymentService;
     private FirstCategory fc;
+
     @Bean
     public ApplicationRunner init() {
         return args -> {
@@ -37,15 +38,17 @@ public class NotProd {
                 MilyUser milyUser2 = milyUserService.userSignup("leewowns1005", "a7586898", "이재준", "leewowns1005@naver.com", "01020105481", "1996-10-05").getData();
                 MilyUser milyUser3 = milyUserService.userSignup("oizill5481", "a7586898", "이재준", "oizill5481@icloud.com", "01045702579", "1996-10-05").getData();
                 MilyUser milyUser4 = milyUserService.userSignup("test1111", "test1111", "한문철", "test1111@email.com", "01011111111", "1996-01-01").getData();
-                milyUserService.lawyerSignup("교통사고/범죄", "교통 사고, 상해 전문 승소율 97% 이상 / 처리까지 최저 수임료로", "법무법인 아로", "1111-1111-1111", "대전", milyUser4, "https://i.postimg.cc/J7sVTCpC/Vudz-Wb-LYPYgc-OBwt32ap-Na-ZBHt5b8-AXA.webp");
-                MilyUser milyUser5 = milyUserService.userSignup("test2222", "test2222", "박추어", "test2222@email.com", "01022222222", "1995-01-01").getData();
-                milyUserService.lawyerSignup("민사 절차", "<1,400건 이상의 후기> 검증된 변호사 / 합리적 수임료", "법무법인 새긴", "2222-2222-2222", "대전", milyUser5, "https://i.postimg.cc/63sjzFqt/SE-8dd832e9-2fa4-4cb4-9868-f1ebc.jpg");
-                MilyUser milyUser6 = milyUserService.userSignup("test3333", "test3333", "이정건", "test3333@email.com", "01033333333", "1995-01-01").getData();
-                milyUserService.lawyerSignup("성 범죄", "[성매매/성범죄] 초기 대응부터 확실하게", "법률사무소 M&Y", "3333-3333-3333", "대전", milyUser6, "https://i.postimg.cc/0QkzDyvS/Kakao-Talk-20231125-230349223.jpg");
-                MilyUser milyUser7 = milyUserService.userSignup("test4444", "test4444", "이재영", "test4444@email.com", "01044444444", "1995-01-01").getData();
-                milyUserService.lawyerSignup("가족", "TV출연/대형 로펌 출신/이혼 관련 상담 2000건 이상", "MILY L&C", "4444-4444-4444", "대전", milyUser7, "https://i.postimg.cc/dtYHGRCT/Kakao-Talk-20231125-222200034.jpg");
-                MilyUser milyUser8 = milyUserService.userSignup("test5555", "test5555", "최진우", "test5555@email.com", "01055555555", "1995-01-01").getData();
+                milyUserService.lawyerSignup("교통사고/범죄", "교통 사고, 상해 전문 승소율 97% 이상 / 처리까지 최저 수임료로", "법무법인 아로", "1111-1111-1111", "서울", milyUser4, "https://i.postimg.cc/J7sVTCpC/Vudz-Wb-LYPYgc-OBwt32ap-Na-ZBHt5b8-AXA.webp");
+                MilyUser milyUser5 = milyUserService.userSignup("test2222", "test2222", "박추어", "test2222@email.com", "01022222222", "1999-04-08").getData();
+                milyUserService.lawyerSignup("민사 절차", "<1,400건 이상의 후기> 검증된 변호사 / 합리적 수임료", "법무법인 새긴", "2222-2222-2222", "대구", milyUser5, "https://i.postimg.cc/63sjzFqt/SE-8dd832e9-2fa4-4cb4-9868-f1ebc.jpg");
+                MilyUser milyUser6 = milyUserService.userSignup("test3333", "test3333", "이정건", "test3333@email.com", "01033333333", "1999-09-24").getData();
+                milyUserService.lawyerSignup("성 범죄", "[성매매/성범죄] 초기 대응부터 확실하게", "법률사무소 M&Y", "3333-3333-3333", "강원", milyUser6, "https://i.postimg.cc/0QkzDyvS/Kakao-Talk-20231125-230349223.jpg");
+                MilyUser milyUser7 = milyUserService.userSignup("test4444", "test4444", "이재영", "test4444@email.com", "01044444444", "1997-12-07").getData();
+                milyUserService.lawyerSignup("가족", "TV출연/대형 로펌 출신/이혼 관련 상담 2000건 이상", "MILY L&C", "4444-4444-4444", "경기", milyUser7, "https://i.postimg.cc/dtYHGRCT/Kakao-Talk-20231125-222200034.jpg");
+                MilyUser milyUser8 = milyUserService.userSignup("test5555", "test5555", "최진우", "test5555@email.com", "01055555555", "1997-08-11").getData();
                 milyUserService.lawyerSignup("교통사고/범죄", "교통 사고, 상해 전문 승소율 90% 이상 / 처리까지 최저 수임료로", "MILY L&C", "5555-5555-5555", "대전", milyUser8, "https://i.postimg.cc/Kc90KKbn/IMG-1638.jpg");
+                MilyUser milyUser9 = milyUserService.userSignup("test6666", "test6666", "김예지", "test6666@email.com", "01066666666", "1999-03-04").getData();
+                milyUserService.lawyerSignup("재산 범죄", "전세 사기 피해 관련 상담 313건의 노하우로 철저하게 도와드립니다.", "법률사무소 SPRING", "6666-6666-6666", "대구", milyUser9, "https://i.postimg.cc/Kc90KKbn/IMG-1638.jpg");
 
                 milyUser4.setRole("approve");
                 milyUser5.setRole("approve");
@@ -55,6 +58,13 @@ public class NotProd {
                 milyUserRepository.save(milyUser5);
                 milyUserRepository.save(milyUser6);
                 milyUserRepository.save(milyUser7);
+
+                MilyUser milyUser10 = milyUserService.userSignup("user1111", "user1111", "user1111", "user1111@email.com", "010-1010-1010", "1992-09-21").getData();
+                MilyUser milyUser11 = milyUserService.userSignup("user2222", "user2222", "user2222", "user2222@email.com", "010-2020-2020", "1989-05-30").getData();
+                MilyUser milyUser12 = milyUserService.userSignup("user3333", "user3333", "user3333", "user3333@email.com", "010-3030-3030", "1989-02-10").getData();
+                MilyUser milyUser13 = milyUserService.userSignup("user4444", "user4444", "user4444", "user4444@email.com", "010-4040-4040", "1988-04-12").getData();
+                MilyUser milyUser14 = milyUserService.userSignup("user5555", "user5555", "user5555", "user5555@email.com", "010-5050-5050", "1990-01-31").getData();
+                MilyUser milyUser15 = milyUserService.userSignup("user6666", "user6666", "user6666", "user6666@email.com", "010-6060-6060", "1998-12-06").getData();
 
                 paymentService.dummyPayment("161251211", milyUser2, 300, "밀리 포인트 300", (long) 4800);
                 paymentService.dummyPayment("161251212", milyUser3, 50, "밀리 포인트 50", (long) 900);
@@ -169,6 +179,41 @@ public class NotProd {
                 secondCategory = categoryService.findBySTitle("사이버 명예훼손/모욕");
                 milyXService.dummyCreate(milyUser2, firstCategory, secondCategory, "게임하다가 심한 욕설을 들었습니다.", "사건 발생 : 2023.09.10 11:35 a.m.\n본인 챔피언 : 카이사\n가해 챔피언 : 리 신\n내용 : 리그오브레전드 일반 (팀)게임을 하면서 '만년브론즈희생폿(본인)아, 니 엄마는 너를 낳지 말았어야 한다', '이게 피임의 중요성이다 시', '발아 ㅋㅋ'라고 하며 저를 능욕했고, 수치심과 모욕감에 한참을 진정하지 못 했습니다.\n본인 챔피언인 카이사를 특정하며 말을 해서 특정성과 팀 게임 특성상 공연성은 성립될 거 같은데, 모욕성까지 해서 모욕죄 성립 요건 3가지를 충족했으니 고소할 수 있을까요?", 50);
                 milyUserService.sevenCreateEstimate(firstCategory, secondCategory, "대전", "내용", milyUser2);
+
+                firstCategory = categoryService.findByFTitle("가족");
+                secondCategory = categoryService.findBySTitle("이혼");
+                milyXService.dummyCreate(milyUser10, firstCategory, secondCategory, "양육비와 재산분할에 대한 상담", "협의 이혼 준비 중이며\n" +
+                        "양육비 산정표에 있는 금액이 한명의 아이에 대한 금액인가요?! 아니면 아이가 두명이면 2를 곱하면 되나요?!\n" +
+                        "\n" +
+                        "하기 조건인 경우에 월 양육비를 대략 어느정도 받을 수 있는지 계산 부탁드립니다.\n" +
+                        "1. 2명의 자녀 19년 22년생(만1세, 만 4세) \n" +
+                        "2. 남편 세후 통장에 찍히는 금액 약 450~460만원 \n" +
+                        "와이프 21년도 연봉 5300만원 22년도 육아휴직 중간에 들어가서 2400만원 23년도 육아휴직 후 5월 퇴사하여 0원\n" +
+                        "3. 대도시 거주 \n" +
+                        "\n" +
+                        "이 조건이면 약 월 양육비가 어느정도 되나요?", 70);
+
+                firstCategory = categoryService.findByFTitle("교통사고/범죄");
+                secondCategory = categoryService.findBySTitle("음주/무면허");
+                milyXService.dummyCreate(milyUser14, firstCategory, secondCategory, "음주사고 후 구공판 문자 수신 후 대처 방안", "6월1일 0.057수치로 하면 안 될 음주운전으로 후진하다 오토바이와 사고가 났습니다..\n" +
+                        "즉시 경찰과 구급차를 불렀고 후속조치는 다 마친상태였고 상대방은 전치10주가 나왔습니다\n" +
+                        "시간이 지나 합의도 하였고 타 지역에서 일어난 사건이라 지청을 옮기는 과정에서 사건번호가 바뀌는 줄 모르고 있다 문의후 사겅 번호를 받아\n" +
+                        "지청 민원실에 11월28일 합의서 자동차매매서류\n" +
+                        "서약서 반성문 제출을 하였고\n" +
+                        "11월 28일 구공판 확정? 받았습니다\n" +
+                        "이 후 대처를 어떻게 해야할 지 막막합니다\n" +
+                        "집안 사정으로 대출을 받은게 있고\n" +
+                        "사건 해결을 위해 대출을 또 받아야 하는 상황\n" +
+                        "(나올 지 안 나올 지도 모름..)인데\n" +
+                        "금전적으로 너무 힘들어 변호사 선임은 거의 불가 한 상태입니다..\n" +
+                        "지금 현재 이 상태에소 할 수 있는 최선의 방법은 무엇일까요.. 깊히 반성하고 후회하고있습니다..", 100);
+
+                firstCategory = categoryService.findByFTitle("명예훼손/모욕");
+                secondCategory = categoryService.findBySTitle("사이버 명예훼손/모욕");
+                milyXService.dummyCreate(milyUser12, firstCategory, secondCategory, "고소접수 후 수사관 연락 시기와 절차에 대한 질문", " 안녕하세요 저는 피고소인 입장입니다. 디시인사이드 마이너 갤러리에서 성적 발언을 해서 통매음으로 고소당한 사건입니다. 저번 주에 갤러리를 통해 고소접수를 했다는 글을 올려서 알게되었습니다. 고소인은 pdf, 아카이브를 다 따놔있는 상태라서 현재 저는 문제되는 해당 계정을 삭제하고 탈퇴를 진행중입니다. (원본 삭제) 고소인은 고소 다음주에 바로 진술하러간다고 하는데 보통 이렇게 빨리 진술하러 가는 걸까요? 피고소인인 저에게 수사관이 연락오려면 어느 정도 시간이 걸릴까요?\n" +
+                        "\n" +
+                        "그리고 이관될 때 수사관이 전화로\n" +
+                        "제 신상을 물어본 다음 우편으로 이관됐다고 나오는 게 맞는 걸까요?", 50);
             }
         };
     }
