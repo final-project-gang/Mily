@@ -37,7 +37,7 @@
             <div class="info-middle flex">
                 <div class="ml-4 my-4">채택된 답변</div>
                 <div class="mr-4 my-4">
-<!--                    <span th:if="${comments.has"></span>-->
+                    <!--                    <span th:if="${comments.has"></span>-->
                 </div>
             </div>
             <div class="info-middle flex">
@@ -66,18 +66,32 @@
         <div class="my-cal flex mt-8">
             <span class="regular-text ml-4 my-4">예약 현황</span>
             <div class="info-first flex">
-                <table style="width: 640px">
-                    <thead style="width: 640px">
+                <table class="calendar">
+                    <thead>
                     <tr>
-                        <th>일</th>
-                        <th>월</th>
-                        <th>화</th>
-                        <th>수</th>
-                        <th>목</th>
-                        <th>금</th>
-                        <th>토</th>
+                        <th th:each="dates: ${dates}" th:text="${#strings.substring(dates, 8, 10)}"
+                            class="th-text"></th>
+                    </tr>
+                    <tr>
+                        <th th:each="day: ${day}" th:text="${day}" class="th-text">
+                        </th>
                     </tr>
                     </thead>
+                    <tbody>
+                    <tr>
+                        <td th:each="dates: ${dates}" class="td-text">
+                            <div th:each="reservations: ${reservations}" class="table-div">
+                                <span th:if="${#strings.substring(reservations.reservationTime, 8, 10)} == ${#strings.substring(dates, 8, 10)}"
+                                      th:text="${#temporals.format(reservations.reservationTime, 'HH:mm')}"></span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!--                    <tr th:each="reservations: ${reservations}">-->
+                    <!--                        <td class="td-text" th:text="${reservations.reservationTime}">-->
+                    <!--                        </td>-->
+                    <!--                    </tr>-->
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -119,35 +133,9 @@
         </table>
     </div>
 
-    <div style="display:flex; margin: 20px 0 10px 0;">
+    <div>
         <span th:if="${estimatesCount < 0}" th:text="'견적서가 없습니다.'"></span>
         <span th:if="${estimatesCount > 0}" th:text="'견적서 ' + ${estimatesCount} + '건이 대기 중입니다.'"></span>
-    </div>
-    <div class="flex" style="flex-direction: column">
-        <table style="border: 1px solid #c8c8c8;">
-            <thead>
-            <tr>
-                <th style="border-right: 1px solid #c8c8c8;">번호</th>
-                <th style="border-right: 1px solid #c8c8c8;">1차 카테고리</th>
-                <th style="border-right: 1px solid #c8c8c8;">2차 카테고리</th>
-                <th style="border-right: 1px solid #c8c8c8;">지역</th>
-                <th style="border-right: 1px solid #c8c8c8;">작성자</th>
-                <th style="border-right: 1px solid #c8c8c8;">작성자 전화번호</th>
-                <th>작성일</th>
-            </tr>
-            </thead>
-            <tbody style="border: 1px solid #c8c8c8; text-align: center;">
-            <tr th:each="estimate: ${estimate}">
-                <td th:text="${estimate.id}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${estimate.firstCategory.title}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${estimate.secondCategory.title}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${estimate.area}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${estimate.milyUser.userName}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${estimate.milyUser.userPhoneNumber}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${#temporals.format(estimate.createDate, 'MM월 dd일 HH시 mm분')}"></td>
-            </tr>
-            </tbody>
-        </table>
     </div>
     <style>
         .main {
@@ -188,7 +176,45 @@
             width: 100%;
             justify-content: space-between;
         }
+
+        .calendar {
+            width: 640px;
+            margin: 16px 0;
+        }
+        .th-text {
+            width: 91.42px;
+        }
+        .td-text {
+            text-align: center;
+            vertical-align: top;
+        }
     </style>
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th style="border-right: 1px solid #c8c8c8;">번호</th>
+                <th style="border-right: 1px solid #c8c8c8;">1차 카테고리</th>
+                <th style="border-right: 1px solid #c8c8c8;">2차 카테고리</th>
+                <th style="border-right: 1px solid #c8c8c8;">지역</th>
+                <th style="border-right: 1px solid #c8c8c8;">작성자</th>
+                <th style="border-right: 1px solid #c8c8c8;">작성자 전화번호</th>
+                <th>작성일</th>
+            </tr>
+            </thead>
+            <tbody style="border: 1px solid #c8c8c8; text-align: center;">
+            <tr th:each="estimate: ${estimate}">
+                <td th:text="${estimate.id}" style="border-right: 1px solid #c8c8c8;"></td>
+                <td th:text="${estimate.firstCategory.title}" style="border-right: 1px solid #c8c8c8;"></td>
+                <td th:text="${estimate.secondCategory.title}" style="border-right: 1px solid #c8c8c8;"></td>
+                <td th:text="${estimate.area}" style="border-right: 1px solid #c8c8c8;"></td>
+                <td th:text="${estimate.milyUser.userName}" style="border-right: 1px solid #c8c8c8;"></td>
+                <td th:text="${estimate.milyUser.userPhoneNumber}" style="border-right: 1px solid #c8c8c8;"></td>
+                <td th:text="${#temporals.format(estimate.createDate, 'MM월 dd일 HH시 mm분')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </section>
 
 </body>
