@@ -32,10 +32,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @RequestMapping("/user")
@@ -190,6 +192,11 @@ public class MilyUserController {
 
     @GetMapping("/estimate")
     public String showForm(EstimateCreateForm estimateCreateForm, Model model) {
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+
+        if (isLoginedUser == null) {
+            return "redirect:/";
+        }
         List<FirstCategory> firstCategories = categoryService.getFirstCategories();
         List<SecondCategory> secondCategories = categoryService.getSecondCategories();
 
@@ -444,22 +451,35 @@ public class MilyUserController {
                 model.addAttribute("reservationsCount", allReservations.size());
                 model.addAttribute("reservations", allReservations);
 
+                System.out.println(allReservations);
+
                 List<Estimate> allEstimates = estimateRepository.findAll();
                 model.addAttribute("allEstimatesCount", allEstimates.size());
                 model.addAttribute("allEstimates", allEstimates);
 
                 // 달력 메서드
-                List<LocalDate> monthDate = new ArrayList<>();
-                LocalDate now = LocalDate.now();
+                List<LocalDateTime> dates = new ArrayList<>();
+                List<String> daysOfWeek = new ArrayList<>();
 
-                for (LocalDate date = now.withDayOfMonth(1); !date.isAfter(now.withDayOfMonth(now.lengthOfMonth())); date = date.plusDays(1)) {
-                    monthDate.add(date);
-//                    dayOfWeek = date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
-//                    System.out.println(dayOfWeek.charAt(0));
+                LocalDateTime start = LocalDateTime.now();
+                LocalDateTime end = start.plusDays(7);
+
+                model.addAttribute("start", start);
+                model.addAttribute("end", end);
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd");
+
+                dates.add(start);
+                daysOfWeek.add("오늘");
+
+                for (int i = 1; i < 7; i++) {
+                    dates.add(start.plusDays(i));
+                    String dayOfWeek = start.plusDays(i).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+                    daysOfWeek.add(dayOfWeek.substring(0, 1));
                 }
 
-                model.addAttribute("calendarSize", monthDate.size());
-                model.addAttribute("calendar", monthDate);
+                model.addAttribute("dates", dates);
+                model.addAttribute("day", daysOfWeek);
 
                 return "mily/milyuser/information/lawyer/lawyer_dashboard";
             } else if (isLoginedUser.getRole().equals("admin")) {
