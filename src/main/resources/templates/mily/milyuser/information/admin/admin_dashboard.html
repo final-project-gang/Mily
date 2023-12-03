@@ -1,173 +1,255 @@
 <html layout:decorate="@{mily/common/layout}" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>관리자 페이지 : MILY</title>
+    <title>관리자 대시보드 : MILY</title>
+    <script>
+        $(document).ready(function() {
+            $('button').click(function(e) {
+                e.preventDefault();
+                let conf = confirm("해당 변호사의 가입을 승인하시겠습니까?");
+                if (conf) {
+                    $(this).parents('form').submit();
+                }
+            });
+        });
+    </script>
 </head>
-
 <body>
-<section layout:fragment="content">
 
-    <div class="flex" style="border: 1px solid #c8c8c8; margin: 10px 20%; font-size: 20px;">
-        <div class="flex" style="flex-direction: column">
-            <span style="font-weight: bold; color: red;">관리자 전용 페이지입니다.</span>
-            <span style="font-weight: bold; color: blue">이 곳에서 일반 회원 및 변호사 회원 관리와 결제 내역 등을 확인할 수 있습니다.</span>
+<div layout:fragment="content">
+    <!--  메뉴바  -->
+    <div id="header_menu" class="text-lg w-full fixed top-20 left-0 bg-white z-50 h-12 border-b pt-4">
+        <div class="flex max-w-7xl m-auto justify-evenly">
+            <!--            <a th:href="@{/user/mypage/info}" class="hover:text-blue-400 text-gray-300">내 정보</a>-->
+            <!--            <a th:href="@{/user/mypage/dashboard}"-->
+            <!--               style="color: rgb(43, 45, 47); border-bottom: 2px solid black; padding-bottom: 3px;">대시보드</a>-->
         </div>
     </div>
 
-    <div class="flex" style="flex-direction: column;">
-        <div style="margin: 20px 0 10px 0;">
-        <span th:if="${users > 0}" th:text="'전체 회원 ' + ${users} + '명'" style="font-size: 18px; font-weight: bold;"></span>
+    <div class="main">
+        <div class="sub-text">
+            <span class="large-text">관리자 대시보드</span>
         </div>
-        <table>
-            <thead style="border: 1px solid #c8c8c8;">
-            <tr>
-                <th style="border-right: 1px solid #c8c8c8;">번호</th>
-                <th style="border-right: 1px solid #c8c8c8;">아이디</th>
-                <th style="border-right: 1px solid #c8c8c8;">이름</th>
-                <th style="border-right: 1px solid #c8c8c8;">이메일</th>
-                <th style="border-right: 1px solid #c8c8c8;">전화번호</th>
-                <th style="border-right: 1px solid #c8c8c8;">생년월일</th>
-                <th style="border-right: 1px solid #c8c8c8;">권한</th>
-                <th>가입일</th>
-            </tr>
-            </thead>
 
-            <tbody style="border: 1px solid #c8c8c8; text-align: center;">
-            <tr th:each="userList: ${userList}">
-                <td th:text="${userList.id}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${userList.userLoginId}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${userList.userName}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${userList.userEmail}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${userList.userPhoneNumber}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${userList.userDateOfBirth}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:switch="${userList.Role}" style="border-right: 1px solid #c8c8c8;">
-                    <span th:case="'admin'">관리자</span>
-                    <span th:case="'member'">일반 회원</span>
-                    <span th:case="'waiting'">승인 대기</span>
-                    <span th:case="'approve'">변호사</span>
-                </td>
-                <td th:text="${#temporals.format(userList.userCreateDate, 'yyyy-MM-dd')}"></td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="my-cmt flex mt-8">
+            <span class="regular-text ml-4 my-4">유저 현황</span>
+            <div class="info-first flex"></div>
+            <div class="flex justify-around my-6">
+                <div class="user-info flex">
+                    <span class="regular-text">변호사</span>
+                    <span class="regular-text" th:text="${lawyersCount} + '명'"></span>
+                </div>
+                <div class="user-info flex">
+                    <span class="regular-text">회원</span>
+                    <span class="regular-text" th:text="${usersCount} + '명'"></span>
+                </div>
+            </div>
 
-        <div style="margin: 20px 0 10px 0;">
-            <span th:if="${waiting > 0}" th:text="'승인 대기 중인 변호사가 ' + ${waiting} + '명 있습니다.'" style="font-size: 18px; font-weight: bold;"></span>
+            <div class="user-list flex mb-12">
+                <div th:each="users, stat: ${users}" class="flex justify-around">
+                    <div th:if="${stat.count <=4}" th:text="${users.userName}" class="user-text"></div>
+                    <div th:if="${stat.count <=4}" th:text="${users.userPhoneNumber}" class="user-text"></div>
+                    <div th:if="${stat.count <=4}" th:text="${users.role}" class="user-text"></div>
+                </div>
+            </div>
+
+            <span class="regular-text ml-4 my-4">서비스 현황</span>
+            <div class="info-first flex mb-6"></div>
+            <div class="flex justify-around">
+                <div class="service-text">Mily X</div>
+                <div class="service-text">
+                    <span th:text="'총'" class="mr-1"></span>
+                    <a th:href="@{/milyx}" th:text="${posts}" style="font-weight: 600; text-decoration: underline;"
+                       target="_blank"></a>
+                    <span th:text="'개'"></span>
+                </div>
+            </div>
+            <div class="flex justify-around">
+                <div class="service-text">견적서</div>
+                <div th:text="'총 ' + ${estimates} + '개'" class="service-text"></div>
+            </div>
+            <div class="flex justify-around mb-12">
+                <div class="service-text">상담 예약</div>
+                <div th:text="'총 ' + ${reservations} + '개'" class="service-text"></div>
+            </div>
+
+            <span class="regular-text ml-4 my-4" th:text="'승인 대기 변호사 ' + ${waitingCount} + '명'"></span>
+            <div class="info-first flex mb-4" th:unless="${waitingCount == 0}"></div>
+            <div class="flex justify-around" th:unless="${waitingCount == 0}">
+                <div class="waiting-text w-20">이름</div>
+                <div class="waiting-text w-12">지역</div>
+                <div class="waiting-text w-44">사무실</div>
+                <div class="waiting-text w-44">라이센스</div>
+                <div class="waiting-text w-12">승인</div>
+            </div>
+            <div class="flex justify-around">
+                <div class="waiting-list">
+                    <div th:each="waiting: ${waiting}" th:text="${waiting.userName}" class="waiting-text w-20"></div>
+                </div>
+                <div class="waiting-list">
+                    <div th:each="waiting: ${waiting}" th:text="${waiting.lawyerUser.area}"
+                         class="waiting-text w-12"></div>
+                </div>
+                <div class="waiting-list">
+                    <div th:each="waiting: ${waiting}" th:text="${waiting.lawyerUser.officeAddress}"
+                         class="waiting-text w-44"></div>
+                </div>
+                <div class="waiting-list">
+                    <div th:each="waiting: ${waiting}" th:text="${waiting.lawyerUser.licenseNumber}"
+                         class="waiting-text w-44"></div>
+                </div>
+                <div class="waiting-list">
+                    <form th:each="waiting: ${waiting}" th:action="@{/user/approveLawyer/{id}(id=${waiting.id})}"
+                          method="POST">
+                        <button th:text="'승인'" class="waiting-text w-12" style="color: #75BDFF;"></button>
+                    </form>
+                </div>
+            </div>
+
+            <span class="regular-text ml-4 my-4" th:if="${waitingCount > 0}" th:text="'승인 대기 변호사 ' + ${waitingCount} + '명'"></span>
+            <span class="regular-text ml-4 my-4" th:if="${waitingCount == 0}" th:text="'승인 대기 변호사가 없습니다.'"></span>
+            <div class="info-first flex mb-4" th:unless="${waitingCount == 0}"></div>
+            <div class="lawyer-profile" th:each="waiting: ${waiting}">
+                <div class="lawyer-img">
+                    <img th:src="${waiting.lawyerUser.profileImgFilePath}">
+                </div>
+                <div class="lawyer-info">
+                    <div class="lawyer-name" th:text="${waiting.userName}"></div>
+                    <div class="lawyer-office" th:text="${waiting.lawyerUser.officeAddress}"></div>
+                    <div class="lawyer-license" th:text="${waiting.lawyerUser.licenseNumber}"></div>
+                </div>
+            </div>
         </div>
-        <table>
-            <thead style="border: 1px solid #c8c8c8;">
-                <tr>
-                    <th style="border-right: 1px solid #c8c8c8;">번호</th>
-                    <th style="border-right: 1px solid #c8c8c8;">아이디</th>
-                    <th style="border-right: 1px solid #c8c8c8;">이름</th>
-                    <th style="border-right: 1px solid #c8c8c8;">분야</th>
-                    <th style="border-right: 1px solid #c8c8c8;">지역</th>
-                    <th style="border-right: 1px solid #c8c8c8;">사무실 주소</th>
-                    <th style="border-right: 1px solid #c8c8c8;">라이센스 번호</th>
-                    <th style="border-right: 1px solid #c8c8c8;">자기소개</th>
-                    <th style="border-right: 1px solid #c8c8c8;">상태</th>
-                    <th>승인</th>
-                </tr>
-            </thead>
-
-            <tbody style="border: 1px solid #c8c8c8; text-align: center;">
-                <tr th:each="lawyer: ${waitingLawyers}">
-                    <td th:text="${lawyer.id}" style="border-right: 1px solid #c8c8c8;"></td>
-                    <td th:text="${lawyer.userLoginId}" style="border-right: 1px solid #c8c8c8;"></td>
-                    <td th:text="${lawyer.userName}" style="border-right: 1px solid #c8c8c8;"></td>
-                    <td th:text="${lawyer.lawyerUser.major}" style="border-right: 1px solid #c8c8c8;"></td>
-                    <td th:text="${lawyer.lawyerUser.area}" style="border-right: 1px solid #c8c8c8;"></td>
-                    <td th:text="${lawyer.lawyerUser.officeAddress}" style="border-right: 1px solid #c8c8c8;"></td>
-                    <td th:text="${lawyer.lawyerUser.licenseNumber}" style="border-right: 1px solid #c8c8c8;"></td>
-                    <td th:text="${lawyer.lawyerUser.introduce}" style="border-right: 1px solid #c8c8c8;"></td>
-                    <td th:switch="${lawyer.Role}" style="border-right: 1px solid #c8c8c8;">
-                        <span th:case="'waiting'">승인 대기</span>
-                        <span th:case="'approve'">변호사</span>
-                    </td>
-                    <td style="border-right: 1px solid #c8c8c8;">
-                    <div class="button">
-                        <form th:action="@{/user/approveLawyer/{id}(id=${lawyer.id})}" method="post">
-                            <input type="submit" value="승인하기" style="font-size: 17px; color: blue;">
-                        </form>
-                    </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div style="margin: 20px 0 10px 0;">
-            <span th:if="${payments < 0}" th:text="'결제 내역이 없습니다.'" style="font-size: 18px; font-weight: bold;"></span>
-            <span th:if="${payments > 0}" th:text="'총 결제 내역 ' + ${payments} + '건'" style="font-size: 18px; font-weight: bold;"></span>
-        </div>
-        <table>
-            <thead style="border: 1px solid #c8c8c8;">
-                <tr>
-                    <th style="border-right: 1px solid #c8c8c8;">번호</th>
-                    <th style="border-right: 1px solid #c8c8c8;">결제일시</th>
-                    <th style="border-right: 1px solid #c8c8c8;">주문 번호</th>
-                    <th style="border-right: 1px solid #c8c8c8;">주문자 아이디</th>
-                    <th style="border-right: 1px solid #c8c8c8;">결제 항목</th>
-                    <th>가격 (단위: 원)</th>
-                </tr>
-            </thead>
-
-            <tbody style="border: 1px solid #c8c8c8; text-align: center;">
-                <tr th:each="paymentsList: ${paymentsList}">
-                    <td style="border-right: 1px solid #c8c8c8;" th:text="${paymentsList.id}"></td>
-                    <td style="border-right: 1px solid #c8c8c8;" th:text="${#temporals.format(paymentsList.orderDate, 'yyyy-MM-dd, HH시 mm분 ss초')}"></td>
-                    <td style="border-right: 1px solid #c8c8c8;" th:text="${paymentsList.orderId}"></td>
-                    <td style="border-right: 1px solid #c8c8c8;" th:text="${paymentsList.customerName.userLoginId}"></td>
-                    <td style="border-right: 1px solid #c8c8c8;" th:text="${paymentsList.orderName}"></td>
-                    <td th:text="${paymentsList.amount}"></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div style="display:flex; margin: 20px 0 10px 0;">
-            <span th:if="${milyXs < 0}" th:text="'질문이 없습니다.'" style="font-size: 18px; font-weight: bold;"></span>
-            <span th:if="${milyXs > 0}" th:text="'MilyX 에 ' + ${milyXs} + '개의 게시글이 있습니다.'" style="font-size: 18px; font-weight: bold;"></span>
-            <a th:href="@{/milyx}" target="_blank" style="text-decoration: underline;">(목록)</a>
-        </div>
-        <table style="border: 1px solid #c8c8c8;">
-            <thead style="border: 1px solid #c8c8c8;">
-                <tr>
-                    <th style="border-right: 1px solid #c8c8c8;">번호</th>
-                    <th style="border-right: 1px solid #c8c8c8;">작성자 ID</th>
-                    <th style="border-right: 1px solid #c8c8c8;">작성일시</th>
-                    <th style="border-right: 1px solid #c8c8c8;">제목</th>
-                    <th style="border-right: 1px solid #c8c8c8;">내용</th>
-                    <th style="border-right: 1px solid #c8c8c8;">답변 수</th>
-                    <th style="border-right: 1px solid #c8c8c8;">채택 여부</th>
-                    <th>관리</th>
-                </tr>
-            </thead>
-
-            <tbody style="border: 1px solid #c8c8c8; text-align: center;">
-                <tr th:each="milyXList: ${milyXList}">
-                    <td style="border-right: 1px solid #c8c8c8;" th:text="${milyXList.id}"></td>
-                    <td style="border-right: 1px solid #c8c8c8;" th:text="${milyXList.author.userLoginId}"></td>
-                    <td style="border-right: 1px solid #c8c8c8;" th:text="${#temporals.format(milyXList.createDate, 'yyyy-MM-dd, HH시 mm분 ss초')}"></td>
-                    <td style="border-right: 1px solid #c8c8c8;">
-                        <a th:href="@{/milyx/detail/{id}(id=${milyXList.id})}" target="_blank" th:text="${#strings.abbreviate(milyXList.subject, 14)}" style="text-decoration: underline;">
-                        </a>
-                    </td>
-                    <td style="border-right: 1px solid #c8c8c8;" th:text="${#strings.abbreviate(milyXList.body, 24)}"></td>
-                    <td style="border-right: 1px solid #c8c8c8;" th:text="${milyXList.commentsCount}"></td>
-                    <td style="border-right: 1px solid #c8c8c8;">
-                        <span th:unless="${milyXList.hasAdoptedAnswer}">X</span>
-                        <span th:if="${milyXList.hasAdoptedAnswer}">O</span>
-                    </td>
-                    <td th:unless="${milyXList.hasAdoptedAnswer}">
-                        <div class="button">
-                            <form th:action="@{/milyx/delete/{id}(id=${milyXList.id})}" method="post">
-                                <input type="submit" value="삭제" style="font-size: 17px; color: red;">
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
     </div>
-</section>
+
+    <style>
+        .main {
+            display: flex;
+            width: 640px;
+            justify-content: center;
+            flex-direction: column;
+            margin: 96px 0 96px;
+        }
+        .main > .sub-text {
+            display: flex;
+            justify-content: center;
+            margin: 48px 0;
+        }
+        .large-text {
+            font-size: 32px;
+            font-weight: 600;
+        }
+        .regular-text {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .user-info {
+            flex-direction: column;
+            width: 150px;
+            background-color: #75BDFF;
+            border-radius: 10px;
+            padding: 5px 0;
+            text-align: center;
+        }
+        .user-info > .regular-text {
+            font-size: 18px;
+            font-weight: 400;
+            color: white;
+        }
+        .waiting-list {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        .waiting-text {
+            display: flex;
+            justify-content: center;
+        }
+        .service-text, .waiting-text {
+            font-size: 18px;
+            font-weight: 400;
+        }
+        .user-list {
+            flex-direction: column;
+        }
+        .user-text {
+            display: flex;
+            font-size: 16px;
+        }
+        .service-text {
+            display: flex;
+            justify-content: center;
+            width: 80px;
+        }
+        .my-info, .my-res, .my-cal, .my-cmt, .my-est {
+            width: 100%;
+            flex-direction: column;
+        }
+        .my-info .info-first, .my-res .info-first, .my-cmt .info-first, .my-est .info-first {
+            width: 100%;
+            justify-content: space-between;
+            border-top: 2px solid black;
+        }
+        .my-info .info-middle, .my-res .info-middle, .my-cmt .info-middle {
+            width: 100%;
+            justify-content: space-between;
+        }
+        .my-info .info-last, .my-res .info-last, .my-cmt .info-last {
+            width: 100%;
+            justify-content: space-between;
+        }
+        .my-cal .info-first {
+            width: 100%;
+            justify-content: space-between;
+            border: 1px solid black;
+            border-radius: 15px;
+        }
+        .calendar {
+            width: 640px;
+            margin: 16px 0;
+        }
+        .th-text {
+            width: 91.42px;
+        }
+        .td-text {
+            text-align: center;
+            vertical-align: top;
+        }
+        .span-text {
+            display: inline-block;
+            width: 56px;
+            border: 1px solid #75BDFF;
+            padding: 2px 3px;
+            border-radius: 10px;
+            margin: 1px 0;
+        }
+        .lawyer-profile {
+            display: flex;
+            margin: 10px 0;
+        }
+        .lawyer-img {
+            display: flex;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            transform: translateZ(0);
+        }
+        .lawyer-info {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            margin-left: 8px;
+        }
+        .lawyer-name {
+            font-weight: 600;
+            color: black;
+        }
+        .lawyer-office, .lawyer-license {
+            font-size: 14px;
+        }
+    </style>
+</div>
+
 </body>
 </html>

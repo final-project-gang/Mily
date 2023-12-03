@@ -11,7 +11,6 @@ import com.mily.base.rq.Rq;
 import com.mily.base.rsData.RsData;
 import com.mily.estimate.Estimate;
 import com.mily.estimate.EstimateRepository;
-import com.mily.payment.Payment;
 import com.mily.payment.PaymentService;
 import com.mily.reservation.Reservation;
 import com.mily.reservation.ReservationService;
@@ -398,35 +397,7 @@ public class MilyUserController {
 
         // 현재 로그인 된 사용자의 권한이 "admin"일 때
         if (isLoginedUser.getRole().equals("admin")) {
-            List<MilyUser> allUsers = milyUserService.findAll();
-            int users = allUsers.size();
-
-            model.addAttribute("user", isLoginedUser);
-            model.addAttribute("users", users);
-            model.addAttribute("userList", allUsers);
-
-            List<MilyUser> waitingLawyers = milyUserService.getWaitingLawyerList();
-            int waiting = waitingLawyers.size();
-
-            model.addAttribute("waiting", waiting);
-            model.addAttribute("waitingLawyers", waitingLawyers);
-
-            List<Payment> allPayments = paymentService.findAll();
-            int payments = allPayments.size();
-
-            if (!allPayments.isEmpty()) {
-                model.addAttribute("payments", payments);
-                model.addAttribute("paymentsList", allPayments);
-            }
-
-            List<MilyX> allMilyX = milyXService.findAll();
-            int milyXs = allMilyX.size();
-
-            if (!allMilyX.isEmpty()) {
-                model.addAttribute("milyXs", milyXs);
-                model.addAttribute("milyXList", allMilyX);
-            }
-
+            showDashboard(model);
             return "/mily/milyuser/information/admin/admin_dashboard";
         }
 
@@ -480,6 +451,25 @@ public class MilyUserController {
 
                 return "mily/milyuser/information/lawyer/lawyer_dashboard";
             } else if (isLoginedUser.getRole().equals("admin")) {
+                List<MilyUser> allUsers = milyUserService.findAll();
+                List<MilyUser> allLawyers = milyUserService.findByRole("approve");
+
+                model.addAttribute("usersCount", allUsers.size());
+                model.addAttribute("lawyersCount", allLawyers.size());
+
+                List<MilyX> allPosts = milyXService.findAll();
+                List<Estimate> allEstimates = estimateRepository.findAll();
+                List<Reservation> allReservations = reservationService.findAll();
+
+                model.addAttribute("posts", allPosts.size());
+                model.addAttribute("estimates", allEstimates.size());
+                model.addAttribute("reservations", allReservations.size());
+
+                List<MilyUser> waitingLawyers = milyUserService.findByRole("waiting");
+
+                model.addAttribute("waiting", waitingLawyers);
+                model.addAttribute("waitingCount", waitingLawyers.size());
+
                 return "mily/milyuser/information/admin/admin_dashboard";
             } else {
                 return "redirect:/";
@@ -598,7 +588,7 @@ public class MilyUserController {
 
     @GetMapping("lawyers")
     public String lawyerLists(Model model) {
-        List<MilyUser> lawyers = milyUserService.findAllApproveLawyer("approve");
+        List<MilyUser> lawyers = milyUserService.findByRole("approve");
         model.addAttribute("lawyers", lawyers);
         return "lawyers";
     }

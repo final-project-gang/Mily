@@ -1,11 +1,12 @@
 <html layout:decorate="@{mily/common/layout}" lang="ko">
 <head>
+    <meta charset="UTF-8">
     <title>변호사 대시보드 : MILY</title>
 </head>
 
 <body>
 
-<section layout:fragment="content">
+<div layout:fragment="content">
     <!--  메뉴바  -->
     <div id="header_menu" class="text-lg w-full fixed top-20 left-0 bg-white z-50 h-12 border-b pt-4">
         <div class="flex max-w-7xl m-auto justify-evenly">
@@ -93,7 +94,7 @@
                 <input type="radio" name="my-accordion-2" />
                 <div class="collapse-title" th:text="${estimate.milyUser.userName} + '님의 견적서'"></div>
                 <div class="collapse-content">
-                    <span th:text="${estimate.firstCategory.title}"></span>
+                    <span th:text="${estimate.firstCategory.title} + ' - '"></span>
                     <span th:text="${estimate.secondCategory.title}"></span><br>
                     <span th:text="${estimate.body}"></span>
                 </div>
@@ -167,7 +168,7 @@
         }
 
     </style>
-</section>
+</div>
 
 </body>
 </html>

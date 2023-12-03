@@ -416,7 +416,7 @@ public class MilyUserService {
 
     public List<MilyUser> findAll() { return milyUserRepository.findAll(); }
 
-    public List<MilyUser> findAllApproveLawyer(String role) {
+    public List<MilyUser> findByRole(String role) {
         return milyUserRepository.findByRole(role);
     }
 

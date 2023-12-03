@@ -67,4 +67,6 @@ public class ReservationService {
     public List<Reservation> findByLawyerUserId(long id) {
         return reservationRepository.findByLawyerUserId(id);
     }
+
+    public List<Reservation> findAll() { return reservationRepository.findAll(); }
 }
