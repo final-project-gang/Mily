@@ -45,9 +45,9 @@ public class NotProd {
                 milyUserService.lawyerSignup("성 범죄", "[성매매/성범죄] 초기 대응부터 확실하게", "법률사무소 M&Y", "3333-3333-3333", "강원", milyUser6, "https://i.postimg.cc/0QkzDyvS/Kakao-Talk-20231125-230349223.jpg");
                 MilyUser milyUser7 = milyUserService.userSignup("test4444", "test4444", "이재영", "test4444@email.com", "01044444444", "1997-12-07").getData();
                 milyUserService.lawyerSignup("가족", "TV출연/대형 로펌 출신/이혼 관련 상담 2000건 이상", "MILY L&C", "4444-4444-4444", "경기", milyUser7, "https://i.postimg.cc/dtYHGRCT/Kakao-Talk-20231125-222200034.jpg");
-                MilyUser milyUser8 = milyUserService.userSignup("test5555", "test5555", "최진우", "test5555@email.com", "01055555555", "1997-08-11").getData();
+                MilyUser milyUser8 = milyUserService.userSignup("test5555", "test5555", "정명준", "test5555@email.com", "01055555555", "1997-08-11").getData();
                 milyUserService.lawyerSignup("교통사고/범죄", "교통 사고, 상해 전문 승소율 90% 이상 / 처리까지 최저 수임료로", "MILY L&C", "5555-5555-5555", "대전", milyUser8, "https://i.postimg.cc/Kc90KKbn/IMG-1638.jpg");
-                MilyUser milyUser9 = milyUserService.userSignup("test6666", "test6666", "김예지", "test6666@email.com", "01066666666", "1999-03-04").getData();
+                MilyUser milyUser9 = milyUserService.userSignup("test6666", "test6666", "조승근", "test6666@email.com", "01066666666", "1999-03-04").getData();
                 milyUserService.lawyerSignup("재산 범죄", "전세 사기 피해 관련 상담 313건의 노하우로 철저하게 도와드립니다.", "법률사무소 SPRING", "6666-6666-6666", "대구", milyUser9, "https://i.postimg.cc/Kc90KKbn/IMG-1638.jpg");
 
                 milyUser4.setRole("approve");
@@ -59,12 +59,12 @@ public class NotProd {
                 milyUserRepository.save(milyUser6);
                 milyUserRepository.save(milyUser7);
 
-                MilyUser milyUser10 = milyUserService.userSignup("user1111", "user1111", "user1111", "user1111@email.com", "010-1010-1010", "1992-09-21").getData();
-                MilyUser milyUser11 = milyUserService.userSignup("user2222", "user2222", "user2222", "user2222@email.com", "010-2020-2020", "1989-05-30").getData();
-                MilyUser milyUser12 = milyUserService.userSignup("user3333", "user3333", "user3333", "user3333@email.com", "010-3030-3030", "1989-02-10").getData();
-                MilyUser milyUser13 = milyUserService.userSignup("user4444", "user4444", "user4444", "user4444@email.com", "010-4040-4040", "1988-04-12").getData();
-                MilyUser milyUser14 = milyUserService.userSignup("user5555", "user5555", "user5555", "user5555@email.com", "010-5050-5050", "1990-01-31").getData();
-                MilyUser milyUser15 = milyUserService.userSignup("user6666", "user6666", "user6666", "user6666@email.com", "010-6060-6060", "1998-12-06").getData();
+                MilyUser milyUser10 = milyUserService.userSignup("user1111", "user1111", "user1111", "user1111@email.com", "01010101010", "1992-09-21").getData();
+                MilyUser milyUser11 = milyUserService.userSignup("user2222", "user2222", "user2222", "user2222@email.com", "01020202020", "1989-05-30").getData();
+                MilyUser milyUser12 = milyUserService.userSignup("user3333", "user3333", "user3333", "user3333@email.com", "01030303030", "1989-02-10").getData();
+                MilyUser milyUser13 = milyUserService.userSignup("user4444", "user4444", "user4444", "user4444@email.com", "01040404040", "1988-04-12").getData();
+                MilyUser milyUser14 = milyUserService.userSignup("user5555", "user5555", "user5555", "user5555@email.com", "01050505050", "1990-01-31").getData();
+                MilyUser milyUser15 = milyUserService.userSignup("user6666", "user6666", "user6666", "user6666@email.com", "01060606060", "1998-12-06").getData();
 
                 paymentService.dummyPayment("161251211", milyUser2, 300, "밀리 포인트 300", (long) 4800);
                 paymentService.dummyPayment("161251212", milyUser3, 50, "밀리 포인트 50", (long) 900);

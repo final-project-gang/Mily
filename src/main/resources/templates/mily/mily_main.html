@@ -743,8 +743,8 @@
 
 
             <div class="question-box">
-                <div class="question-list mt-3" th:each="milyx : ${milyx}">
-                    <a th:href="@{/milyx/detail/{id}(id=${milyx.id})}">
+                <div class="question-list mt-3" th:each="milyx, stat : ${milyx}">
+                    <a th:if="${stat.count <= 4}" th:href="@{/milyx/detail/{id}(id=${milyx.id})}">
                         <div class="question-titleLine mt-3">
                             <p class="list mt-2" style="color: rgb(43, 45, 47); font-size: 20px;"
                                th:text="${milyx.firstCategory.title} + '/' + ${milyx.secondCategory.title}"></p>
@@ -796,10 +796,10 @@
                                 <img width="50" height="50" ng-if="!guide.showLtlogo" alt=" 썸네일"
                                      ng-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/thumb/5e3a69d37c4060019b2e156f-thumb-1695780947034.jpg"
                                      class="photo rounded-full"
-                                     src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/thumb/5e3a69d37c4060019b2e156f-thumb-1695780947034.jpg">
+                                     src="https://i.postimg.cc/dtYHGRCT/Kakao-Talk-20231125-222200034.jpg">
                             </div>
                             <div class="pt-8 ml-5 text-gray-400">
-                                By 유지은 변호사
+                                By 이재영 변호사
                             </div>
                         </div>
                     </div>
@@ -818,10 +818,10 @@
                                 <img width="50" height="50" ng-if="!guide.showLtlogo" alt=" 썸네일"
                                      ng-src="	https://d2ai3ajp99ywjy.cloudfront.net/uploads/thumb/637f079d9130c800d977b4f5-thumb-1678886717410.jpg"
                                      class="photo rounded-full"
-                                     src="	https://d2ai3ajp99ywjy.cloudfront.net/uploads/thumb/637f079d9130c800d977b4f5-thumb-1678886717410.jpg">
+                                     src="https://i.postimg.cc/0QkzDyvS/Kakao-Talk-20231125-230349223.jpg">
                             </div>
                             <div class="pt-8 ml-5 text-gray-400">
-                                By 조성근 변호사
+                                By 이정건 변호사
                             </div>
                         </div>
                     </div>
@@ -840,10 +840,10 @@
                                 <img width="50" height="50" ng-if="!guide.showLtlogo" alt=" 썸네일"
                                      ng-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/thumb/5e3a69d37c4060019b2e156f-thumb-1695780947034.jpg"
                                      class="photo rounded-full"
-                                     src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/thumb/5e3a69d37c4060019b2e156f-thumb-1695780947034.jpg">
+                                     src="https://i.postimg.cc/dtYHGRCT/Kakao-Talk-20231125-222200034.jpg">
                             </div>
                             <div class="pt-8 ml-5 text-gray-400">
-                                By 유지은 변호사
+                                By 이재영 변호사
                             </div>
                         </div>
                     </div>
