@@ -19,7 +19,7 @@ public class MilyXCommentService {
     private final MilyXCommentRepository milyXCommentRepository;
     private final MilyUserService milyUserService;
 
-    public RsData<MilyXComment> createComment (MilyX milyX, String body) {
+    public RsData<MilyXComment> createComment(MilyX milyX, String body) {
         LocalDateTime now = LocalDateTime.now();
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
@@ -36,11 +36,25 @@ public class MilyXCommentService {
         return new RsData<>("S-1", "답변 등록 완료", milyXComment);
     }
 
-    public List<MilyXComment> findAll () {
+    public MilyXComment dummyCreate(MilyX milyX, String body, MilyUser author) {
+        MilyXComment milyXComment = MilyXComment.builder()
+                .milyX(milyX)
+                .author(author)
+                .body(body)
+                .adopt(false)
+                .createDate(LocalDateTime.now())
+                .build();
+
+        milyXCommentRepository.save(milyXComment);
+
+        return milyXComment;
+    }
+
+    public List<MilyXComment> findAll() {
         return milyXCommentRepository.findAll();
     }
 
-    public List<MilyXComment> findByMilyX (MilyX milyX) {
+    public List<MilyXComment> findByMilyX(MilyX milyX) {
         return milyXCommentRepository.findByMilyX(milyX);
     }
 
@@ -48,14 +62,14 @@ public class MilyXCommentService {
         return milyXCommentRepository.findById(id);
     }
 
-    public long getMilyXIdByCommentId (long commentId) {
+    public long getMilyXIdByCommentId(long commentId) {
         MilyXComment milyXComment = milyXCommentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid comment Id:" + commentId));
         return milyXComment.getMilyX().getId();
     }
 
     @Transactional
-    public RsData<MilyXComment> delete (long id) {
+    public RsData<MilyXComment> delete(long id) {
         Optional<MilyXComment> mxcOptional = milyXCommentRepository.findById(id);
 
         if (mxcOptional.isEmpty()) {

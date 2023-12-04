@@ -53,7 +53,8 @@
             </div>
 
             <div class="consul_wrap h-full flex flex-col">
-                <a href="/user/lawyers" class="btn btn-primary">상담 예약</a>
+                <a th:if="${@rq.login and @rq.getMilyUser.role == 'member'}" href="/user/estimate" class="btn btn-primary">견적내기</a>
+                <a th:if="${@rq.logout or @rq.login and @rq.getMilyUser.role != 'member'}" href="/user/lawyers" class="btn btn-primary">상담 예약</a>
                 <a href="/milyx" class="btn btn-primary mt-5">상담글 작성</a>
             </div>
         </div>

@@ -76,6 +76,11 @@ public class ReservationController {
     @GetMapping("/select_date")
     public String selectDate(@RequestParam("lawyerUserId") Long lawyerUserId, Model model) {
         MilyUser lawyerUser = milyUserService.findById(lawyerUserId).get();
+        MilyUser isLoginedUser = milyUserService.getCurrentUser();
+
+        if (isLoginedUser == null || !isLoginedUser.role.equals("member")) {
+            return "redirect:/";
+        }
 
         List<String> dates = new ArrayList<>();
         List<String> daysOfWeek = new ArrayList<>();
