@@ -73,39 +73,6 @@
                 <div th:text="'총 ' + ${reservations} + '개'" class="service-text"></div>
             </div>
 
-            <span class="regular-text ml-4 my-4" th:text="'승인 대기 변호사 ' + ${waitingCount} + '명'"></span>
-            <div class="info-first flex mb-4" th:unless="${waitingCount == 0}"></div>
-            <div class="flex justify-around" th:unless="${waitingCount == 0}">
-                <div class="waiting-text w-20">이름</div>
-                <div class="waiting-text w-12">지역</div>
-                <div class="waiting-text w-44">사무실</div>
-                <div class="waiting-text w-44">라이센스</div>
-                <div class="waiting-text w-12">승인</div>
-            </div>
-            <div class="flex justify-around">
-                <div class="waiting-list">
-                    <div th:each="waiting: ${waiting}" th:text="${waiting.userName}" class="waiting-text w-20"></div>
-                </div>
-                <div class="waiting-list">
-                    <div th:each="waiting: ${waiting}" th:text="${waiting.lawyerUser.area}"
-                         class="waiting-text w-12"></div>
-                </div>
-                <div class="waiting-list">
-                    <div th:each="waiting: ${waiting}" th:text="${waiting.lawyerUser.officeAddress}"
-                         class="waiting-text w-44"></div>
-                </div>
-                <div class="waiting-list">
-                    <div th:each="waiting: ${waiting}" th:text="${waiting.lawyerUser.licenseNumber}"
-                         class="waiting-text w-44"></div>
-                </div>
-                <div class="waiting-list">
-                    <form th:each="waiting: ${waiting}" th:action="@{/user/approveLawyer/{id}(id=${waiting.id})}"
-                          method="POST">
-                        <button th:text="'승인'" class="waiting-text w-12" style="color: #75BDFF;"></button>
-                    </form>
-                </div>
-            </div>
-
             <span class="regular-text ml-4 my-4" th:if="${waitingCount > 0}" th:text="'승인 대기 변호사 ' + ${waitingCount} + '명'"></span>
             <span class="regular-text ml-4 my-4" th:if="${waitingCount == 0}" th:text="'승인 대기 변호사가 없습니다.'"></span>
             <div class="info-first flex mb-4" th:unless="${waitingCount == 0}"></div>
@@ -114,9 +81,18 @@
                     <img th:src="${waiting.lawyerUser.profileImgFilePath}">
                 </div>
                 <div class="lawyer-info">
-                    <div class="lawyer-name" th:text="${waiting.userName}"></div>
+                    <div class="lawyer-name" th:text="${waiting.userName} + ' · ' + ${waiting.lawyerUser.area}"></div>
                     <div class="lawyer-office" th:text="${waiting.lawyerUser.officeAddress}"></div>
                     <div class="lawyer-license" th:text="${waiting.lawyerUser.licenseNumber}"></div>
+                </div>
+                <div class="lawyer-introduce">
+                    <div class="lawyer-intro" th:text="${waiting.lawyerUser.introduce}"></div>
+                </div>
+                <div class="confirm-approve">
+                    <form th:each="waiting: ${waiting}" th:action="@{/user/approveLawyer/{id}(id=${waiting.id})}"
+                          method="POST" class="confirm-form">
+                        <button th:text="'승인'" class="waiting-text w-12" style="color: #75BDFF;"></button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -225,7 +201,7 @@
         }
         .lawyer-profile {
             display: flex;
-            margin: 10px 0;
+            margin-bottom: 10px;
         }
         .lawyer-img {
             display: flex;
@@ -239,7 +215,19 @@
             display: flex;
             justify-content: center;
             flex-direction: column;
-            margin-left: 8px;
+            width: 140px;
+            margin: 0 8px;
+        }
+        .lawyer-introduce {
+            display: flex;
+            flex-wrap: wrap;
+            align-content: center;
+            width: 320px;
+            margin-right: 8px;
+        }
+        .lawyer-intro {
+            font-size: 14px;
+            color: black;
         }
         .lawyer-name {
             font-weight: 600;
@@ -247,6 +235,17 @@
         }
         .lawyer-office, .lawyer-license {
             font-size: 14px;
+        }
+        .confirm-approve {
+            display: flex;
+            justify-content: flex-end;
+            width: 64px;
+            margin-left: 16px;
+        }
+        .confirm-form {
+            display: flex;
+            align-content: center;
+            flex-wrap: wrap;
         }
     </style>
 </div>

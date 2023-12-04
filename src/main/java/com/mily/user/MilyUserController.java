@@ -51,14 +51,21 @@ public class MilyUserController {
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
-    public String showUserLogin() {
+    public String showUserLogin(HttpServletRequest hsr) {
+        String referer = hsr.getHeader("Referer");
+        hsr.getSession().setAttribute("previousUrl", referer);
+
         return "mily/milyuser/login_form";
     }
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/signup")
     public String showSignup() {
-        return "mily/milyuser/signup_form";
+        if (milyUserService.getCurrentUser() == null) {
+            return "mily/milyuser/signup_form";
+        } else {
+            return "redirect:/";
+        }
     }
 
     @PreAuthorize("isAnonymous()")
@@ -84,9 +91,13 @@ public class MilyUserController {
     @PreAuthorize("isAnonymous()")
     @GetMapping("/lawyerSignup")
     public String showLawyerSignup(Model model) {
-        List<FirstCategory> categories = categoryService.getFirstCategories();
-        model.addAttribute("categories", categories);
-        return "mily/milyuser/lawyer_signup_form";
+        if (milyUserService.getCurrentUser() == null) {
+            List<FirstCategory> categories = categoryService.getFirstCategories();
+            model.addAttribute("categories", categories);
+            return "mily/milyuser/lawyer_signup_form";
+        } else {
+            return "redirect:/";
+        }
     }
 
     @PreAuthorize("isAnonymous()")
@@ -180,7 +191,7 @@ public class MilyUserController {
         return milyUserService.checkUserEmailDup(userEmail);
     }
 
-    @GetMapping({"checkUserPhoneNumberDup", "/mypage/edit/checkUserPhoneNumberDup" })
+    @GetMapping({"checkUserPhoneNumberDup", "/mypage/edit/checkUserPhoneNumberDup"})
     @ResponseBody
     public RsData checkUserPhoneNumber(String userPhoneNumber) {
         return milyUserService.checkUserPhoneNumberDup(userPhoneNumber);
@@ -190,16 +201,17 @@ public class MilyUserController {
     public String showForm(EstimateCreateForm estimateCreateForm, Model model) {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
-        if (isLoginedUser == null) {
+        if (isLoginedUser != null && isLoginedUser.role.equals("member")) {
+            List<FirstCategory> firstCategories = categoryService.getFirstCategories();
+            List<SecondCategory> secondCategories = categoryService.getSecondCategories();
+
+            model.addAttribute("firstCategories", firstCategories);
+            model.addAttribute("secondCategories", secondCategories);
+
+            return "estimate";
+        } else {
             return "redirect:/";
         }
-        List<FirstCategory> firstCategories = categoryService.getFirstCategories();
-        List<SecondCategory> secondCategories = categoryService.getSecondCategories();
-
-        model.addAttribute("firstCategories", firstCategories);
-        model.addAttribute("secondCategories", secondCategories);
-
-        return "estimate";
     }
 
     @PostMapping("/estimate")
@@ -510,7 +522,7 @@ public class MilyUserController {
         // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
         String referer = hsr.getHeader("Referer");
 
-        if ( isLoginedUser != null) {
+        if (isLoginedUser != null) {
             milyUserService.editInformation(isLoginedUser, userEmail, userPhoneNumber);
             model.addAttribute("user", isLoginedUser);
 

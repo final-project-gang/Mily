@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mily.user.MilyUser;
 import com.mily.user.MilyUserService;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpResponse;
@@ -50,17 +51,18 @@ public class PaymentController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("")
-    public String doPayment(Model model) {
+    public String doPayment(HttpServletRequest hsr, Model model) {
+        String referer = hsr.getHeader("Referer");
         try {
             MilyUser isLoginedUser = milyUserService.getCurrentUser();
             if (isLoginedUser != null) {
                 model.addAttribute("user", isLoginedUser);
             } else {
-                return "redirect:/user/login";
+                return "redirect:/";
             }
             return "mily/payment/payment";
         } catch (NullPointerException e) {
-            return "redirect:/user/login";
+            return "redirect:/" + referer;
         }
     }
 

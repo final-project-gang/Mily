@@ -20,12 +20,20 @@ public class CustomSimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthen
     private RequestCache requestCache = new HttpSessionRequestCache();
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws ServletException, IOException {
-        SavedRequest savedRequest = this.requestCache.getRequest(request, response);
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+            throws ServletException, IOException {
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
         clearAuthenticationAttributes(request);
 
-        String targetUrl = savedRequest != null ? savedRequest.getRedirectUrl() : getDefaultTargetUrl();
+        String targetUrl;
+        if (savedRequest != null) {
+            targetUrl = savedRequest.getRedirectUrl();
+        } else {
+            targetUrl = (String) request.getSession().getAttribute("previousUrl");
+            if (targetUrl == null) {
+                targetUrl = getDefaultTargetUrl();
+            }
+        }
 
         targetUrl = Ut.url.modifyQueryParam(targetUrl, "msg", Ut.url.encode("환영합니다."));
 
