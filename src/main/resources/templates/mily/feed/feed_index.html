@@ -1,6 +1,20 @@
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<html layout:decorate="@{mily/common/layout}" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Mily X : Mily</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+<div layout:fragment="content">
+    <!--  메뉴바  -->
+    <div id="header_menu" class="text-lg w-full fixed top-20 left-0 bg-white z-50 h-12 border-b pt-4">
+        <div class="max-w-7xl m-auto">
+            <a href="/" class="hover:text-blue-400 text-gray-300">홈</a>
+            <a href="/user/lawyers" class="ml-5 hover:text-blue-400 text-gray-300">변호사</a>
+            <a href="/milyx" class="ml-5 hover:text-blue-400 text-gray-300"
+               style="color: rgb(43, 45, 47); border-bottom: 2px solid black; padding-bottom: 7px;">상담사례</a>
+        </div>
+    </div>
 
 <!-- 제이쿼리 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -21,8 +35,8 @@
 <!-- 디자인 시작 -->
 <!-- min-h-screen : min-height:100vh; -->
 <!-- ====첫번째===== -->
-<main class="max-w-screen-2xl bg-gray-50 min-h-screen flex flex-col mx-auto">
-    <!--  탑바  -->
+<!--<main class="max-w-screen-2xl bg-gray-50 min-h-screen flex flex-col mx-auto">
+    &lt;!&ndash;  탑바  &ndash;&gt;
     <header class="top-0 mb-4 flex justify-between items-center">
         <div class="mx-10">
             <form action="">
@@ -38,11 +52,11 @@
             <div class="mx-5">
                 <a href="#">회원가입</a>
             </div>
-            <button class="btn btn-primary btn-jelly" style="--tw-bg-opacity: 1;
-background-color: rgba(147, 197, 253, var(--tw-bg-opacity)); border : none;">변호사 가입</button>
+            <button class="btn btn-primary btn-jelly" style="&#45;&#45;tw-bg-opacity: 1;
+background-color: rgba(147, 197, 253, var(&#45;&#45;tw-bg-opacity)); border : none;">변호사 가입</button>
         </div>
         </form>
-    </header>
+    </header>-->
 
     <!--  메뉴바  -->
     <form action="">

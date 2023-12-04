@@ -331,7 +331,7 @@ a {
 
 .category > .container .click-button-box .click_reserve-button {
   border: 0;
-  background-color: rgba(147, 197, 253, var(--tw-bg-opacity));
+  background-color: skybule;
   width: 64px;
   height: 64px;
   font-size: 14px;
@@ -396,6 +396,11 @@ a {
   width : 1280px;
 }
 
+.click_reserve-button {
+    background-color: #87CEEB; /* 스카이 블루 */
+    color: #fff; /* 텍스트 색상을 흰색으로 설정 (선택사항) */
+    /* 다른 스타일 속성들도 필요에 따라 추가할 수 있습니다. */
+}
 
 
 
