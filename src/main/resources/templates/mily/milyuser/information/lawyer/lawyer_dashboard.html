@@ -1,11 +1,12 @@
 <html layout:decorate="@{mily/common/layout}" lang="ko">
 <head>
+    <meta charset="UTF-8">
     <title>변호사 대시보드 : MILY</title>
 </head>
 
 <body>
 
-<section layout:fragment="content">
+<div layout:fragment="content">
     <!--  메뉴바  -->
     <div id="header_menu" class="text-lg w-full fixed top-20 left-0 bg-white z-50 h-12 border-b pt-4">
         <div class="flex max-w-7xl m-auto justify-evenly">
@@ -29,16 +30,10 @@
         </div>
 
         <div class="my-res flex mt-8">
-            <span class="regular-text ml-4 my-4">내 상담내역</span>
+            <span class="regular-text ml-4 my-4">내 활동</span>
             <div class="info-first flex">
                 <div class="ml-4 my-4">내 답변</div>
                 <div class="mr-4 my-4" th:text="${commentsCount}"></div>
-            </div>
-            <div class="info-middle flex">
-                <div class="ml-4 my-4">채택된 답변</div>
-                <div class="mr-4 my-4">
-<!--                    <span th:if="${comments.has"></span>-->
-                </div>
             </div>
             <div class="info-middle flex">
                 <div class="ml-4 my-4">예약 현황</div>
@@ -51,7 +46,7 @@
         </div>
 
         <div class="my-cmt flex mt-8">
-            <span class="regular-text ml-4 my-4">내 답변 내역</span>
+            <span class="regular-text ml-4 my-4">답변 내역</span>
             <div class="info-first flex">
             </div>
             <div class="info-middle flex" th:each="comments: ${comments}">
@@ -66,89 +61,47 @@
         <div class="my-cal flex mt-8">
             <span class="regular-text ml-4 my-4">예약 현황</span>
             <div class="info-first flex">
-                <table style="width: 640px">
-                    <thead style="width: 640px">
+                <table class="calendar">
+                    <thead>
                     <tr>
-                        <th>일</th>
-                        <th>월</th>
-                        <th>화</th>
-                        <th>수</th>
-                        <th>목</th>
-                        <th>금</th>
-                        <th>토</th>
+                        <th th:each="dates: ${dates}" th:text="${#strings.substring(dates, 8, 10)}"
+                            class="th-text"></th>
+                    </tr>
+                    <tr>
+                        <th th:each="day: ${day}" th:text="${day}" class="th-text">
+                        </th>
                     </tr>
                     </thead>
+                    <tbody>
+                    <tr>
+                        <td th:each="dates: ${dates}" class="td-text">
+                            <div th:each="reservations: ${reservations}" class="table-div">
+                                <span th:if="${#strings.substring(reservations.reservationTime, 8, 10)} == ${#strings.substring(dates, 8, 10)}"
+                                      th:text="${#temporals.format(reservations.reservationTime, 'HH:mm')}"
+                                      class="span-text"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
                 </table>
+            </div>
+        </div>
+
+        <div class="my-est flex mt-8">
+            <span class="regular-text ml-4 my-4" th:text="'견적서 ' + ${allEstimatesCount} + '개'"></span>
+            <div class="info-first flex"></div>
+            <div class="collapse collapse-arrow" th:each="estimate: ${allEstimates}">
+                <input type="radio" name="my-accordion-2" />
+                <div class="collapse-title" th:text="${estimate.milyUser.userName} + '님의 견적서'"></div>
+                <div class="collapse-content">
+                    <span th:text="${estimate.firstCategory.title} + ' - '"></span>
+                    <span th:text="${estimate.secondCategory.title}"></span><br>
+                    <span th:text="${estimate.body}"></span>
+                </div>
             </div>
         </div>
     </div>
 
-    <div style="display:flex; margin: 20px 0 10px 0;">
-        <span th:if="${commentsCount < 0}" th:text="'작성한 답변이 없습니다.'"></span>
-        <span th:if="${commentsCount > 0}" th:text="'내가 쓴 답변 ' + ${commentsCount} + '개'"></span>
-    </div>
-
-    <div class="flex" style="flex-direction: column">
-        <table style="border: 1px solid #c8c8c8;">
-            <thead>
-            <tr>
-                <th style="border-right: 1px solid #c8c8c8;">번호</th>
-                <th style="border-right: 1px solid #c8c8c8;">질문 제목</th>
-                <th style="border-right: 1px solid #c8c8c8;">답변 내용</th>
-                <th style="border-right: 1px solid #c8c8c8;">답변 시간</th>
-                <th>채택 여부</th>
-            </tr>
-            </thead>
-
-            <tbody style="border: 1px solid #c8c8c8; text-align: center;">
-            <tr th:each="comments: ${comments}">
-                <td th:text="${comments.id}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td style="border-right: 1px solid #c8c8c8;">
-                    <a th:href="@{milyx/detail/{id}(id=${comments.milyX.id})}" target="_blank"
-                       th:text="${#strings.abbreviate(comments.milyX.subject, 18)}" style="font-weight: bold;"></a>
-                </td>
-                <td th:text="${#strings.abbreviate(comments.body, 18)}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${#temporals.format(comments.createDate, 'MM월 dd일 HH시 mm분')}"
-                    style="border-right: 1px solid #c8c8c8;"></td>
-                <td>
-                    <span th:unless="${comments.adopt}">X</span>
-                    <span th:if="${comments.adopt}">O</span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div style="display:flex; margin: 20px 0 10px 0;">
-        <span th:if="${estimatesCount < 0}" th:text="'견적서가 없습니다.'"></span>
-        <span th:if="${estimatesCount > 0}" th:text="'견적서 ' + ${estimatesCount} + '건이 대기 중입니다.'"></span>
-    </div>
-    <div class="flex" style="flex-direction: column">
-        <table style="border: 1px solid #c8c8c8;">
-            <thead>
-            <tr>
-                <th style="border-right: 1px solid #c8c8c8;">번호</th>
-                <th style="border-right: 1px solid #c8c8c8;">1차 카테고리</th>
-                <th style="border-right: 1px solid #c8c8c8;">2차 카테고리</th>
-                <th style="border-right: 1px solid #c8c8c8;">지역</th>
-                <th style="border-right: 1px solid #c8c8c8;">작성자</th>
-                <th style="border-right: 1px solid #c8c8c8;">작성자 전화번호</th>
-                <th>작성일</th>
-            </tr>
-            </thead>
-            <tbody style="border: 1px solid #c8c8c8; text-align: center;">
-            <tr th:each="estimate: ${estimate}">
-                <td th:text="${estimate.id}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${estimate.firstCategory.title}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${estimate.secondCategory.title}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${estimate.area}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${estimate.milyUser.userName}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${estimate.milyUser.userPhoneNumber}" style="border-right: 1px solid #c8c8c8;"></td>
-                <td th:text="${#temporals.format(estimate.createDate, 'MM월 dd일 HH시 mm분')}"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
     <style>
         .main {
             display: flex;
@@ -171,25 +124,51 @@
             font-weight: 600;
         }
 
-        .my-info, .my-res, .my-cal, .my-cmt {
+        .my-info, .my-res, .my-cal, .my-cmt, .my-est {
             width: 100%;
             flex-direction: column;
         }
-        .my-info .info-first, .my-res .info-first, .my-cal .info-first, .my-cmt .info-first {
+        .my-info .info-first, .my-res .info-first, .my-cmt .info-first, .my-est .info-first {
             width: 100%;
             justify-content: space-between;
             border-top: 2px solid black;
         }
-        .my-info .info-middle, .my-res .info-middle, .my-cal .info-middle, .my-cmt .info-middle {
+        .my-info .info-middle, .my-res .info-middle, .my-cmt .info-middle {
             width: 100%;
             justify-content: space-between;
         }
-        .my-info .info-last, .my-res .info-last, .my-cal .info-last, .my-cmt .info-last {
+        .my-info .info-last, .my-res .info-last, .my-cmt .info-last {
             width: 100%;
             justify-content: space-between;
         }
+        .my-cal .info-first {
+            width: 100%;
+            justify-content: space-between;
+            border: 1px solid black;
+            border-radius: 15px;
+        }
+        .calendar {
+            width: 640px;
+            margin: 16px 0;
+        }
+        .th-text {
+            width: 91.42px;
+        }
+        .td-text {
+            text-align: center;
+            vertical-align: top;
+        }
+        .span-text {
+            display: inline-block;
+            width: 56px;
+            border: 1px solid #75BDFF;
+            padding: 2px 3px;
+            border-radius: 10px;
+            margin: 1px 0;
+        }
+
     </style>
-</section>
+</div>
 
 </body>
 </html>
