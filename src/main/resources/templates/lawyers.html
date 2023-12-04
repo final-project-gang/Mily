@@ -66,9 +66,11 @@
                 <div class="category flex">
                     <div class="container">
                         <div class="lawyer-tit flex">
-                            <a th:if="${@rq.login}" th:href="@{/reservation/select_date(lawyerUserId=${lawyer.id})}"
+                            <a th:if="${@rq.login and @rq.getMilyUser.role == 'member'}" th:href="@{/reservation/select_date(lawyerUserId=${lawyer.id})}"
                                th:text="${lawyer.userName} + ' 변호사'"
                                class="hover:text-blue-400 lawyer-name text-xl"></a>
+                            <span th:if="${@rq.login and @rq.getMilyUser.role != 'member'}" th:text="${lawyer.userName} + ' 변호사'"
+                                  class="lawyer-name text-xl"></span>
                             <span th:if="${@rq.logout}" th:text="${lawyer.userName} + ' 변호사'"
                                   class="lawyer-name text-xl"></span>
                             <div class="lawyer-status ml-2 mb-1 flex items-center text-sm">
@@ -101,9 +103,9 @@
 
                             <!-- 변호사상담예약하기버튼 -->
                             <div class="click-button-box flex justify-start mt-2 mb-5">
-                                <a th:if="${@rq.login}" th:href="@{/reservation/select_date(lawyerUserId=${lawyer.id})}"
+                                <a th:if="${@rq.login and @rq.getMilyUser.role == 'member'}" th:href="@{/reservation/select_date(lawyerUserId=${lawyer.id})}"
                                    class="text-xs btn btn-sm btn-primary">예약하기</a>
-                                <a th:if="${@rq.login}" th:href="@{/milyx}" class="text-xs btn btn-sm btn-primary ml-2">상담글
+                                <a th:if="${@rq.login and @rq.getMilyUser.role == 'member'}" th:href="@{/milyx}" class="text-xs btn btn-sm btn-primary ml-2">상담글
                                     작성</a>
                                 <sapn th:if="${@rq.logout}" th:text="'로그인 하시면 상담 서비스 이용이 가능합니다.'"
                                       class="text-xs block"></sapn>

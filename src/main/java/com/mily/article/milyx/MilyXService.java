@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -121,8 +122,8 @@ public class MilyXService {
 
     /* 더미 데이터용입니다 */
     @Transactional
-    public RsData<MilyX> dummyCreate(MilyUser author, FirstCategory firstCategory, SecondCategory secondCategory, String subject, String body, int milyPoint) {
-        LocalDateTime now = LocalDateTime.now();
+    public MilyX dummyCreate(MilyUser author, FirstCategory firstCategory, SecondCategory secondCategory, String subject, String body, int milyPoint) {
+        Random random = new Random();
 
         MilyX mx = MilyX.builder()
                 .firstCategory(firstCategory)
@@ -131,12 +132,12 @@ public class MilyXService {
                 .body(body)
                 .author(author)
                 .milyPoint(milyPoint)
-                .createDate(now)
+                .createDate(LocalDateTime.now().minusDays(random.nextLong(7)+1).plusHours(random.nextLong(12)+1).minusMinutes(random.nextLong(59)+1).plusSeconds(random.nextLong(59)+1))
                 .build();
 
         mx = mxr.save(mx);
 
-        return new RsData<>("S-1", "게시물 생성 완료", mx);
+        return mx;
     }
 
     public List<MilyX> findAll() {

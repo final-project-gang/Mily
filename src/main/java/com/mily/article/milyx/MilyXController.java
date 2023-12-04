@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -37,14 +38,15 @@ public class MilyXController {
     @PreAuthorize("isAnonymous()")
     @GetMapping("")
     public String showMilyX(Model model) {
-        List<MilyX> milyx = milyXService.getAllPosts();
+        List<MilyX> milyx = new java.util.ArrayList<>(milyXService.getAllPosts().stream()
+                .sorted(Comparator.comparing(MilyX::getCreateDate))
+                .toList());
         Collections.reverse(milyx);
         model.addAttribute("milyx", milyx);
 
         List<MilyXComment> comments = milyXCommentService.findAll();
         Collections.reverse(comments);
 
-        System.out.println(comments);
         int count = comments.size();
         model.addAttribute("count", count);
         model.addAttribute("comments", comments);

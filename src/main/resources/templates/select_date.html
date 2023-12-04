@@ -3,7 +3,7 @@
     <title>상담 예약 : MILY</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
-<body>
+<body style="height: 100vh;">
 <div>
     <div layout:fragment="content">
 
@@ -48,10 +48,10 @@
                         <div class="collapse-content"
                              style="display: flex; justify-content: space-around; text-align: center;  margin: 15px 0;">
                             <button id="consultation30" type="button"
-                                    style="width: 150px; border: 1px solid #DCDCDC; padding: 10px; border-radius: 10px;"
+                                    style="width: 150px; padding: 10px; border-radius: 10px; border: 3px solid transparent; background-color: #0000001A;"
                                     th:value="'30분 상담'" th:text="'30분 상담'"></button>
                             <button id="consultation60" type="button"
-                                    style="width: 150px; border: 1px solid #DCDCDC; padding: 10px; border-radius: 10px;"
+                                    style="width: 150px; padding: 10px; border-radius: 10px; border: 3px solid transparent; background-color: #0000001A;"
                                     th:value="'60분 상담'" th:text="'60분 상담'"></button>
                         </div>
                     </div>
@@ -95,6 +95,14 @@
 
                     consultationButtons.forEach(function(button) {
                         button.addEventListener("click", function() {
+                            // 모든 버튼의 스타일을 초기화합니다.
+                            consultationButtons.forEach(function(btn) {
+                                btn.style.border = "transparent";
+                                btn.style.backgroundColor = "#0000001A";
+                            });
+                            // 클릭된 버튼의 스타일만 변경합니다.
+                            this.style.border = "3px solid #75BDFF";
+                            this.style.backgroundColor = "transparent";
                             // 클릭된 버튼의 텍스트 값을 'consultation' input 필드에 설정합니다.
                             let consultationInput = $("#consultation");
                             consultationInput.val($(this).text()).trigger('change');
@@ -193,12 +201,23 @@
                         });
 
                         if (isAllSet) {
+                            $(".added-content").remove();
+
+                            let date = new Date();
+                            let month = date.getMonth() + 1;
+                            document.querySelectorAll('input[type="radio"]').forEach(function(radio) {
+                                radio.checked = false;
+                            });
                             const htmlToAdd = `
-                                <div class="collapse collapse">
-                                    <input type="radio" name="my-accordion-2" checked="checked" />
-                                    <div class="collapse-title"></div>
-                                    <button class="collapse-content" type="submit" style="background-color: #75BDFF; padding: 10px 0; border-radius: 15px;">
-                                        <span style="color: #fff; font-size: 20px;">예약하기</span>
+                                <div class="added-content" style="display: flex; align-items: center; justify-content: space-evenly;">
+                                    <div class="flex justify-evenly">
+                                        <span style="font-size: 18px; font-weight: 600; margin: 0 5px;">${consultationInput.val()},</span>
+                                        <span style="font-size: 18px; font-weight: 600; margin: 0 5px;">${month}월</span>
+                                        <span style="font-size: 18px; font-weight: 600; margin: 0 5px;">${selectedDateInput.val()}일,</span>
+                                        <span style="font-size: 18px; font-weight: 600; margin: 0 5px;">${selectedTimeInput.val()}</span>
+                                    </div>
+                                    <button class="flex justify-center" type="submit" style="border: 2px solid #309cff; width: 120px; padding: 5px 0; border-radius: 15px;">
+                                        <span style="color: #309cff; font-size: 18px;">예약하기</span>
                                     </button>
                                 </div>
                             `;
