@@ -132,18 +132,18 @@
                     </div>
                     <div style="margin-bottom: 30px;"></div>
 
-                    <button class="btn btn-success" style="background-color: #87CEEB; margin-left: 1000px; ">답변등록
+                    <button class="btn btn-success" style="background-color: #87CEEB; margin-left: 1030px; ">답변등록
                     </button>
 
                 </form>
 
-                <div style="margin-bottom: 10px;"></div>
+                <div style="margin-bottom: 90px;"></div>
 
 
                 <div class="form-control">
                     <!-- @@@@@@@@@@@@체택된 답변@@@@@@@@@@@@ -->
                     <ul th:each="milyxcomment : ${milyx.comments.?[isAdopt == true]}"
-                        style="border: 1px solid green; border-radius: 10px; padding: 20px; margin-bottom: 1px; width: 700px; height: auto;">
+                        style="border: 1px solid green; border-radius: 10px; padding: 20px; margin-bottom: 1px; width: 900px; height: auto;">
                         <li>
                             <span style="font-weight: bold; color: green;">작성자 체택 답변</span>
                         </li>
@@ -166,7 +166,7 @@
                                   style="font-weight: bold; font-size: 25px; margin-right: 50px;"></span>
 
                             <!-- 상담예약 버튼 -->
-                            <button th:text="'상담예약'" style="margin-left: 200px; padding: 8px 12px;
+                            <button th:text="'상담예약'" style="margin-left: 700px; padding: 8px 12px;
                         background-color: #87CEEB; color: #fff; border: none; border-radius: 5px; cursor: pointer;"></button>
                         </li>
 
@@ -182,7 +182,6 @@
                     </form>
 
 
-
                     <!--------------------------------------------------------------------------------------->
 
                     <!--공백기능-->
@@ -193,7 +192,7 @@
 
                     <!-- 체택되지 않은 답변들 -->
                     <ul th:each="milyxcomment : ${milyx.comments.?[isAdopt == false]}"
-                        style="border: 1px solid green; border-radius: 10px; padding: 20px; margin-bottom: 100px; width: 700px; height: auto;">
+                        style="border: 1px solid #E6E6E6; border-radius: 10px; padding: 20px; margin-bottom: 100px; width: 9 00px; height: auto;">
 
                         <li>
                             <span style="font-weight: bold; color: #6E6E6E; margin-left: 10px;">다른 변호사 답변</span>
@@ -218,7 +217,7 @@
                                   style="font-weight: bold; font-size: 25px; margin-right: 50px;"></span>
 
                             <!-- 상담예약 버튼 -->
-                            <button th:text="'상담예약'" style="margin-left: 220px; padding: 8px 12px;
+                            <button th:text="'상담예약'" style="margin-left: 700px; padding: 8px 12px;
                         background-color: #87CEEB; color: #fff; border: none; border-radius: 5px; cursor: pointer;"></button>
 
                         </li>
@@ -240,16 +239,6 @@
                                      style="font-size: 13px; margin-right: 10px;">게시물 날짜
                                 </div>
 
-                                <div style="margin-bottom: 100px;"></div>
-
-                                <div style="text-align: right;">
-                                    <button type="submit" class="delete ml-4 mr-4"
-                                            th:data-url="@{|/milyxcomment/delete/${milyxcomment.id}|}"
-                                            style="padding: 8px 12px; background-color: #ff5252; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
-                                        삭제
-                                    </button>
-                                </div>
-
                                 <div th:if="${user != null and user.userName == milyx.author.userName and !milyx.hasAdoptedAnswer}">
                                     <form th:action="@{|/milyxcomment/adopt/${milyxcomment.id}|}" method="post"
                                           style="display: inline;">
@@ -260,6 +249,27 @@
                                     </form>
                                 </div>
 
+                                <div style="margin-bottom: 10px;"></div>
+
+
+                                <div style="text-align: right;">
+                                    <button type="submit" class="delete ml-4 mr-4"
+                                            th:data-url="@{|/milyxcomment/delete/${milyxcomment.id}|}"
+                                            style="padding: 8px 12px; background-color: #ff5252; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
+                                        삭제
+                                    </button>
+                                </div>
+
+                                <!--<div th:if="${user != null and user.userName == milyx.author.userName and !milyx.hasAdoptedAnswer}">
+                                    <form th:action="@{|/milyxcomment/adopt/${milyxcomment.id}|}" method="post"
+                                          style="display: inline;">
+
+                                        <button type="submit" class="adopt btn btn-primary"
+                                                th:data-url="@{|/milyxcomment/adopt/${milyxcomment.id}|}">채택
+                                        </button>
+                                    </form>
+                                </div>-->
+                        </div>
                     </ul>
                 </div>
 
@@ -270,80 +280,216 @@
                         <button class="btn btn-wide" onclick="location.href='/milyx';"> 목록</button>
                         <div style="margin-bottom: 100px;"></div>
 
+                        <!------------오른쪽 배너-------------->
+                        <!-- ====필터==== -->
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>당신의 페이지 제목</title>
+                        <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.js"></script>
+                        <style>
 
+                            .box-form {
+                                width: 900px; /* 넓이 설정 */
+                                border: 1px solid #ddd; /* 테두리 추가 */
+                                border-radius: 10px; /* 둥근 테두리 */
+                                padding: 15px; /* 안쪽 여백 */
+                                margin-bottom: 20px; /* 아래 여백 */
+                                background-color: #f9f9f9; /* 배경색 추가 */
+                                margin-left: 150px; /* 왼쪽으로 500px의 공백 추가 */
 
-                                ]; <!------------오른쪽 배너-------------->
-                        !-- 오른쪽 배너 영역 -->
-                        <div class="sideBanner">
-                            <span class="txt-label">변호사 추천목록</span>
+                            }
 
-                            <!-- 변호사 목록을 표시할 영역 -->
-                            <ul id="recommendedLawyers" class="lawyer-list">
-                                <!-- 여기에 변호사 목록이 동적으로 추가될 것입니다. -->
-                            </ul>
+                            .box-form img.lawyer-profile {
+                                border-radius: 50%; /* 이미지를 둥글게 만듭니다. */
+                                max-width: 100px; /* 이미지 최대 너비 설정 */
+                                max-height: 100px; /* 이미지 최대 높이 설정 */
+                                margin-bottom: 10px; /* 이미지 아래 여백 조절 */
+                                top: 50%; /* 부모의 50% 위치로 이동 */
+                                left: 50%; /* 부모의 50% 위치로 이동 */
+
+                            }
+
+                            .lawyer-name {
+                                font-size: 30px; /* 변호사 이름 폰트 크기 조절 */
+                                text-decoration: none; /* 링크에 밑줄 제거 */
+                                color: #333; /* 이름 색상 설정 */
+                                margin-top: 0px; /* 이미지 아래에 여백 조절 */
+                            }
+
+                            .lawyer-company-name {
+                                font-size: 14px; /* 회사 소속 폰트 크기 조절 */
+                                color: #777; /* 회사 소속 색상 설정 */
+                                margin-top: -150px; /* 이미지 아래에 여백 조절 */
+                            }
+                        </style>
+                        </head>
+                        <body>
+                        <!-- 변호사 목록 시작 -->
+                        <div class="ft_content_1 flex flex-col" style="font-size: 20px;">
+                            <h3 style="font-size: inherit;">이런 변호사는 어떠세요?</h3>
+                            <div style="margin-bottom: 50px;"></div>
+
+                            <!-- 여기에 추가적인 내용이 있을 수 있습니다. -->
                         </div>
 
+                        <!-- 첫 번째 변호사 -->
+                        <div class="box-form">
+                            <a href="#" class="lawyer-name text-1xl">이재준 변호사</a>
+                            <div class="lawyer-status ml-3 flex items-center">
+                                <a class="lawyer-company-name"> 법무법인 한경</a>
 
+                                <!-- 변호사 이미지 -->
+                                <div class="lawyerimg-box flex items-center">
+                                    <div class="lawyer-gride-box">
+                                        <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}"
+                                             class="lawyer-profile-right">
+                                            <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})"
+                                                 ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list"
+                                                 ad-event="click_lawyer-thumbnail" ad-label="9403-이재준"
+                                                 ad-delay="1000" class="picture">
+                                                <img lazy-image=""
+                                                     data-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/5e64b6fc9566c101e43e1b23-original.jpg"
+                                                     data-desktop-size="256x256" class="lawyer-profile"
+                                                     src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/5e64b6fc9566c101e43e1b23-original.jpg?s=256x256">
 
+                                                <!-- 상담예약 버튼 -->
+                                                <button th:text="'상담예약'" style="margin-left: 600px; padding: 16px 24px;
+                                                     background-color: #87CEEB; color: #fff; border: none; border-radius: 5px; cursor: pointer;"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                        </form>
+                        <!-- 두 번째 변호사 -->
+                        <div class="box-form">
+                            <a href="#" class="lawyer-name text-1xl">윤준혁 변호사</a>
+                            <div class="lawyer-status ml-3 flex items-center">
+                                <a class="lawyer-company-name"> 법률사무소 필승</a>
+                                <!-- 변호사 이미지 -->
+                                <div class="lawyerimg-box flex items-center">
+                                    <div class="lawyer-gride-box">
+                                        <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}"
+                                             class="lawyer-profile-right">
+                                            <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})"
+                                                 ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list"
+                                                 ad-event="click_lawyer-thumbnail" ad-label="9403-이재준"
+                                                 ad-delay="1000" class="picture">
+                                                <img lazy-image=""
+                                                     data-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/55efb089b1e8dbd319a45b6d-original.png"
+                                                     data-desktop-size="256x256" class="lawyer-profile"
+                                                     src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/55efb089b1e8dbd319a45b6d-original.png?s=256x256">
+                                                <!-- 상담예약 버튼 -->
+                                                <button th:text="'상담예약'" style="margin-left: 600px; padding: 16px 24px;
+                                                     background-color: #87CEEB; color: #fff; border: none; border-radius: 5px; cursor: pointer;"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 세 번째 변호사 -->
+                        <div class="box-form">
+                            <a href="#" class="lawyer-name text-1xl">조겨울샘 변호사</a>
+                            <div class="lawyer-status ml-3 flex items-center">
+                                <a class="lawyer-company-name"> 김앤장 법률사무소</a>
+                                <!-- 변호사 이미지 -->
+                                <div class="lawyerimg-box flex items-center">
+                                    <div class="lawyer-gride-box">
+                                        <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}"
+                                             class="lawyer-profile-right">
+                                            <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})"
+                                                 ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list"
+                                                 ad-event="click_lawyer-thumbnail" ad-label="9403-이재준"
+                                                 ad-delay="1000" class="picture">
+                                                <img lazy-image=""
+                                                     data-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/62bd357692c48600b5393184-original-1657192155647.jpg"
+                                                     data-desktop-size="256x256" class="lawyer-profile"
+                                                     src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/62bd357692c48600b5393184-original-1657192155647.jpg?s=256x256">
+
+                                                <!-- 상담예약 버튼 -->
+                                                <button th:text="'상담예약'" style="margin-left: 600px; padding: 16px 24px;
+                                                     background-color: #87CEEB; color: #fff; border: none; border-radius: 5px; cursor: pointer;"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    </main>
+</body>
+
+<div style="margin-bottom: 100px;"></div>
 
 
-                    <style>
-                        .btn-wide {
-                            background-color: #87CEEB;
-                            color: #FFFFFF;
-                            padding: 10px 20px;
-                            border: none;
-                            border-radius: 10px;
-                            cursor: pointer;
-                        }
-                    </style>
-                </div>
-                <!-- onclick는 버튼 디자인 만큼 클릭의 영역이 늘어나게 해준다. 이걸 쓰기 전에는 버튼을 누르면 이동이 안됐는데 쓰고 나니 버튼을 누르면 이동한다.-->
+</form>
+</div>
+</main>
 
-                <style>
-                    :root {
-                        --m_width: 310px;
-                    }
-                    #header.active {
-                      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-                    }
-                    .lawyer-info {
-                        border: 1px solid gray; /* 또는 원하는 회색 값으로 변경 */
-                    }
 
-                    @media (max-width: 360px) {
-                      h1 {
-                      font-size: 11px;
-                      }
+<style>
+    .btn-wide {
+        background-color: #87CEEB;
+        color: #FFFFFF;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+    }
 
-                      body {
-                      font-size: 13px;
-                      }
+    .lawyer-profile {
+       width: 100px;
+       height: 100px;
+       border-radius: 50%; /* 이미지를 둥글게 만들기 */
+       object-fit: cover; /* 이미지 비율 유지하며 크기 조절 */
+       display: block;
+       margin: 0 auto; /* 가운데 정렬 */
+    }
+</style>
+</div>
+<!-- onclick는 버튼 디자인 만큼 클릭의 영역이 늘어나게 해준다. 이걸 쓰기 전에는 버튼을 누르면 이동이 안됐는데 쓰고 나니 버튼을 누르면 이동한다.-->
 
-                      .header_wrap {
-                        height: 50px;
-                      }
+<style>
+    :root {
+        --m_width: 310px;
+    }
+    #header.active {
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    }
+    .lawyer-info {
+        border: 1px solid gray; /* 또는 원하는 회색 값으로 변경 */
+    }
 
-                      .header_con {
-                        max-width: var(--m_width);
-                        height: 60px;
-                      }
+    @media (max-width: 360px) {
+      h1 {
+      font-size: 11px;
+      }
 
-                      .header_con .header_logo {
-                        width: 70px;
-                        margin-top: -8px;
-                        margin-left: -2px;
-                      }
-                    }
-                </style>
-                </form>
-            </div>
-        </div>
-    </div>
+      body {
+      font-size: 13px;
+      }
+
+      .header_wrap {
+        height: 50px;
+      }
+
+      .header_con {
+        max-width: var(--m_width);
+        height: 60px;
+      }
+
+      .header_con .header_logo {
+        width: 70px;
+        margin-top: -8px;
+        margin-left: -2px;
+      }
+    }
+</style>
+</form>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
