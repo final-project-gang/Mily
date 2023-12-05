@@ -1,5 +1,7 @@
 package com.mily.article.feed.entity;
 
+import com.mily.article.milyx.category.entity.FirstCategory;
+import com.mily.article.milyx.category.entity.SecondCategory;
 import com.mily.user.MilyUser;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,6 +28,12 @@ public class Feed {
     private LocalDateTime createDate;
 
     private LocalDateTime modifyDate;
+
+    @ManyToOne
+    private FirstCategory firstCategory;
+
+    @ManyToOne
+    private SecondCategory secondCategory;
 
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;

@@ -28,11 +28,15 @@ public class QFeed extends EntityPathBase<Feed> {
 
     public final DateTimePath<java.time.LocalDateTime> createDate = createDateTime("createDate", java.time.LocalDateTime.class);
 
+    public final com.mily.article.milyx.category.entity.QFirstCategory firstCategory;
+
     public final BooleanPath hasVote = createBoolean("hasVote");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final DateTimePath<java.time.LocalDateTime> modifyDate = createDateTime("modifyDate", java.time.LocalDateTime.class);
+
+    public final com.mily.article.milyx.category.entity.QSecondCategory secondCategory;
 
     public final StringPath subject = createString("subject");
 
@@ -59,6 +63,8 @@ public class QFeed extends EntityPathBase<Feed> {
     public QFeed(Class<? extends Feed> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.author = inits.isInitialized("author") ? new com.mily.user.QMilyUser(forProperty("author"), inits.get("author")) : null;
+        this.firstCategory = inits.isInitialized("firstCategory") ? new com.mily.article.milyx.category.entity.QFirstCategory(forProperty("firstCategory")) : null;
+        this.secondCategory = inits.isInitialized("secondCategory") ? new com.mily.article.milyx.category.entity.QSecondCategory(forProperty("secondCategory"), inits.get("secondCategory")) : null;
     }
 
 }

@@ -38,9 +38,12 @@ public class MilyXController {
     @PreAuthorize("isAnonymous()")
     @GetMapping("")
     public String showMilyX(Model model) {
+        // 오래된 날짜 순으로 정렬을 합니다.
         List<MilyX> milyx = new java.util.ArrayList<>(milyXService.getAllPosts().stream()
                 .sorted(Comparator.comparing(MilyX::getCreateDate))
                 .toList());
+
+        // 최신순으로 재정렬합니다.
         Collections.reverse(milyx);
         model.addAttribute("milyx", milyx);
 
