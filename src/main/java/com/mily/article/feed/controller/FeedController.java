@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -24,7 +25,9 @@ public class FeedController {
 
     @GetMapping("")
     public String showFeeds(Model model) {
-        List<Feed> feeds = feedService.getAllFeeds();
+        List<Feed> feeds = new java.util.ArrayList<>(feedService.getAllFeeds().stream()
+                .sorted(Comparator.comparing(Feed::getCreateDate))
+                .toList());
         Collections.reverse(feeds);
 
         model.addAttribute("feed", feeds);
@@ -69,9 +72,7 @@ public class FeedController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/detail/{id}")
-    public String showDetail(Model model, @PathVariable long id, HttpServletRequest hsr) {
-        String referer = hsr.getHeader("Referer");
-
+    public String showDetail(Model model, @PathVariable long id) {
         try {
             MilyUser isLoginedUser = milyUserService.getCurrentUser();
             if (isLoginedUser != null) {
@@ -94,7 +95,7 @@ public class FeedController {
 
             return "mily/feed/feed_detail";
         } catch (NullPointerException e) {
-            return "redirect:" + referer;
+            return "mily/feed/feed_detail";
         }
     }
 

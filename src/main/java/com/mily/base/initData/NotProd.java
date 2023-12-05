@@ -1,5 +1,7 @@
 package com.mily.base.initData;
 
+import com.mily.article.feed.entity.Feed;
+import com.mily.article.feed.service.FeedService;
 import com.mily.article.milyx.MilyX;
 import com.mily.article.milyx.MilyXService;
 import com.mily.article.milyx.category.CategoryService;
@@ -26,6 +28,7 @@ public class NotProd {
     private final MilyUserRepository milyUserRepository;
     private final CategoryService categoryService;
     private final MilyXService milyXService;
+    private final FeedService feedService;
     private final MilyXCommentService milyXCommentService;
     private final PaymentService paymentService;
     private FirstCategory fc;
@@ -218,6 +221,47 @@ public class NotProd {
                         "\n" +
                         "그리고 이관될 때 수사관이 전화로\n" +
                         "제 신상을 물어본 다음 우편으로 이관됐다고 나오는 게 맞는 걸까요?", 50);
+
+                firstCategory = categoryService.findByFTitle("교통사고/범죄");
+                secondCategory = categoryService.findBySTitle("교통사고/도주");
+                Feed feed1 = feedService.dummyCreate(milyUser4, firstCategory, secondCategory, "뺑소니 사고에 관한 법적 조치", "연말 행사로 인한 잦은 회식과 망년회 모임등으로 인해서 음주를 하고 운전대를 잡는 경우가 있습니다.\n" + "그럴경우 대리운전을 불러 운전을 맡기거나, 혹은 대중교통을 이용하여 귀가하시는 것이 옳은 방법인데요 허나 몇몇 분들이 음주를 하신상태에서 운전을 하시다가 사고를 내시고는 음주한 사실이 들키기 싫어서 도주하는 경향이 있습니다. 술을 먹으면 인간의 호르몬 영향으로 인해서 판단력이 흐려지고 수습하기보다는 도망하는 쪽으로 본능이 나오게 되는데 그래서 뺑소니 사고를 내시고는 갑니다. \n" +
+                        "그럴경우엔 법적으로 상황이 많이 불리해질 수 있습니다. 모임 회사 망년회에 참여할 경우에는 운전을 절대적으로 삼가하시고 혹여 차가 필요할 경우엔 가져오시되 대리운전을 꼭 불러서 하시고, 가급적으로 택시를 이용해서 다니시기를 권장합니다. \n" +
+                        "4~5만원 아낄려다가 수 천만원이 깨지고 심하면 징역살이를 할 수도 있습니다. 꼭 안전운전 하시고 절대적으로 음주 후 운전대를 잡지 마시길 바랍니다.");
+
+                firstCategory = categoryService.findByFTitle("가족");
+                secondCategory = categoryService.findBySTitle("이혼");
+                Feed feed2 = feedService.dummyCreate(milyUser7, firstCategory, secondCategory, "대한민국 이혼율 0.4% 감소", "2022년 혼인건수는 19만 2,000건으로 2021년보다 800건, 0.4% 감소했습니다.\n" +
+                        "\n" +
+                        "인구 1,000명당 혼인건수를 의미하는 조혼인율은 3.7건으로 2021년보다 0.1건 감소했습니다.\n" +
+                        "\n" +
+                        "2022년 혼인건수와 조혼인율 모두 1970년 통계 작성 이후 가장 낮았습니다.\n" +
+                        "\n" +
+                        "연령대별 혼인건수는 남녀 모두 20대 후반 연령대에서 가장 많이 감소했습니다.\n" +
+                        "\n" +
+                        "해당 연령인구 1,000명당 혼인건수를 의미하는 연령별 혼인율을 보면 남자는 30대 초반에서 40.3건, 여자는 30대 초반에서 41.3건으로 가장 높게 나타났습니다.\n" +
+                        "\n" +
+                        "평균 초혼연령은 남자 33.7세, 여자 31.3세로 2021년보다 각각 0.4세, 0.2세 높아졌습니다.\n" +
+                        "\n" +
+                        "2022년 이혼건수는 9만 3,000건으로 2021년보다 8,000건, 8.3% 감소했습니다.\n" +
+                        "\n" +
+                        "인구 1,000명당 이혼건수인 조이혼율은 1.8건으로 2021년보다 0.2건 감소했습니다.\n" +
+                        "\n" +
+                        "혼인지속기간별로 이혼의 구성비를 살펴보면 4년 이하 18.6%, 5~9년 18.0%, 30년 이상 16.8% 순으로 많았습니다.\n" +
+                        "\n" +
+                        "연령별 이혼율은 남자는 40대 초반이 1,000명당 6.9건, 여자는 40대 초반이 1,000명 7.6건으로 가장 높았습니다.\n" +
+                        "\n" +
+                        "외국인과의 혼인은 1만 7,000건으로 2021년보다 4,000건, 27.2% 증가했습니다.\n" +
+                        "\n" +
+                        "외국인과의 이혼은 6,000건으로 2021년보다 400건, 5.9% 감소했습니다.\n" +
+                        "\n" +
+                        "[출처] 대한민국 정책브리핑(www.korea.kr)");
+
+                firstCategory = categoryService.findByFTitle("재산 범죄");
+                secondCategory = categoryService.findBySTitle("횡령/배임");
+                Feed feed3 = feedService.dummyCreate(milyUser9, firstCategory, secondCategory, "지인에게 코인투자를 부탁받았는데 고소를 당한 사례", "안녕하세요 재산범죄 담당자 조승근입니다. 최근 횡령/배임에 대한 사건 사례를 한 가지 소개드릴려고 합니다" +
+                        "횡령배임으로 고소가 되었습니다. 저에게 코인 투자를 맡겼던 사람이 제가 투자 손실을 보자 횡령배임으로 고소를 했습니다. 횡령배임은 어떤 경우에 성립될 수 있나요? 아직 고소장을 확인하지 못했는데 고소장 확인은 어떻게 하나요? 무혐의를 받고 싶은데 경찰조사에서 어떻게 해야할까요?" +
+                        "라는 질문입니다." +
+                        "답변을 드리자면 횡령, 배임 관련 형사사건의 구체적인 고소 내용을 확인하여 이에 대응하는 적절한 진행 및 대응 방안을 마련하셔야 합니다. 담당 관할 경찰서에 정보 공개 청구 등을 통해서 해당 횡령, 배임 관련 형사사건의 고소 내용을 확인할 수 있습니다. ");
             }
         };
     }

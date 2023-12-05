@@ -140,6 +140,7 @@ public class MilyXService {
         return mx;
     }
 
+
     public List<MilyX> findAll() {
         return mxr.findAll();
     }

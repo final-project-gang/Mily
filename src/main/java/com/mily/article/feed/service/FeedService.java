@@ -2,6 +2,8 @@ package com.mily.article.feed.service;
 
 import com.mily.article.feed.entity.Feed;
 import com.mily.article.feed.repository.FeedRepository;
+import com.mily.article.milyx.category.entity.FirstCategory;
+import com.mily.article.milyx.category.entity.SecondCategory;
 import com.mily.base.rsData.RsData;
 import com.mily.user.MilyUser;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +43,24 @@ public class FeedService {
         feed = feedRepository.save(feed);
 
         return new RsData<>("S-1", "피드 작성 완료", feed);
+    }
+
+    @Transactional
+    public Feed dummyCreate(MilyUser author, FirstCategory firstCategory, SecondCategory secondCategory, String subject, String body) {
+        Random random = new Random();
+
+        Feed feed = Feed.builder()
+                .firstCategory(firstCategory)
+                .secondCategory(secondCategory)
+                .subject(subject)
+                .body(body)
+                .author(author)
+                .createDate(LocalDateTime.now().minusDays(random.nextLong(7)+1).plusHours(random.nextLong(12)+1).minusMinutes(random.nextLong(59)+1).plusSeconds(random.nextLong(59)+1))
+                .build();
+
+        feed = feedRepository.save(feed);
+
+        return feed;
     }
 
     @Transactional

@@ -1,7 +1,7 @@
 <html layout:decorate="@{mily/common/layout}" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Mily X : Mily</title>
+    <title>변호사 피드 : Mily</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
@@ -16,1025 +16,107 @@
         </div>
     </div>
 
-<!-- 제이쿼리 불러오기 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-
-<!-- toastr 불러오기 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
-<link rel="stylesheet" href="https://jhs512.github.io/toastr/toastr.css">
-
-<!-- 폰트어썸 아이콘 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- 아이콘 목록 : https://fontawesome.com/search?o=r&m=free -->
-
-<!-- 데이지 UI 불러오기 -->
-<link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.css" rel="stylesheet" type="text/css" />
-<!-- 테일윈드 불러오기 -->
-<script src="https://cdn.tailwindcss.com"></script>
-
-<!-- 디자인 시작 -->
-<!-- min-h-screen : min-height:100vh; -->
-<!-- ====첫번째===== -->
-<!--<main class="max-w-screen-2xl bg-gray-50 min-h-screen flex flex-col mx-auto">
-    &lt;!&ndash;  탑바  &ndash;&gt;
-    <header class="top-0 mb-4 flex justify-between items-center">
-        <div class="mx-10">
-            <form action="">
-                <h2 class="flex justify-center items-center">
-                    <a href="#"><img src="https://i.postimg.cc/DZ9cZsT1/mily-logo.png" alt="mily로고"></a>
-                </h2>
-        </div>
-
-        <div class="flex justify-center items-center mx-10">
-            <div class="mx-5">
-                <a href="#">로그인</a>
-            </div>
-            <div class="mx-5">
-                <a href="#">회원가입</a>
-            </div>
-            <button class="btn btn-primary btn-jelly" style="&#45;&#45;tw-bg-opacity: 1;
-background-color: rgba(147, 197, 253, var(&#45;&#45;tw-bg-opacity)); border : none;">변호사 가입</button>
-        </div>
-        </form>
-    </header>-->
-
-    <!--  메뉴바  -->
-    <form action="">
-        <div class="flex justify-between items-center text-lg mb-3">
-            <div class="TabNavMenu-module_menuList__deUxM"><button class="TabNavMenu-module_menuItemButton__IZao9 TabNavMenu-module_active__qZkXu">
-                <p class="mx-5 Typography-module_lt-text--size-20__Coy4u Typography-module_lt-text--weight-700__MTX72 Typography-module_lt-text--height-100__U8Og5 Typography-module_lt-text--inherit__uNmPK" style="color: rgb(43, 45, 47);">홈</p>
-            </button><button class="TabNavMenu-module_menuItemButton__IZao9">
-                <p class="mx-5 Typography-module_lt-text--size-20__Coy4u Typography-module_lt-text--weight-700__MTX72 Typography-module_lt-text--height-100__U8Og5 Typography-module_lt-text--inherit__uNmPK" style="color: rgb(195, 201, 208);">변호사</p>
-            </button><button class="TabNavMenu-module_menuItemButton__IZao9">
-                <p class="mx-5 Typography-module_lt-text--size-20__Coy4u Typography-module_lt-text--weight-700__MTX72 Typography-module_lt-text--height-100__U8Og5 Typography-module_lt-text--inherit__uNmPK" style="color: rgb(195, 201, 208);">상담사례</p>
-            </button>
-            </div>
-
-            <!-- 메뉴바 버튼 -->
-            <!-- <div class="mx-10 text-lg">
-                    <button class="mx-1 btn btn-primary btn-jelly" style="--tw-bg-opacity: 1;
-            background-color: rgba(147, 197, 253, var(--tw-bg-opacity)); border : none;">상담 예약</button>
-                    <button class="btn btn-primary btn-jelly" style="--tw-bg-opacity: 1;
-            background-color: rgba(147, 197, 253, var(--tw-bg-opacity)); border : none;">상담글 작성</button>
-                    <button class="mx-1 btn btn-primary btn-jelly" style="--tw-bg-opacity: 1;
-            background-color: rgba(147, 197, 253, var(--tw-bg-opacity)); border : none;">사이버 머니</button>
-                  </div> -->
-        </div>
-    </form>
-
-    <!-- 탑바 선 -->
-    <div class="nav-bar border border-gray-300"></div>
-
-
-    <!-- tab-wrapper -->
-    <form action="">
-        <div class="lawyers-tab-wrapper pt-5">
-            <div class="lawyers-tab-advices">
-                <!-- 전체 -->
-                <button ng-class="{'active': activeTab === 'all'}" ng-click="activeTab !== 'all' &amp;&amp; changeTab('all')" analytics-on="click" analytics-category="lawyer-tab" analytics-event="click_all-lawyer" analytics-label="ALL" class="lawyers-tab all-lawyers active">
-                    <div class="advice-title text-gray-800 pb-10 mx-5">전체</div>
-                </button>
-
-                <!-- 전화상담 -->
-                <button ng-class="{'active': activeTab === 'all'}" ng-click="activeTab !== 'all' &amp;&amp; changeTab('all')" analytics-on="click" analytics-category="lawyer-tab" analytics-event="click_all-lawyer" analytics-label="ALL" class="lawyers-tab all-lawyers active">
-                    <div class="advice-title text-gray-400 pb-4 mx-5">전화상담</div>
-                </button>
-
-                <!-- 방문상담 -->
-                <button ng-class="{'active': activeTab === 'all'}" ng-click="activeTab !== 'all' &amp;&amp; changeTab('all')" analytics-on="click" analytics-category="lawyer-tab" analytics-event="click_all-lawyer" analytics-label="ALL" class="lawyers-tab all-lawyers active">
-                    <div class="advice-title text-gray-400 pb-4 mx-5">방문상담</div>
-                </button>
-            </div>
-        </div>
-    </form>
-
-    <div class="container relative mx-auto">
-        <!-- ====crud두번째===== -->
-        <form action="">
-            <!-- 첫번째 -->
-            <div class="lawyer-left-list max-w-6xl mx-auto">
-                <!-- ===1=== -->
-                <table class="lawyers-list-wrapper mt-16">
-                    <tbody>
-                    <tr>
-                        <div class="premium-lawyer-card-list w-4/5 px-5 mx-auto">
-                            <div class="category flex">
-                                <div class="container">
-                                    <div class="lawyer-tit flex">
-                                        <a href="#" class="lawyer-name text-3xl">이재준 변호사</a>
-                                        <div class="lawyer-status ml-3 flex items-center">
-                                            <div class="watch-icon">
-                                                <a href='https://postimages.org/' target='_blank'>
-                                                    <img src='https://i.postimg.cc/HVnX7N8k/free-icon-clock.png' border='0' alt='clock' /></a>
-                                            </div>
-                                            <i class="lc-watch text-gray-600">1시간 뒤 상담가능</i>
-                                        </div>
-                                    </div>
-
-                                    <div class="lawyer-company-name text-gray-500 text-sm mb-4">법무법인 한경</div>
-                                    <a href="#" class="lawyer-text text-lg">사시출신,2290개 만점후기,합리적비용,입소문,다수승소
-                                    </a>
-
-                                    <!-- 1만원 아이콘-->
-                                    <div class="lawyer-coupon-icon my-5 w-16">
-                                        <img src="data:image/png;base64,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" class="couponicon">
-                                    </div>
-
-                                    <!-- #해시태그버튼 -->
-                                    <div ng-if="adCategoryHighlightKeywords.length > 0" class="lawyer-card-keywords flex items-center">
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-24 h-8 flex items-center justify-center">#랜덤채팅</div>
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-28 h-8 flex items-center justify-center mx-3">#조건만남사기</div>
-                                        <!---->
-                                    </div>
-
-                                    <!-- 변호사상담예약하기버튼 -->
-                                    <div class="click-button-box flex justify-start mx-2">
-                                        <button class="click_reserve-button my-5">
-                                            예약하기
-                                        </button>
-                                        <button class="click_reserve-button my-5 mx-4">
-                                            상담글</br>작성
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- 변호사 이미지 -->
-                                <div class="lawyerimg-box flex items-center">
-                                    <div class="lawyer-gride-box">
-                                        <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}" class="lawyer-profile-right">
-                                            <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-thumbnail" ad-label="9403-이재준" ad-delay="1000" class="picture">
-                                                <img lazy-image="" data-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/5e64b6fc9566c101e43e1b23-original.jpg" data-desktop-size="256x256" class="lawyer-profile" src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/5e64b6fc9566c101e43e1b23-original.jpg?s=256x256">
-                                            </div>
-                                            <!---->
-                                        </div>
-
-                                        <!-- 더 알아보기 -->
-                                        <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_more_see'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-more-see" ad-label="5308-이재준" ad-delay="1000" class="lawyer-more-see-block mt-16">
-                                            <div class="lawyer-more-see-text text-center">더 알아보기</div>
-                                            <div class="lawyer-more-see-arrow">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
+    <div class="content_item">
+        <!--  배너  -->
+        <div class="m_banner_wrap relative -mt-3">
+            <div class="mx-auto flex justify-end items-end">
+                <div class="mx-auto">
+                    <!-- 이미지 -->
+                    <div class="banner-img-box">
+                        <img src="https://d2nyk3ltml4doc.cloudfront.net/lawtalk/latest/images/0cb1e48e97121240a8a5.png"
+                             class="object-cover; vertical-align: bottom;" alt="main-img-1">
+                        <div class="text-grid">
+                            <p class="text">MILY 변호사님들의 사건사례와 판결문의 대한 의견을 써보세요!</p>
+                            <a class="text" th:if="${@rq.login and @rq.getMilyUser.role == 'approve'}"
+                               th:href="@{feed/create}"
+                               style="text-decoration: underline;">작성하기</a>
                         </div>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <!-- ===2=== -->
-                <table class="lawyers-list-wrapper mt-16">
-                    <tbody>
-                    <tr>
-                        <div class="premium-lawyer-card-list w-4/5 px-5 mx-auto">
-                            <div class="category flex">
-                                <div class="container">
-                                    <div class="lawyer-tit flex">
-                                        <a href="#" class="lawyer-name text-3xl">윤준혁 변호사</a>
-                                        <div class="lawyer-status ml-3 flex items-center">
-                                            <div class="watch-icon">
-                                                <a href='https://postimages.org/' target='_blank'>
-                                                    <img src='https://i.postimg.cc/HVnX7N8k/free-icon-clock.png' border='0' alt='clock' /></a>
-                                            </div>
-                                            <i class="lc-watch text-gray-600">1시간 뒤 상담가능</i>
-                                        </div>
-                                    </div>
-
-                                    <div class="lawyer-company-name text-gray-500 text-sm mb-4">법률사무소 필승</div>
-                                    <a href="#" class="lawyer-text text-lg">
-                                        <1,400건 이상의 후기>검증된 변호사/합리적 수임료
-                                    </a>
-
-                                    <!-- 1만원 아이콘-->
-                                    <div class="lawyer-coupon-icon my-5 w-16">
-                                        <img src="data:image/png;base64,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" class="couponicon">
-                                    </div>
-
-                                    <!-- #해시태그버튼 -->
-                                    <div ng-if="adCategoryHighlightKeywords.length > 0" class="lawyer-card-keywords flex items-center">
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-24 h-8 flex items-center justify-center">#성매수</div>
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-28 h-8 flex items-center justify-center mx-3">#장부단속</div>
-                                        <!---->
-                                    </div>
-
-                                    <!-- 변호사상담예약하기버튼 -->
-                                    <div class="click-button-box flex justify-start mx-2">
-                                        <button class="click_reserve-button my-5">
-                                            예약하기
-                                        </button>
-                                        <button class="click_reserve-button my-5 mx-4">
-                                            상담글</br>작성
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- 변호사 이미지 -->
-                                <div class="lawyerimg-box flex items-center">
-                                    <div class="lawyer-gride-box">
-                                        <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}" class="lawyer-profile-right">
-                                            <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-thumbnail" ad-label="9403-이재준" ad-delay="1000" class="picture">
-                                                <img lazy-image="" data-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/55efb089b1e8dbd319a45b6d-original.png" data-desktop-size="256x256" class="lawyer-profile" src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/55efb089b1e8dbd319a45b6d-original.png?s=256x256">
-                                            </div>
-                                            <!---->
-                                        </div>
-
-                                        <!-- 더 알아보기 -->
-                                        <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_more_see'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-more-see" ad-label="5308-이재준" ad-delay="1000" class="lawyer-more-see-block mt-16">
-                                            <div class="lawyer-more-see-text text-center">더 알아보기</div>
-                                            <div class="lawyer-more-see-arrow">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <!-- ===3=== -->
-                <table class="lawyers-list-wrapper mt-16">
-                    <tbody>
-                    <tr>
-                        <div class="premium-lawyer-card-list w-4/5 px-5 mx-auto">
-                            <div class="category flex">
-                                <div class="container">
-                                    <div class="lawyer-tit flex">
-                                        <a href="#" class="lawyer-name text-3xl">조겨울샘 변호사</a>
-                                        <div class="lawyer-status ml-3 flex items-center">
-                                            <div class="watch-icon">
-                                                <a href='https://postimages.org/' target='_blank'>
-                                                    <img src='https://i.postimg.cc/HVnX7N8k/free-icon-clock.png' border='0' alt='clock' /></a>
-                                            </div>
-                                            <i class="lc-watch text-gray-600">1시간 뒤 상담가능</i>
-                                        </div>
-                                    </div>
-
-                                    <div class="lawyer-company-name text-gray-500 text-sm mb-4">CKH&Partners</div>
-                                    <a href="#" class="lawyer-text text-lg">TV출연/사법연수원,대형로펌출신/공감과위로를주는상담후기
-                                    </a>
-
-                                    <!-- 1만원 아이콘-->
-                                    <div class="lawyer-coupon-icon my-5 w-16">
-                                        <img src="data:image/png;base64,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" class="couponicon">
-                                    </div>
-
-                                    <!-- #해시태그버튼 -->
-                                    <div ng-if="adCategoryHighlightKeywords.length > 0" class="lawyer-card-keywords flex items-center">
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-24 h-8 flex items-center justify-center">#성매수</div>
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-28 h-8 flex items-center justify-center mx-3">#조건만남사기</div>
-                                        <!---->
-                                    </div>
-
-                                    <!-- 변호사상담예약하기버튼 -->
-                                    <div class="click-button-box flex justify-start mx-2">
-                                        <button class="click_reserve-button my-5">
-                                            예약하기
-                                        </button>
-                                        <button class="click_reserve-button my-5 mx-4">
-                                            상담글</br>작성
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- 변호사 이미지 -->
-                                <div class="lawyerimg-box flex items-center">
-                                    <div class="lawyer-gride-box">
-                                        <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}" class="lawyer-profile-right">
-                                            <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-thumbnail" ad-label="9403-이재준" ad-delay="1000" class="picture">
-                                                <img lazy-image="" data-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/62bd357692c48600b5393184-original-1657192155647.jpg" data-desktop-size="256x256" class="lawyer-profile" src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/62bd357692c48600b5393184-original-1657192155647.jpg?s=256x256">
-                                            </div>
-                                            <!---->
-                                        </div>
-
-                                        <!-- 더 알아보기 -->
-                                        <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_more_see'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-more-see" ad-label="5308-이재준" ad-delay="1000" class="lawyer-more-see-block mt-16">
-                                            <div class="lawyer-more-see-text text-center">더 알아보기</div>
-                                            <div class="lawyer-more-see-arrow">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <!-- ===4=== -->
-                <table class="lawyers-list-wrapper mt-16">
-                    <tbody>
-                    <tr>
-                        <div class="premium-lawyer-card-list w-4/5 px-5 mx-auto">
-                            <div class="category flex">
-                                <div class="container">
-                                    <div class="lawyer-tit flex">
-                                        <a href="#" class="lawyer-name text-3xl">박경범 변호사</a>
-                                        <div class="lawyer-status ml-3 flex items-center">
-                                            <div class="watch-icon">
-                                                <a href='https://postimages.org/' target='_blank'>
-                                                    <img src='https://i.postimg.cc/HVnX7N8k/free-icon-clock.png' border='0' alt='clock' /></a>
-                                            </div>
-                                            <i class="lc-watch text-gray-600">1시간 뒤 상담가능</i>
-                                        </div>
-                                    </div>
-
-                                    <div class="lawyer-company-name text-gray-500 text-sm mb-4">더신사법무법인</div>
-                                    <a href="#" class="lawyer-text text-lg">[성매매/성범죄] 초기대응부터 확실하게
-                                    </a>
-
-                                    <!-- 1만원 아이콘-->
-                                    <div class="lawyer-coupon-icon my-5 w-16">
-                                        <img src="data:image/png;base64,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" class="couponicon">
-                                    </div>
-
-                                    <!-- #해시태그버튼 -->
-                                    <div ng-if="adCategoryHighlightKeywords.length > 0" class="lawyer-card-keywords flex items-center">
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-24 h-8 flex items-center justify-center">#성매매</div>
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-28 h-8 flex items-center justify-center mx-3">#성매매알선</div>
-                                        <!---->
-                                    </div>
-
-                                    <!-- 변호사상담예약하기버튼 -->
-                                    <div class="click-button-box flex justify-start mx-2">
-                                        <button class="click_reserve-button my-5">
-                                            예약하기
-                                        </button>
-                                        <button class="click_reserve-button my-5 mx-4">
-                                            상담글</br>작성
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- 변호사 이미지 -->
-                                <div class="lawyerimg-box flex items-center">
-                                    <div class="lawyer-gride-box">
-                                        <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}" class="lawyer-profile-right">
-                                            <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-thumbnail" ad-label="9403-이재준" ad-delay="1000" class="picture">
-                                                <img lazy-image="" data-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/65137fc4941715379b916179-original-1695781044187.jpg" data-desktop-size="256x256" class="lawyer-profile" src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/65137fc4941715379b916179-original-1695781044187.jpg?s=256x256">
-                                            </div>
-                                            <!---->
-                                        </div>
-
-                                        <!-- 더 알아보기 -->
-                                        <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_more_see'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-more-see" ad-label="5308-이재준" ad-delay="1000" class="lawyer-more-see-block mt-16">
-                                            <div class="lawyer-more-see-text text-center">더 알아보기</div>
-                                            <div class="lawyer-more-see-arrow">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <!-- ===5=== -->
-                <table class="lawyers-list-wrapper mt-16">
-                    <tbody>
-                    <tr>
-                        <div class="premium-lawyer-card-list w-4/5 px-5 mx-auto">
-                            <div class="category flex">
-                                <div class="container">
-                                    <div class="lawyer-tit flex">
-                                        <a href="#" class="lawyer-name text-3xl">이충용 변호사</a>
-                                        <div class="lawyer-status ml-3 flex items-center">
-                                            <div class="watch-icon">
-                                                <a href='https://postimages.org/' target='_blank'>
-                                                    <img src='https://i.postimg.cc/HVnX7N8k/free-icon-clock.png' border='0' alt='clock' /></a>
-                                            </div>
-                                            <i class="lc-watch text-gray-600">1시간 뒤 상담가능</i>
-                                        </div>
-                                    </div>
-
-                                    <div class="lawyer-company-name text-gray-500 text-sm mb-4">법률사무소 충용</div>
-                                    <a href="#" class="lawyer-text text-lg">성범죄 전담 검사 출신, 사법고시 출신 대표변호사
-                                    </a>
-
-                                    <!-- 1만원 아이콘-->
-                                    <div class="lawyer-coupon-icon my-5 w-16">
-                                        <img src="data:image/png;base64,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" class="couponicon">
-                                    </div>
-
-                                    <!-- #해시태그버튼 -->
-                                    <div ng-if="adCategoryHighlightKeywords.length > 0" class="lawyer-card-keywords flex items-center">
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-24 h-8 flex items-center justify-center">#성매수</div>
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-28 h-8 flex items-center justify-center mx-3">#장부단속</div>
-                                        <!---->
-                                    </div>
-
-                                    <!-- 변호사상담예약하기버튼 -->
-                                    <div class="click-button-box flex justify-start mx-2">
-                                        <button class="click_reserve-button my-5">
-                                            예약하기
-                                        </button>
-                                        <button class="click_reserve-button my-5 mx-4">
-                                            상담글</br>작성
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- 변호사 이미지 -->
-                                <div class="lawyerimg-box flex items-center">
-                                    <div class="lawyer-gride-box">
-                                        <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}" class="lawyer-profile-right">
-                                            <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-thumbnail" ad-label="9403-이재준" ad-delay="1000" class="picture">
-                                                <img lazy-image="" data-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/62724a3f187407005ca42038-original-1652235911951.jpg" data-desktop-size="256x256" class="lawyer-profile" src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/62724a3f187407005ca42038-original-1652235911951.jpg?s=256x256">
-                                            </div>
-                                            <!---->
-                                        </div>
-
-                                        <!-- 더 알아보기 -->
-                                        <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_more_see'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-more-see" ad-label="5308-이재준" ad-delay="1000" class="lawyer-more-see-block mt-16">
-                                            <div class="lawyer-more-see-text text-center">더 알아보기</div>
-                                            <div class="lawyer-more-see-arrow">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <!-- ===6=== -->
-                <table class="lawyers-list-wrapper mt-16">
-                    <tbody>
-                    <tr>
-                        <div class="premium-lawyer-card-list w-4/5 px-5 mx-auto">
-                            <div class="category flex">
-                                <div class="container">
-                                    <div class="lawyer-tit flex">
-                                        <a href="#" class="lawyer-name text-3xl">이재준 변호사</a>
-                                        <div class="lawyer-status ml-3 flex items-center">
-                                            <div class="watch-icon">
-                                                <a href='https://postimages.org/' target='_blank'>
-                                                    <img src='https://i.postimg.cc/HVnX7N8k/free-icon-clock.png' border='0' alt='clock'/></a>
-                                            </div>
-                                            <i class="lc-watch text-gray-600">1시간 뒤 상담가능</i>
-                                        </div>
-                                    </div>
-
-                                    <div class="lawyer-company-name text-gray-500 text-sm mb-4">법무법인 태일</div>
-                                    <a href="#" class="lawyer-text text-lg">성매매후기만368개/동남아오피/무죄/무혐의/주소변경입회
-                                    </a>
-
-                                    <!-- 1만원 아이콘-->
-                                    <div class="lawyer-coupon-icon my-5 w-16">
-                                        <img src="data:image/png;base64,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" class="couponicon">
-                                    </div>
-
-                                    <!-- #해시태그버튼 -->
-                                    <div ng-if="adCategoryHighlightKeywords.length > 0" class="lawyer-card-keywords flex items-center">
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-32 h-8 flex items-center justify-center">#성매매특별법</div>
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-28 h-8 flex items-center justify-center mx-3">#장부단속</div>
-                                        <!---->
-                                    </div>
-
-                                    <!-- 변호사상담예약하기버튼 -->
-                                    <div class="click-button-box flex justify-start mx-2">
-                                        <button class="click_reserve-button my-5">
-                                            예약하기
-                                        </button>
-                                        <button class="click_reserve-button my-5 mx-4">
-                                            상담글</br>작성
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- 변호사 이미지 -->
-                                <div class="lawyerimg-box flex items-center">
-                                    <div class="lawyer-gride-box">
-                                        <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}" class="lawyer-profile-right">
-                                            <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-thumbnail" ad-label="9403-이재준" ad-delay="1000" class="picture">
-                                                <img lazy-image="" data-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/5da42d24314cc6a0f919114b-original.jpg" data-desktop-size="256x256" class="lawyer-profile" src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/5da42d24314cc6a0f919114b-original.jpg?s=256x256">
-                                            </div>
-                                            <!---->
-                                        </div>
-
-                                        <!-- 더 알아보기 -->
-                                        <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_more_see'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-more-see" ad-label="5308-이재준" ad-delay="1000" class="lawyer-more-see-block mt-16">
-                                            <div class="lawyer-more-see-text text-center">더 알아보기</div>
-                                            <div class="lawyer-more-see-arrow">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <!-- ===7=== -->
-                <table class="lawyers-list-wrapper mt-16">
-                    <tbody>
-                    <tr>
-                        <div class="premium-lawyer-card-list w-4/5 px-5 mx-auto">
-                            <div class="category flex">
-                                <div class="container">
-                                    <div class="lawyer-tit flex">
-                                        <a href="#" class="lawyer-name text-3xl">이재준 변호사</a>
-                                        <div class="lawyer-status ml-3 flex items-center">
-                                            <div class="watch-icon">
-                                                <a href='https://postimages.org/' target='_blank'>
-                                                    <img src='https://i.postimg.cc/HVnX7N8k/free-icon-clock.png' border='0' alt='clock' /></a>
-                                            </div>
-                                            <i class="lc-watch text-gray-600">1시간 뒤 상담가능</i>
-                                        </div>
-                                    </div>
-
-                                    <div class="lawyer-company-name text-gray-500 text-sm mb-4">법무법인 한경</div>
-                                    <a href="#" class="lawyer-text text-lg">사시출신,2290개 만점후기,합리적비용,입소문,다수승소
-                                    </a>
-
-                                    <!-- 1만원 아이콘-->
-                                    <div class="lawyer-coupon-icon my-5 w-16">
-                                        <img src="data:image/png;base64,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" class="couponicon">
-                                    </div>
-
-                                    <!-- #해시태그버튼 -->
-                                    <div ng-if="adCategoryHighlightKeywords.length > 0" class="lawyer-card-keywords flex items-center">
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-24 h-8 flex items-center justify-center">#랜덤채팅</div>
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-28 h-8 flex items-center justify-center mx-3">#조건만남사기</div>
-                                        <!---->
-                                    </div>
-
-                                    <!-- 변호사상담예약하기버튼 -->
-                                    <div class="click-button-box flex justify-start mx-2">
-                                        <button class="click_reserve-button my-5">
-                                            예약하기
-                                        </button>
-                                        <button class="click_reserve-button my-5 mx-4">
-                                            상담글</br>작성
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- 변호사 이미지 -->
-                                <div class="lawyerimg-box flex items-center">
-                                    <div class="lawyer-gride-box">
-                                        <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}" class="lawyer-profile-right">
-                                            <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-thumbnail" ad-label="9403-이재준" ad-delay="1000" class="picture">
-                                                <img lazy-image="" data-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/5e64b6fc9566c101e43e1b23-original.jpg" data-desktop-size="256x256" class="lawyer-profile" src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/5e64b6fc9566c101e43e1b23-original.jpg?s=256x256">
-                                            </div>
-                                            <!---->
-                                        </div>
-
-                                        <!-- 더 알아보기 -->
-                                        <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_more_see'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-more-see" ad-label="5308-이재준" ad-delay="1000" class="lawyer-more-see-block mt-16">
-                                            <div class="lawyer-more-see-text text-center">더 알아보기</div>
-                                            <div class="lawyer-more-see-arrow">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <!-- ===8=== -->
-                <table class="lawyers-list-wrapper mt-16">
-                    <tbody>
-                    <tr>
-                        <div class="premium-lawyer-card-list w-4/5 px-5 mx-auto">
-                            <div class="category flex">
-                                <div class="container">
-                                    <div class="lawyer-tit flex">
-                                        <a href="#" class="lawyer-name text-3xl">윤준혁 변호사</a>
-                                        <div class="lawyer-status ml-3 flex items-center">
-                                            <div class="watch-icon">
-                                                <a href='https://postimages.org/' target='_blank'>
-                                                    <img src='https://i.postimg.cc/HVnX7N8k/free-icon-clock.png' border='0' alt='clock' /></a>
-                                            </div>
-                                            <i class="lc-watch text-gray-600">1시간 뒤 상담가능</i>
-                                        </div>
-                                    </div>
-
-                                    <div class="lawyer-company-name text-gray-500 text-sm mb-4">법률사무소 필승</div>
-                                    <a href="#" class="lawyer-text text-lg">
-                                        <1,400건 이상의 후기>검증된 변호사/합리적 수임료
-                                    </a>
-
-                                    <!-- 1만원 아이콘-->
-                                    <div class="lawyer-coupon-icon my-5 w-16">
-                                        <img src="data:image/png;base64,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" class="couponicon">
-                                    </div>
-
-                                    <!-- #해시태그버튼 -->
-                                    <div ng-if="adCategoryHighlightKeywords.length > 0" class="lawyer-card-keywords flex items-center">
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-24 h-8 flex items-center justify-center">#성매수</div>
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-28 h-8 flex items-center justify-center mx-3">#장부단속</div>
-                                        <!---->
-                                    </div>
-
-                                    <!-- 변호사상담예약하기버튼 -->
-                                    <div class="click-button-box flex justify-start mx-2">
-                                        <button class="click_reserve-button my-5">
-                                            예약하기
-                                        </button>
-                                        <button class="click_reserve-button my-5 mx-4">
-                                            상담글</br>작성
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- 변호사 이미지 -->
-                                <div class="lawyerimg-box flex items-center">
-                                    <div class="lawyer-gride-box">
-                                        <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}" class="lawyer-profile-right">
-                                            <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-thumbnail" ad-label="9403-이재준" ad-delay="1000" class="picture">
-                                                <img lazy-image="" data-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/55efb089b1e8dbd319a45b6d-original.png" data-desktop-size="256x256" class="lawyer-profile" src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/55efb089b1e8dbd319a45b6d-original.png?s=256x256">
-                                            </div>
-                                            <!---->
-                                        </div>
-
-                                        <!-- 더 알아보기 -->
-                                        <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_more_see'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-more-see" ad-label="5308-이재준" ad-delay="1000" class="lawyer-more-see-block mt-16">
-                                            <div class="lawyer-more-see-text text-center">더 알아보기</div>
-                                            <div class="lawyer-more-see-arrow">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <!-- ===9=== -->
-                <table class="lawyers-list-wrapper mt-16">
-                    <tbody>
-                    <tr>
-                        <div class="premium-lawyer-card-list w-4/5 px-5 mx-auto">
-                            <div class="category flex">
-                                <div class="container">
-                                    <div class="lawyer-tit flex">
-                                        <a href="#" class="lawyer-name text-3xl">조겨울샘 변호사</a>
-                                        <div class="lawyer-status ml-3 flex items-center">
-                                            <div class="watch-icon">
-                                                <a href='https://postimages.org/' target='_blank'>
-                                                    <img src='https://i.postimg.cc/HVnX7N8k/free-icon-clock.png' border='0' alt='clock' /></a>
-                                            </div>
-                                            <i class="lc-watch text-gray-600">1시간 뒤 상담가능</i>
-                                        </div>
-                                    </div>
-
-                                    <div class="lawyer-company-name text-gray-500 text-sm mb-4">CKH&Partners</div>
-                                    <a href="#" class="lawyer-text text-lg">TV출연/사법연수원,대형로펌출신/공감과위로를주는상담후기
-                                    </a>
-
-                                    <!-- 1만원 아이콘-->
-                                    <div class="lawyer-coupon-icon my-5 w-16">
-                                        <img src="data:image/png;base64,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" class="couponicon">
-                                    </div>
-
-                                    <!-- #해시태그버튼 -->
-                                    <div ng-if="adCategoryHighlightKeywords.length > 0" class="lawyer-card-keywords flex items-center">
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-24 h-8 flex items-center justify-center">#성매수</div>
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-28 h-8 flex items-center justify-center mx-3">#조건만남사기</div>
-                                        <!---->
-                                    </div>
-
-                                    <!-- 변호사상담예약하기버튼 -->
-                                    <div class="click-button-box flex justify-start mx-2">
-                                        <button class="click_reserve-button my-5">
-                                            예약하기
-                                        </button>
-                                        <button class="click_reserve-button my-5 mx-4">
-                                            상담글</br>작성
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- 변호사 이미지 -->
-                                <div class="lawyerimg-box flex items-center">
-                                    <div class="lawyer-gride-box">
-                                        <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}" class="lawyer-profile-right">
-                                            <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-thumbnail" ad-label="9403-이재준" ad-delay="1000" class="picture">
-                                                <img lazy-image="" data-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/62bd357692c48600b5393184-original-1657192155647.jpg" data-desktop-size="256x256" class="lawyer-profile" src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/62bd357692c48600b5393184-original-1657192155647.jpg?s=256x256">
-                                            </div>
-                                            <!---->
-                                        </div>
-
-                                        <!-- 더 알아보기 -->
-                                        <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_more_see'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-more-see" ad-label="5308-이재준" ad-delay="1000" class="lawyer-more-see-block mt-16">
-                                            <div class="lawyer-more-see-text text-center">더 알아보기</div>
-                                            <div class="lawyer-more-see-arrow">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <!-- ===10=== -->
-                <table class="lawyers-list-wrapper mt-16">
-                    <tbody>
-                    <tr>
-                        <div class="premium-lawyer-card-list w-4/5 px-5 mx-auto">
-                            <div class="category flex">
-                                <div class="container">
-                                    <div class="lawyer-tit flex">
-                                        <a href="#" class="lawyer-name text-3xl">박경범 변호사</a>
-                                        <div class="lawyer-status ml-3 flex items-center">
-                                            <div class="watch-icon">
-                                                <a href='https://postimages.org/' target='_blank'>
-                                                    <img src='https://i.postimg.cc/HVnX7N8k/free-icon-clock.png' border='0' alt='clock' /></a>
-                                            </div>
-                                            <i class="lc-watch text-gray-600">1시간 뒤 상담가능</i>
-                                        </div>
-                                    </div>
-
-                                    <div class="lawyer-company-name text-gray-500 text-sm mb-4">더신사법무법인</div>
-                                    <a href="#" class="lawyer-text text-lg">[성매매/성범죄] 초기대응부터 확실하게
-                                    </a>
-
-                                    <!-- 1만원 아이콘-->
-                                    <div class="lawyer-coupon-icon my-5 w-16">
-                                        <img src="data:image/png;base64,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" class="couponicon">
-                                    </div>
-
-                                    <!-- #해시태그버튼 -->
-                                    <div ng-if="adCategoryHighlightKeywords.length > 0" class="lawyer-card-keywords flex items-center">
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-24 h-8 flex items-center justify-center">#성매매</div>
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-28 h-8 flex items-center justify-center mx-3">#성매매알선</div>
-                                        <!---->
-                                    </div>
-
-                                    <!-- 변호사상담예약하기버튼 -->
-                                    <div class="click-button-box flex justify-start mx-2">
-                                        <button class="click_reserve-button my-5">
-                                            예약하기
-                                        </button>
-                                        <button class="click_reserve-button my-5 mx-4">
-                                            상담글</br>작성
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- 변호사 이미지 -->
-                                <div class="lawyerimg-box flex items-center">
-                                    <div class="lawyer-gride-box">
-                                        <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}" class="lawyer-profile-right">
-                                            <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-thumbnail" ad-label="9403-이재준" ad-delay="1000" class="picture">
-                                                <img lazy-image="" data-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/65137fc4941715379b916179-original-1695781044187.jpg" data-desktop-size="256x256" class="lawyer-profile" src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/65137fc4941715379b916179-original-1695781044187.jpg?s=256x256">
-                                            </div>
-                                            <!---->
-                                        </div>
-
-                                        <!-- 더 알아보기 -->
-                                        <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_more_see'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-more-see" ad-label="5308-이재준" ad-delay="1000" class="lawyer-more-see-block mt-16">
-                                            <div class="lawyer-more-see-text text-center">더 알아보기</div>
-                                            <div class="lawyer-more-see-arrow">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <!-- ===11=== -->
-                <table class="lawyers-list-wrapper mt-16">
-                    <tbody>
-                    <tr>
-                        <div class="premium-lawyer-card-list w-4/5 px-5 mx-auto">
-                            <div class="category flex">
-                                <div class="container">
-                                    <div class="lawyer-tit flex">
-                                        <a href="#" class="lawyer-name text-3xl">이충용 변호사</a>
-                                        <div class="lawyer-status ml-3 flex items-center">
-                                            <div class="watch-icon">
-                                                <a href='https://postimages.org/' target='_blank'>
-                                                    <img src='https://i.postimg.cc/HVnX7N8k/free-icon-clock.png' border='0' alt='clock' /></a>
-                                            </div>
-                                            <i class="lc-watch text-gray-600">1시간 뒤 상담가능</i>
-                                        </div>
-                                    </div>
-
-                                    <div class="lawyer-company-name text-gray-500 text-sm mb-4">법률사무소 충용</div>
-                                    <a href="#" class="lawyer-text text-lg">성범죄 전담 검사 출신, 사법고시 출신 대표변호사
-                                    </a>
-
-                                    <!-- 1만원 아이콘-->
-                                    <div class="lawyer-coupon-icon my-5 w-16">
-                                        <img src="data:image/png;base64,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" class="couponicon">
-                                    </div>
-
-                                    <!-- #해시태그버튼 -->
-                                    <div ng-if="adCategoryHighlightKeywords.length > 0" class="lawyer-card-keywords flex items-center">
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-24 h-8 flex items-center justify-center">#성매수</div>
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-28 h-8 flex items-center justify-center mx-3">#장부단속</div>
-                                        <!---->
-                                    </div>
-
-                                    <!-- 변호사상담예약하기버튼 -->
-                                    <div class="click-button-box flex justify-start mx-2">
-                                        <button class="click_reserve-button my-5">
-                                            예약하기
-                                        </button>
-                                        <button class="click_reserve-button my-5 mx-4">
-                                            상담글</br>작성
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- 변호사 이미지 -->
-                                <div class="lawyerimg-box flex items-center">
-                                    <div class="lawyer-gride-box">
-                                        <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}" class="lawyer-profile-right">
-                                            <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-thumbnail" ad-label="9403-이재준" ad-delay="1000" class="picture">
-                                                <img lazy-image="" data-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/62724a3f187407005ca42038-original-1652235911951.jpg" data-desktop-size="256x256" class="lawyer-profile" src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/62724a3f187407005ca42038-original-1652235911951.jpg?s=256x256">
-                                            </div>
-                                            <!---->
-                                        </div>
-
-                                        <!-- 더 알아보기 -->
-                                        <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_more_see'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-more-see" ad-label="5308-이재준" ad-delay="1000" class="lawyer-more-see-block mt-16">
-                                            <div class="lawyer-more-see-text text-center">더 알아보기</div>
-                                            <div class="lawyer-more-see-arrow">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <!-- ===12=== -->
-                <table class="lawyers-list-wrapper mt-16">
-                    <tbody>
-                    <tr>
-                        <div class="premium-lawyer-card-list w-4/5 px-5 mx-auto">
-                            <div class="category flex">
-                                <div class="container">
-                                    <div class="lawyer-tit flex">
-                                        <a href="#" class="lawyer-name text-3xl">이재준 변호사</a>
-                                        <div class="lawyer-status ml-3 flex items-center">
-                                            <div class="watch-icon">
-                                                <a href='https://postimages.org/' target='_blank'>
-                                                    <img src='https://i.postimg.cc/HVnX7N8k/free-icon-clock.png' border='0' alt='clock'/></a>
-                                            </div>
-                                            <i class="lc-watch text-gray-600">1시간 뒤 상담가능</i>
-                                        </div>
-                                    </div>
-
-                                    <div class="lawyer-company-name text-gray-500 text-sm mb-4">법무법인 태일</div>
-                                    <a href="#" class="lawyer-text text-lg">성매매후기만368개/동남아오피/무죄/무혐의/주소변경입회
-                                    </a>
-
-                                    <!-- 1만원 아이콘-->
-                                    <div class="lawyer-coupon-icon my-5 w-16">
-                                        <img src="data:image/png;base64,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" class="couponicon">
-                                    </div>
-
-                                    <!-- #해시태그버튼 -->
-                                    <div ng-if="adCategoryHighlightKeywords.length > 0" class="lawyer-card-keywords flex items-center">
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-32 h-8 flex items-center justify-center">#성매매특별법</div>
-                                        <!---->
-                                        <div class="lawyer-card-keyword bg-gray-200 rounded-3xl w-28 h-8 flex items-center justify-center mx-3">#장부단속</div>
-                                        <!---->
-                                    </div>
-
-                                    <!-- 변호사상담예약하기버튼 -->
-                                    <div class="click-button-box flex justify-start mx-2">
-                                        <button class="click_reserve-button my-5">
-                                            예약하기
-                                        </button>
-                                        <button class="click_reserve-button my-5 mx-4">
-                                            상담글</br>작성
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- 변호사 이미지 -->
-                                <div class="lawyerimg-box flex items-center">
-                                    <div class="lawyer-gride-box">
-                                        <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}" class="lawyer-profile-right">
-                                            <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-thumbnail" ad-label="9403-이재준" ad-delay="1000" class="picture">
-                                                <img lazy-image="" data-src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/5da42d24314cc6a0f919114b-original.jpg" data-desktop-size="256x256" class="lawyer-profile" src="https://d2ai3ajp99ywjy.cloudfront.net/uploads/original/5da42d24314cc6a0f919114b-original.jpg?s=256x256">
-                                            </div>
-                                            <!---->
-                                        </div>
-
-                                        <!-- 더 알아보기 -->
-                                        <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_more_see'})" ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list" ad-event="click_lawyer-more-see" ad-label="5308-이재준" ad-delay="1000" class="lawyer-more-see-block mt-16">
-                                            <div class="lawyer-more-see-text text-center">더 알아보기</div>
-                                            <div class="lawyer-more-see-arrow">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <!-- 필터 -->
-                <!--     <div class="filter-right-box border-2 w-1/4 absolute top-0 left-3/4">
-                     <div class="filter-header flex align-cneter justify-between">
-                       <div class="filter-title mx-8 p-3">상세필터</div>
-                       <button ng-click="resetOption()" class="filter-btn mx-8 p-3">초기화하기</button>
-                     </div>
-
-                    <div class="filter-body-inner">
-                      <div class="filter-row flex justify-between mx-8 p-3">
-                        <div class="filter-label">정렬</div>
-                        <div class="filter-option">
-                          <div ng-repeat="option in innerFilterOptions.sort" class="filter-option">
-                            <div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.sort, option)" class="filter-option-inner active ">전체</div>
-                            </div>
-
-                          <div ng-repeat="option in innerFilterOptions.sort" class="filter-option">
-                            <div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.sort, option)" class="filter-option-inner active">경력높은순</div>
-                            </div>
-
-                          <div ng-repeat="option in innerFilterOptions.sort" class="filter-option">
-                            <div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.sort, option)" class="filter-option-inner active">빠른상담순</div>
-                            </div>
-                        </div>
-                      </div>
                     </div>
-
-                    <div class="filter-body-inner">
-                      <div class="filter-row flex justify-between mx-8 p-3">
-                        <div class="filter-label">성별</div>
-                        <div class="filter-option">
-                          <div ng-repeat="option in innerFilterOptions.sort" class="filter-option">
-                            <div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.sort, option)" class="filter-option-inner active">전체</div>
-                            </div>
-
-                          <div ng-repeat="option in innerFilterOptions.sort" class="filter-option">
-                            <div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.sort, option)" class="filter-option-inner active">남자</div>
-                            </div>
-
-                          <div ng-repeat="option in innerFilterOptions.sort" class="filter-option">
-                            <div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.sort, option)" class="filter-option-inner active">여자</div>
-                            </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div ng-hide="hideLocation" class="filter-row-2 flex justify-between mx-8 p-3">
-                      <div class="filter-label">지역</div>
-
-                      <div class="filter-options">
-                      <div ng-repeat="option in innerFilterOptions.location" class="filter-option">
-                        <div ng-class="{'active': option.active}" ng-click="clickOption(innerFilterOptions.location, option)" class="filter-option-inner active">전국</div>
-                        </div>
-                      <div ng-repeat="option in innerFilterOptions.location" class="filter-option">
-                      <div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.location, option)" class="filter-option-inner">서울</div></div>
-                      <div ng-repeat="option in innerFilterOptions.location" class="filter-option"><div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.location, option)" class="filter-option-inner">경기</div>
-                      </div>
-                      <div ng-repeat="option in innerFilterOptions.location" class="filter-option">
-                        <div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.location, option)" class="filter-option-inner">춘천/강원</div></div><div ng-repeat="option in innerFilterOptions.location" class="filter-option"><div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.location, option)" class="filter-option-inner">제주</div></div><div ng-repeat="option in innerFilterOptions.location" class="filter-option"><div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.location, option)" class="filter-option-inner">인천/부천</div></div><div ng-repeat="option in innerFilterOptions.location" class="filter-option"><div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.location, option)" class="filter-option-inner">대구/경북</div></div><div ng-repeat="option in innerFilterOptions.location" class="filter-option"><div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.location, option)" class="filter-option-inner">청주/충북</div></div><div ng-repeat="option in innerFilterOptions.location" class="filter-option"><div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.location, option)" class="filter-option-inner">대전/충남/세종</div></div><div ng-repeat="option in innerFilterOptions.location" class="filter-option"><div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.location, option)" class="filter-option-inner">전주/전북</div></div><div ng-repeat="option in innerFilterOptions.location" class="filter-option"><div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.location, option)" class="filter-option-inner">부산/울산/경남</div></div><div ng-repeat="option in innerFilterOptions.location" class="filter-option"><div ng-class="{ 'active': option.active }" ng-click="clickOption(innerFilterOptions.location, option)" class="filter-option-inner">광주/전남</div></div></div>
-                        </div>
-                      </div> -->
+                </div>
             </div>
+        </div>
 
+        <!-- 상담글 4개 -->
+        <div class="question-grid-box mt-12">
 
-        </form>
+            <div class="question-grid-box mt-4">
+                <div class="question-box flex mb-3 border-b pb-3" th:each="feed : ${feed}">
+                    <div class="question-list mt-3">
+                        <div class="question-titleLine mt-3">
+                            <p class="title mt-3" style="color: rgb(122, 130, 135);"
+                               th:text="${feed.firstCategory.title}"></p>
+                            <a th:href="@{/feed/detail/{id}(id=${feed.id})}">
+                                <p class="list mt-3" style="color: rgb(43, 45, 47); font-size: 20px; font-weight: 600;"
+                                   th:text="${feed.secondCategory.title}"></p>
+                            </a>
+                        </div>
+
+                        <!-- 조회수 -->
+                        <div ng-if="stateName != 'main'" class="case-card__info flex justify-between">
+                      <span class="viewCount" style="--tw-text-opacity: 1;
+          color: rgba(107, 114, 128, var(--tw-text-opacity));">조회수<i class="number" th:text="' ' + ${feed.view}"></i>
+                      </span>
+                        </div>
+                    </div>
+                </div>
+
+                <style>
+                    /* 배너 텍스트 */
+                    .text-grid {
+                      padding-top: 128px;
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                      width: 100%;
+                      height: 100%;
+                      text-align: center;
+                      color: #fff;
+                      background-color: rgba(0, 0, 0, 0.2);
+                    }
+
+                    .text {
+                      color: #fff;
+                      font-weight: 500;
+                      font-size : 32px;
+                    }
+
+                    @media (max-width: 360px) {
+                      .content_item {
+                        max-width: var(--m_width);
+                      }
+
+                      .banner-img-box {
+                        height: 100px;
+                      }
+
+                      .banner-img-box > img {
+                          height: 100%;
+                          object-fit: cover;
+                      }
+
+                      .text-grid > p {
+                        margin: 33px 0 0 0;
+                        font-size: 16px;
+                      }
+
+                      .text-grid span {
+                        display: block;
+                        margin-top: -13px;
+                      }
+
+                      .case-card__answer > span {
+                        max-width: var(--m_width) !important;
+                        display: block;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                      }
+                    }
+                </style>
+            </div>
+        </div>
     </div>
-</main>
+</body>
+</html>
 
 <script th:inline="javascript">
     const elapsedTime = (date) => {
@@ -1042,16 +124,16 @@ background-color: rgba(147, 197, 253, var(&#45;&#45;tw-bg-opacity)); border : no
     	const end = new Date();
 
     	const seconds = Math.floor((end.getTime() - start.getTime()) / 1000);
-    	if (seconds < 60) return '방금 전';
+    	if (seconds < 60) return '방금 전 답변';
 
     	const minutes = seconds / 60;
-    	if (minutes < 60) return `${Math.floor(minutes)}분 전`;
+    	if (minutes < 60) return `${Math.floor(minutes)}분 전 답변`;
 
     	const hours = minutes / 60;
-    	if (hours < 24) return `${Math.floor(hours)}시간 전`;
+    	if (hours < 24) return `${Math.floor(hours)}시간 전 답변`;
 
     	const days = hours / 24;
-    	if (days < 7) return `${Math.floor(days)}일 전`;
+    	if (days < 7) return `${Math.floor(days)}일 전 답변`;
 
     	return `${start.toLocaleDateString()}`;
     };
@@ -1063,3 +145,73 @@ background-color: rgba(147, 197, 253, var(&#45;&#45;tw-bg-opacity)); border : no
         });
     };
 </script>
+<!--<html layout:decorate="@{mily/common/layout}" lang="ko">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>피드 : MILY</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div layout:fragment="content" class="items-center justify-center" style="display: flex-row;">-->
+<!--    <div class="mt-9 mb-9 items-center justify-center" style="display: flex; font-size: 42px;">-->
+<!--        변호사 피드-->
+<!--    </div>-->
+<!--    <div class="mt-6 mb-9 items-center justify-center" style="display: flex;">-->
+<!--        <button>-->
+<!--            <a th:if="${user != null && user.role == 'approve'}" th:href="@{feed/create}" class="btn btn-primary">글 작성</a>-->
+<!--        </button>-->
+<!--    </div>-->
+<!--    <div class="ml-60 mr-60 items-center justify-center">-->
+<!--        <ul class="mt-3 border-l-2 border-r-2 border-[#c8c8c8]/25" style="display: block;">-->
+<!--            <li th:each="feed : ${feed}">-->
+<!--                <div class="mt-6 mb-6 card bg-base-100">-->
+<!--                    <div class="card-body">-->
+<!--                        <div class="form-control col-span-full" style="display: block;">-->
+<!--                            <a th:href="@{/feed/detail/{id}(id=${feed.id})}" th:text="${feed.subject}"-->
+<!--                               style="font-weight:bold;"></a>-->
+<!--                        </div>-->
+
+<!--                        <div class="detail grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-3">-->
+<!--                            <div class="form-control" style="display: -webkit-inline-box;">-->
+<!--                                <div th:id="'createDate_' + ${feed.id}" th:text="${feed.createDate}" style="display: inline-block;"></div>-->
+
+<!--                                <i class="fa-regular fa-eye" style="font-size: 16px;"></i>-->
+<!--                                <div th:text="'ㅤ' + ${feed.view}"></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!--<script th:inline="javascript">-->
+<!--    const elapsedTime = (date) => {-->
+<!--    	const start = new Date(date);-->
+<!--    	const end = new Date();-->
+
+<!--    	const seconds = Math.floor((end.getTime() - start.getTime()) / 1000);-->
+<!--    	if (seconds < 60) return '방금 전';-->
+
+<!--    	const minutes = seconds / 60;-->
+<!--    	if (minutes < 60) return `${Math.floor(minutes)}분 전`;-->
+
+<!--    	const hours = minutes / 60;-->
+<!--    	if (hours < 24) return `${Math.floor(hours)}시간 전`;-->
+
+<!--    	const days = hours / 24;-->
+<!--    	if (days < 7) return `${Math.floor(days)}일 전`;-->
+
+<!--    	return `${start.toLocaleDateString()}`;-->
+<!--    };-->
+
+<!--    window.onload = function() {-->
+<!--        document.querySelectorAll("[id^='createDate_']").forEach(function(element) {-->
+<!--            const createDateInMillis = Date.parse(element.textContent);-->
+<!--            element.textContent = elapsedTime(createDateInMillis);-->
+<!--        });-->
+<!--    };-->
+<!--</script>-->
