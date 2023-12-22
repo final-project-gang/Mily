@@ -7,20 +7,25 @@
 <div>
     <div layout:fragment="content">
 
-        <div style="margin: 80px 0 40px 0; display: flex; justify-content: center;">
+        <div style="margin: 40px 0 40px 0; display: flex; justify-content: center;">
             <span style="font-size: 28px; font-weight: 600;">상담 예약</span>
         </div>
 
         <!-- 전체 -->
-        <div style="width: 768px;">
+        <div style="width: 568px;">
             <div>
                 <div style="border: 1px solid #35373A; border-radius: 15px 15px 0 0; background-color: #35373A; color: #fff;">
                     <div th:text="${user.userName} + ' 변호사'" style="margin: 15px 0 0 30px; font-size: 20px;"></div>
                     <div th:text="${user.lawyerUser.officeAddress}"
                          style="margin: 0 0 15px 30px; font-size: 14px;"></div>
                 </div>
-                <div>
-                    <img th:src="${user.lawyerUser.profileImgFilePath}" style="border: 1px solid #35373A; border-radius: 0 0 15px 15px; width: 768px; height: 460px;">
+                <div style="display: flex;">
+                    <img th:src="${user.lawyerUser.profileImgFilePath}" style="border: 1px solid #35373A; border-radius: 0 0 0 15px; width: 256px; height: 256px;">
+                    <div style="border: 1px solid #35373A; border-left: none; border-radius: 0 0 15px 0; width: 312px; height: 256px; font-size: 15px; display: flex; flex-direction: column; align-items: center;">
+                        <span th:text="${user.lawyerUser.major} + ' 전문 변호사'" style="margin-top: 15px; font-weight: 600;"></span><br><br><br>
+                        <span th:text="'〃' + ${user.lawyerUser.introduce} + '〃'" style="margin: 0 15px;"></span><br><br><br>
+                        <span th:text="'Mily 인증 변호사입니다.'" style="color: #75BDFF;"></span>
+                    </div>
                 </div>
             </div>
 
@@ -41,17 +46,17 @@
                 <div style="border: 1px solid #1C1B1F; border-radius: 15px; margin-top: 40px;" id="submitBtnHere">
                     <div class="collapse collapse-arrow"
                          style="border-bottom: 1px solid #DCDCDC; border-radius: 0; width: 90%; margin: 10px 5%;">
-                        <input type="radio" name="my-accordion-2" checked="checked"/>
+                        <input type="radio" name="my-accordion-2"/>
                         <div class="collapse-title">
                             상담 예약
                         </div>
                         <div class="collapse-content"
                              style="display: flex; justify-content: space-around; text-align: center;  margin: 15px 0;">
                             <button id="consultation30" type="button"
-                                    style="width: 150px; padding: 10px; border-radius: 10px; border: 3px solid transparent; background-color: #0000001A;"
+                                    style="width: 125px; padding: 10px; border-radius: 10px; border: 3px solid transparent; background-color: #0000001A; font-size: 14px;"
                                     th:value="'30분 상담'" th:text="'30분 상담'"></button>
                             <button id="consultation60" type="button"
-                                    style="width: 150px; padding: 10px; border-radius: 10px; border: 3px solid transparent; background-color: #0000001A;"
+                                    style="width: 125px; padding: 10px; border-radius: 10px; border: 3px solid transparent; background-color: #0000001A; font-size: 14px;"
                                     th:value="'60분 상담'" th:text="'60분 상담'"></button>
                         </div>
                     </div>
@@ -61,15 +66,15 @@
                         <div class="collapse-title">
                             날짜 선택
                         </div>
-                        <div class="collapse-content">
+                        <div class="collapse-content" style="width: 509px;">
                             <div style="display: flex; flex-direction: column;">
-                                <div style=" display: inline-flex; justify-content: space-around; text-align: center; margin: 15px 0;">
+                                <div style=" display: inline-flex; justify-content: space-around; text-align: center; color: black; margin: 10px 0;">
                                         <button th:id="'selectedDate' + ${stat.index}" type="button" name="date" th:each="dates, stat: ${dates}" th:value="${dates}" th:text="${dates}"
-                                                style="width: 50px; height: 50px; background-color: rgba(0, 0, 0, 0.1); border-radius: 20px;"></button>
+                                                style="width: 45px; height: 45px; background-color: rgba(0, 0, 0, 0.1); border-radius: 20px; font-size:14px;"></button>
                                 </div>
                                 <div style="display: flex; justify-content: space-around; text-align: center; margin: 15px 0;">
                                     <span th:each="day, stat : ${day}"
-                                          th:style="${stat.index == 0} ? 'color:#75BDFF; width:80px;' : 'width:80px;' "
+                                          th:style="${stat.index == 0} ? 'color:#75BDFF; width:80px; font-size: 14px;' : 'width:80px; font-size: 14px;' "
                                           th:text="${day}"></span>
                                 </div>
                             </div>
@@ -101,7 +106,7 @@
                                 btn.style.backgroundColor = "#0000001A";
                             });
                             // 클릭된 버튼의 스타일만 변경합니다.
-                            this.style.border = "3px solid #75BDFF";
+                            this.style.border = "2px solid #75BDFF";
                             this.style.backgroundColor = "transparent";
                             // 클릭된 버튼의 텍스트 값을 'consultation' input 필드에 설정합니다.
                             let consultationInput = $("#consultation");
@@ -117,10 +122,11 @@
                         button.id = 'selectedTime' + i;
                         button.type = 'button';
                         button.style.width = '100px';
-                        button.style.margin = '10px 20px';
+                        button.style.margin = '10px 0';
                         button.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
                         button.style.padding = '10px';
                         button.style.borderRadius = '10px';
+                        button.style.fontSize = '14px';
                         button.innerHTML = times[i];
 
                         ajaxContent.appendChild(button);
@@ -211,13 +217,13 @@
                             const htmlToAdd = `
                                 <div class="added-content" style="display: flex; align-items: center; justify-content: space-evenly;">
                                     <div class="flex justify-evenly">
-                                        <span style="font-size: 18px; font-weight: 600; margin: 0 5px;">${consultationInput.val()},</span>
-                                        <span style="font-size: 18px; font-weight: 600; margin: 0 5px;">${month}월</span>
-                                        <span style="font-size: 18px; font-weight: 600; margin: 0 5px;">${selectedDateInput.val()}일,</span>
-                                        <span style="font-size: 18px; font-weight: 600; margin: 0 5px;">${selectedTimeInput.val()}</span>
+                                        <span style="font-size: 16px; font-weight: 600; margin: 0 5px;">${consultationInput.val()},</span>
+                                        <span style="font-size: 16px; font-weight: 600; margin: 0 5px;">${month}월</span>
+                                        <span style="font-size: 16px; font-weight: 600; margin: 0 5px;">${selectedDateInput.val()}일,</span>
+                                        <span style="font-size: 16px; font-weight: 600; margin: 0 5px;">${selectedTimeInput.val()}</span>
                                     </div>
                                     <button class="flex justify-center" type="submit" style="border: 2px solid #309cff; width: 120px; padding: 5px 0; border-radius: 15px;">
-                                        <span style="color: #309cff; font-size: 18px;">예약하기</span>
+                                        <span style="color: #309cff; font-size: 16px;">예약하기</span>
                                     </button>
                                 </div>
                             `;

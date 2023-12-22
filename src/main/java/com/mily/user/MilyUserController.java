@@ -48,12 +48,13 @@ public class MilyUserController {
     private final PaymentService paymentService;
     private final ReservationService reservationService;
     private final EstimateRepository estimateRepository;
+    private final HttpServletRequest httpServletRequest;
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
-    public String showUserLogin(HttpServletRequest hsr) {
-        String referer = hsr.getHeader("Referer");
-        hsr.getSession().setAttribute("previousUrl", referer);
+    public String showUserLogin() {
+        String referer = httpServletRequest.getHeader("Referer");
+        httpServletRequest.getSession().setAttribute("previousUrl", referer);
 
         return "mily/milyuser/login_form";
     }
@@ -253,9 +254,9 @@ public class MilyUserController {
     }
 
     @PostMapping("/approveLawyer/{id}")
-    public String approveLawyer(@PathVariable int id, Principal principal, HttpServletRequest hsr) {
+    public String approveLawyer(@PathVariable int id, Principal principal) {
         // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
-        String referer = hsr.getHeader("Referer");
+        String referer = httpServletRequest.getHeader("Referer");
 
         String adminLoginId = principal.getName();
         milyUserService.approveLawyer(id, adminLoginId);
@@ -339,11 +340,11 @@ public class MilyUserController {
 
     /* 마이 페이지, 관리자 대시 보드, 변호사 대시 보드 */
     @GetMapping("/mypage/info")
-    public String showMyPage(HttpServletRequest hsr, Model model) {
+    public String showMyPage(Model model) {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
         // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
-        String referer = hsr.getHeader("Referer");
+        String referer = httpServletRequest.getHeader("Referer");
 
         // 현재 로그인 상태가 아닌 유저의 요청을 받으면 돌려 보냄.
         if (isLoginedUser == null) {
@@ -493,11 +494,11 @@ public class MilyUserController {
 
     /* 내 정보 수정 */
     @GetMapping("/mypage/edit")
-    public String getEditInformation(HttpServletRequest hsr, Model model) {
+    public String getEditInformation(Model model) {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
         // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
-        String referer = hsr.getHeader("Referer");
+        String referer = httpServletRequest.getHeader("Referer");
 
         if (isLoginedUser != null) {
             model.addAttribute("user", isLoginedUser);
@@ -508,7 +509,7 @@ public class MilyUserController {
     }
 
     @PostMapping("/mypage/edit/other")
-    public String doEditInformation(@RequestParam String userEmail, @RequestParam String userPhoneNumber, HttpServletRequest hsr, Model model) {
+    public String doEditInformation(@RequestParam String userEmail, @RequestParam String userPhoneNumber, Model model) {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
         if (userEmail.isEmpty()) {
@@ -520,7 +521,7 @@ public class MilyUserController {
         }
 
         // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
-        String referer = hsr.getHeader("Referer");
+        String referer = httpServletRequest.getHeader("Referer");
 
         if (isLoginedUser != null) {
             milyUserService.editInformation(isLoginedUser, userEmail, userPhoneNumber);
@@ -533,11 +534,11 @@ public class MilyUserController {
     }
 
     @GetMapping("/mypage/edit/other")
-    public String getEdiitPassword(HttpServletRequest hsr, Model model) {
+    public String getEdiitPassword(Model model) {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
         // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
-        String referer = hsr.getHeader("Referer");
+        String referer = httpServletRequest.getHeader("Referer");
 
         if (isLoginedUser != null) {
             model.addAttribute("user", isLoginedUser);
@@ -584,11 +585,11 @@ public class MilyUserController {
     }
 
     @GetMapping("/mypage/withdraw/ok")
-    public String doWithdraw(HttpServletRequest hsr) {
+    public String doWithdraw() {
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
         // 경로 이동 요청 전, 머물던 URL 을 받아 온다.
-        String referer = hsr.getHeader("Referer");
+        String referer = httpServletRequest.getHeader("Referer");
 
         if (isLoginedUser != null) {
             milyUserService.withdraw(isLoginedUser);

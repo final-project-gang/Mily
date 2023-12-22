@@ -3,6 +3,7 @@ package com.mily.article.feed.controller;
 import com.mily.article.feed.entity.Feed;
 import com.mily.article.feed.service.FeedService;
 import com.mily.base.rsData.RsData;
+import com.mily.standard.util.Ut;
 import com.mily.user.MilyUser;
 import com.mily.user.MilyUserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import java.util.List;
 public class FeedController {
     private final FeedService feedService;
     private final MilyUserService milyUserService;
+    private final HttpServletRequest httpServletRequest;
 
     @GetMapping("")
     public String showFeeds(Model model) {
@@ -45,8 +47,8 @@ public class FeedController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
-    public String create(Model model, HttpServletRequest hsr) {
-        String referer = hsr.getHeader("Referer");
+    public String create(Model model) {
+        String referer = httpServletRequest.getHeader("Referer");
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
         if (isLoginedUser.getRole().equals("approve")) {
@@ -58,8 +60,8 @@ public class FeedController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String doCreate(@RequestParam String subject, @RequestParam String body, HttpServletRequest hsr) {
-        String referer = hsr.getHeader("Referer");
+    public String doCreate(@RequestParam String subject, @RequestParam String body) {
+        String referer = httpServletRequest.getHeader("Referer");
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
         if (!isLoginedUser.getRole().equals("approve")) {
@@ -101,8 +103,8 @@ public class FeedController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String getModify(Model model, @PathVariable long id, HttpServletRequest hsr) {
-        String referer = hsr.getHeader("Referer");
+    public String getModify(Model model, @PathVariable long id) {
+        String referer = httpServletRequest.getHeader("Referer");
         MilyUser isLoginedUser = milyUserService.getCurrentUser();
 
         Feed feed = feedService.findById(id).get();
@@ -126,8 +128,8 @@ public class FeedController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/delete/{id}")
-    public String doDelete(@PathVariable Long id, HttpServletRequest hsr) {
-        String referer = hsr.getHeader("Referer");
+    public String doDelete(@PathVariable Long id) {
+        String referer = httpServletRequest.getHeader("Referer");
 
         Feed feed = feedService.findById(id).orElse(null);
 

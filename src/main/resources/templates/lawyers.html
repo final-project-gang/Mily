@@ -116,19 +116,7 @@
                     <!-- 변호사 이미지 -->
                     <div class="lawyerimg-box flex items-center">
                         <div class="lawyer-gride-box">
-                            <a th:if="${@rq.login}" th:href="@{/reservation/select_date(lawyerUserId=${lawyer.id})}">
-                                <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}"
-                                     class="lawyer-profile-right">
-                                    <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})"
-                                         ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list"
-                                         ad-event="click_lawyer-thumbnail" ad-label="9403-이재준" ad-delay="1000"
-                                         class="picture">
-                                        <img class="lawyer-profile"
-                                             th:src="${lawyer.lawyerUser.profileImgFilePath}">
-                                    </div>
-                                </div>
-                            </a>
-                            <div th:if="${@rq.logout}" ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}"
+                            <div ng-class="{'has-comment': managerCommentView &amp;&amp; hasManagerComment}"
                                  class="lawyer-profile-right">
                                 <div ng-click="clickProfileLink({lawyerSlug: lawyer.slug, clickElement: 'lawyer_thumbnail'})"
                                      ad-if="gaCategory" ad-category="premium_search_ads_lawyer-list"
