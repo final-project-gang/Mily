@@ -56,6 +56,7 @@ public class MilyUserService {
 
         MilyUser mu = MilyUser
                 .builder()
+                .role("member")
                 .userLoginId(userLoginId)
                 .userPassword(passwordEncoder.encode(userPassword))
                 .userName(userName)

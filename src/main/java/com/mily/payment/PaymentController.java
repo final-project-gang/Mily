@@ -2,6 +2,7 @@ package com.mily.payment;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mily.standard.util.Ut;
 import com.mily.user.MilyUser;
 import com.mily.user.MilyUserService;
 import jakarta.annotation.PostConstruct;
@@ -30,6 +31,7 @@ public class PaymentController {
 
     private final MilyUserService milyUserService;
     private final PaymentService paymentService;
+    private final HttpServletRequest httpServletRequest;
     private String lastOrderName;
 
     @PostConstruct
@@ -51,8 +53,8 @@ public class PaymentController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("")
-    public String doPayment(HttpServletRequest hsr, Model model) {
-        String referer = hsr.getHeader("Referer");
+    public String doPayment(Model model) {
+        String referer = httpServletRequest.getHeader("Referer");
         try {
             MilyUser isLoginedUser = milyUserService.getCurrentUser();
             if (isLoginedUser != null) {
